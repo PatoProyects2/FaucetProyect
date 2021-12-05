@@ -77,6 +77,7 @@ contract Staking is Ownable {
 
     //Variable para el timelock. Permite activar desactivar harvest and reinvet brrr.
     bool public rewardsActive = false;
+    //hola
     
 
     event Deposit(address indexed user, uint256 indexed pid, uint256 amount);
@@ -315,6 +316,10 @@ contract Staking is Ownable {
         emit EmergencyWithdraw(msg.sender, _pid, user.amount);
         user.amount = 0;
         user.rewardDebt = 0;
+        if(user.amount == 0){
+            cantUsers =cantUsers.sub(1);
+        }  
+
     }
 
     // Update dev address by the previous dev.

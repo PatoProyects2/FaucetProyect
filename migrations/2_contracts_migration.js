@@ -25,8 +25,8 @@ module.exports = async function (deployer, network, accounts) {
     await deployer.deploy(Faucet, accounts[0], PATO.address);
 
   }else{
-    await deployer.deploy(PatoVerde, accounts[0]);
-    PATO = await PatoVerde.deployed();
+    //await deployer.deploy(PatoVerde, accounts[0]);
+    // = await PatoVerde.deployed();// MODIFICAR ESTO ANTES DE HACER DEPLOY.
 
     await deployer.deploy(Reward, PATO.address);
     rwrd = await Reward.deployed();

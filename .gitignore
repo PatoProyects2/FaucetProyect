@@ -3,3 +3,4 @@ build
 yarn.lock
 .secret
 .secret2
+.env
