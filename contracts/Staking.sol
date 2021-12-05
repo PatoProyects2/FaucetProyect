@@ -253,18 +253,14 @@ contract Staking is Ownable {
         }
         if (user.amount == 0){
             cantUsers = cantUsers.add(1);
-        }
-        
+        }        
         if (_amount > 0) {
             pool.stakedToken.safeTransferFrom(address(msg.sender), address(this), _amount);            
             pool.totalTokensInPool = pool.totalTokensInPool.add(_amount);
             
             user.amount = user.amount.add(_amount);
-        } 
-        if(rewardsActive){      
-            user.rewardDebt = user.amount.mul(pool.accPATOPerShare).div(1e12);
-        }
-
+        }       
+        user.rewardDebt = user.amount.mul(pool.accPATOPerShare).div(1e12);      
         
         //multiplierAutomatic();
         emit Deposit(msg.sender, _pid, _amount);
