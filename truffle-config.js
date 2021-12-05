@@ -23,7 +23,7 @@ module.exports = {
         new HDWalletProvider(
           process.env.MNENOMIC,
           "https://bsc-dataseed.binance.org/"
-        ),
+        ),  
       network_id: 56, 
       confirmations: 1,
       timeoutBlocks: 900, 
@@ -42,6 +42,16 @@ module.exports = {
       timeoutBlocks: 1000, 
       networkCheckTimeout: 999999,
       skipDryRun: true, 
+    },
+    matic: {
+      provider: () => new HDWalletProvider(process.env.MNEMONIC, 
+      "https://polygon-rpc.com"),
+      network_id: 137,
+      confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: true,
+      gas: 6000000,
+      gasPrice: 10000000000,
     },
 
   },
