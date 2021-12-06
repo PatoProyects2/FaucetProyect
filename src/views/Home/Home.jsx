@@ -56,7 +56,7 @@ class Home extends Component {
               <h4>Total Deposited In Pool:</h4>
               <h5>{Math.round(this.props.tokensInPool / decimals) + " " + this.props.tokenSymbol}</h5>
               <h4>Rewards Per Day:</h4>
-              <h5>1440 PVP</h5>
+              <h5>1964 PVP</h5>
             </div>
           </div>
         </article>
