@@ -1,495 +1,658 @@
 /* GLOBAL */
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  margin: 0;
-  background-color: #161616;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    background-color: #161616;
 }
 
 header {
-  display: inline-block;
-  text-align: center;
-  background-color: #161616;
-  width: 100%;
-  margin-bottom: 15px;
+    display: inline-block;
+    text-align: center;
+    background-color: #161616;
+    width: 100%;
+    margin-bottom: 15px;
 }
 
-#hh1 {  
-  margin-left: 15px;
-  margin-right: 40px;
-  font-size: 30px;
+#hh1 {
+    margin-left: 15px;
+    margin-right: 40px;
+    font-size: 30px;
 }
 
 #hh1 h1 {
-  padding: 5px;
-  color: #00ff40;
+    padding: 5px;
+    color: #00ff40;
 }
 
 #hh1 img {
-  margin-top: 7px;
-  border-radius: 30px;
+    margin-top: 7px;
+    border-radius: 30px;
 }
 
 header a {
-  display: inline-flex;
-  color: #ffffff;
-  text-decoration: none;
-  padding: 0;
+    display: inline-flex;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 0;
 }
 
 nav {
-  width: 100%;
+    width: 100%;
 }
 
-nav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  font-size: 20px;
-}
-
-nav ul li a {
-  text-align: center;
-  text-decoration: none;
-  font-weight: bold;
-  padding: 10px;
+nav ul li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px;
+    display: inline-block;
 }
 
 main {
-  background-color: #161616;
-  margin-top: 120px;
+    background-color: #161616;
+    margin-top: 200px;
+    margin-bottom: 530px;
 }
 
 section {
-  margin: 0 auto;
-  padding: 30px;
-  text-align: center;
-  margin-bottom: 665px;
+    margin: 0 auto;
+    padding: 30px;
+    text-align: center;
 }
 
 article {
-  text-align: center;
-  margin-top: 30px;
-  display: flexbox;
+    text-align: center;
+    display: flexbox;
+    margin-bottom: 20px;
 }
 
 article h1 {
-  text-align: center;
+    text-align: center;
 }
 
 article a:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 footer {
-  background-color: #161616;
-  font-size: 20px;
+    background-color: #161616;
+    font-size: 20px;
 }
 
 h1 {
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  color: #ffbb00;
-  font-size: 30px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: #ffbb00;
+    font-size: 30px;
 }
 
 h2 {
-  color: #ff0000;
-  font-size: 40px;
+    color: #ff0000;
+    font-size: 40px;
 }
 
 h3 {
-  color: #00ff40;
-  font-size: 20px;
+    color: #00ff40;
+    font-size: 20px;
 }
 
 h4 {
-  color: #c4c4c4;
-  font-size: 20px;
+    color: #c4c4c4;
+    font-size: 20px;
 }
 
 h5 {
-  color: #ffffff;
+    color: #ffffff;
 }
 
 h6 {
-  color: #ffffff;
+    color: #ffffff;
 }
 
 span {
-  font-size: 20px;
-  font-weight: normal;
-  color: #ffffff;
+    font-size: 20px;
+    font-weight: normal;
+    color: #ffffff;
 }
 
 table {
-  margin: 0 auto;
+    margin: 0 auto;
 }
 
 table th {
-  color: #c4c4c4;
-  font-weight: normal;
-  font-size: 20px;
+    color: #c4c4c4;
+    font-weight: normal;
+    font-size: 20px;
 }
 
 table td {
-  font-weight: normal;
-  color: #ffffff;
-  font-size: 20px;
+    font-weight: normal;
+    color: #ffffff;
+    font-size: 20px;
 }
 
 a {
-  color: #c4c4c4;
-  padding: 15px;
-  text-decoration: none;
+    color: #c4c4c4;
+    padding: 15px;
+    text-decoration: none;
 }
 
 a:hover {
-  color: #ffffff;
+    color: #ffffff;
 }
 
 p {
-  color: #ffffff;
+    color: #ffffff;
 }
+
 
 /* CLASS */
 
 .titles {
-  font-size: 25px;
+    font-size: 25px;
 }
 
 .logo {
-  border-radius: 50px;
-  margin-right: 10px;
-  margin-top: 20px;
+    border-radius: 50px;
+    margin-right: 10px;
+    margin-top: 20px;
 }
 
 .boxModal {
-  display: inline-block;
-  margin: 0 auto;
-  margin-top: 10px;
-  margin-left: 20px;
-  margin-right: 20px;
-  background-color: #181818;
-  border-radius: 30px;
-  text-align: center;
-  width: 380px;
-  height: 100%;
-  padding: 20px;
-  box-shadow: 0px 0px 10px #00ff40;
+    display: inline-block;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    background-color: #181818;
+    border-radius: 30px;
+    text-align: center;
+    width: 380px;
+    height: 100%;
+    padding: 20px;
+    box-shadow: 0px 0px 10px #00ff40;
 }
 
 .footerModal {
-  border-top: 1px solid #c4c4c4ab;
-  margin-top: 50px;
-  padding: 15px;
-  text-align: center;
+    border-top: 1px solid #c4c4c4ab;
+    margin-top: 50px;
+    padding: 15px;
+    text-align: center;
 }
 
 .footerModal p {
-  margin-bottom: 30px;
+    margin-bottom: 30px;
 }
 
 .footerModal a:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 .loader {
-  margin-top: 30px;
-  position: relative;
+    margin-top: 30px;
+    position: relative;
 }
 
 .spinner {
-  color:#ffae00;
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+    color: #ffae00;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 .circle {
-  width: 100px;
-  height: 100px;
-  border: 10px solid;
-  border-right-color: transparent;
+    width: 100px;
+    height: 100px;
+    border: 10px solid;
+    border-right-color: transparent;
 }
 
 .inactive {
-  color: #c4c4c4;
-  text-decoration: none;
-  background: #161616;
+    color: #c4c4c4;
+    text-decoration: none;
+    background: #161616;
 }
 
 .inactive:hover {
-  color: #ffffff;
+    color: #ffffff;
 }
 
 .active {
-  color: #00ff40;
+    color: #00ff40;
 }
 
 .active:hover {
-  color: #00ff40;
+    color: #00ff40;
 }
+
 
 /* HEADER */
 
 #tokenModal {
-  display: inline-flex;
-  left: 0;
-  position: absolute;
+    display: inline-flex;
+    left: 0;
+    position: absolute;
 }
 
 #walletModal {
-  display: inline-flex;
-  right: 0;
-  position: absolute;
+    display: inline-flex;
+    right: 0;
+    position: absolute;
 }
+
 
 /* HOME */
 
 .homes {
-  display: inline-block;
-  margin: 0 auto;
-  margin-top: 10px;
-  margin-left: 20px;
-  margin-right: 20px;
-  background-color: #181818;
-  border-radius: 30px;
-  text-align: center;
-  width: 800px;
-  height: 100%;
-  padding: 20px;
-  box-shadow: 0px 0px 10px #00ff40;
+    display: inline-block;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    background-color: #181818;
+    border-radius: 30px;
+    text-align: center;
+    width: 800px;
+    height: 100%;
+    padding: 20px;
+    box-shadow: 0px 0px 10px #00ff40;
 }
 
 .homes div {
-  padding: 20px;
- } 
+    padding: 20px;
+}
 
 .homes2 {
-  display: inline-block;
-  margin: 0 auto;
-  margin-top: 10px;
-  margin-left: 20px;
-  margin-right: 20px;
-  background-color: #181818;
-  border-radius: 30px;
-  text-align: center;
-  width: 800px;
-  height: 100%;
-  padding: 20px;
-  box-shadow: 0px 0px 10px #00ff40;
+    display: inline-block;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    background-color: #181818;
+    border-radius: 30px;
+    text-align: center;
+    width: 800px;
+    height: 100%;
+    padding: 20px;
+    box-shadow: 0px 0px 10px #00ff40;
 }
 
 .homes2 h4 {
-  text-align: left;
+    text-align: left;
 }
 
 .homes2 h5 {
-  margin-top: -30px;
-  text-align: right;
+    margin-top: -30px;
+    text-align: right;
 }
 
 #twitch {
-  display: inline-block;
+    display: inline-block;
 }
+
 
 /* FAUCET */
 
+
 /* FARM */
+
+
+/* GAMES  */
+
+.gameModal {
+    display: inline-block;
+    text-align: left;
+    padding: 40px;
+}
+
+#gameNav {
+    display: inline-block;
+}
+
 
 /* FOOTBAR */
 
 #about {
-  display: inline-flex;
-  left: 0;
-  position: absolute;
-  margin-top: 6px;
-  margin-left: 15px;
+    display: inline-flex;
+    left: 0;
+    position: absolute;
+    margin-top: 6px;
+    margin-left: 15px;
 }
 
 #about a {
-  color: #c4c4c4;
-  text-decoration: none;
+    color: #c4c4c4;
+    text-decoration: none;
 }
 
 #about a:hover {
-  color: #ffffff;
-  text-decoration: underline;
+    color: #ffffff;
+    text-decoration: underline;
 }
 
 #social {
-  display: inline-flex;
-  right: 0;
-  position: absolute;
-  margin-top: 8px;
-  margin-right: 15px;
+    display: inline-flex;
+    right: 0;
+    position: absolute;
+    margin-top: 8px;
+    margin-right: 15px;
 }
+
 
 /* INPUT */
 
 .field__input {
-  --uiFieldPlaceholderColor: var(--fieldPlaceholderColor, #5a5a5a);
-  background-color: transparent;
-  border-radius: 0;
-  border: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  font-family: inherit;
-  font-size: inherit;
+    --uiFieldPlaceholderColor: var(--fieldPlaceholderColor, #5a5a5a);
+    background-color: transparent;
+    border-radius: 0;
+    border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    font-family: inherit;
+    font-size: inherit;
 }
 
 .field__input:focus::-webkit-input-placeholder {
-  color: var(--uiFieldPlaceholderColor);
+    color: var(--uiFieldPlaceholderColor);
 }
 
 .field__input:focus::-moz-placeholder {
-  color: var(--uiFieldPlaceholderColor);
+    color: var(--uiFieldPlaceholderColor);
 }
 
 .field {
-  width: 280px;
-  margin-top: 60px;
-  --uiFieldBorderWidth: var(--fieldBorderWidth, 2px);
-  --uiFieldPaddingRight: var(--fieldPaddingRight, 1rem);
-  --uiFieldPaddingLeft: var(--fieldPaddingLeft, 1rem);   
-  --uiFieldBorderColorActive: var(--fieldBorderColorActive, #ffbb00);
-  display: var(--fieldDisplay, inline-flex);
-  position: relative;
-  font-size: var(--fieldFontSize, 1rem);
+    width: 280px;
+    margin-top: 60px;
+    --uiFieldBorderWidth: var(--fieldBorderWidth, 2px);
+    --uiFieldPaddingRight: var(--fieldPaddingRight, 1rem);
+    --uiFieldPaddingLeft: var(--fieldPaddingLeft, 1rem);
+    --uiFieldBorderColorActive: var(--fieldBorderColorActive, #ffbb00);
+    display: var(--fieldDisplay, inline-flex);
+    position: relative;
+    font-size: var(--fieldFontSize, 1rem);
 }
 
 .field__input {
-  color: #ffffff;
-  box-sizing: border-box;
-  width: var(--fieldWidth, 100%);
-  height: var(--fieldHeight, 3rem);
-  padding: var(--fieldPaddingTop, 1.25rem) var(--uiFieldPaddingRight) var(--fieldPaddingBottom, .5rem) var(--uiFieldPaddingLeft);
-  border-bottom: var(--uiFieldBorderWidth) solid var(--fieldBorderColor, #c4c4c4);  
+    color: #ffffff;
+    box-sizing: border-box;
+    width: var(--fieldWidth, 100%);
+    height: var(--fieldHeight, 3rem);
+    padding: var(--fieldPaddingTop, 1.25rem) var(--uiFieldPaddingRight) var(--fieldPaddingBottom, .5rem) var(--uiFieldPaddingLeft);
+    border-bottom: var(--uiFieldBorderWidth) solid var(--fieldBorderColor, #c4c4c4);
 }
 
 .field__input:focus {
-  outline: none;
+    outline: none;
 }
 
 .field__input::-webkit-input-placeholder {
-  opacity: 0;
-  transition: opacity .2s ease-out;
+    opacity: 0;
+    transition: opacity .2s ease-out;
 }
 
 .field__input::-moz-placeholder {
-  opacity: 0;
-  transition: opacity .2s ease-out;
+    opacity: 0;
+    transition: opacity .2s ease-out;
 }
 
 .field__input:focus::-webkit-input-placeholder {
-  opacity: 1;
-  transition-delay: .2s;
+    opacity: 1;
+    transition-delay: .2s;
 }
 
 .field__input:focus::-moz-placeholder {
-  opacity: 1;
-  transition-delay: .2s;
+    opacity: 1;
+    transition-delay: .2s;
 }
 
 .field__label-wrap {
-  box-sizing: border-box;
-  pointer-events: none;
-  cursor: text;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+    box-sizing: border-box;
+    pointer-events: none;
+    cursor: text;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 }
 
 .field__label-wrap::after {
-  content: "";
-  box-sizing: border-box;
-  width: 100%;
-  height: 0;
-  opacity: 0;
-  position: absolute;
-  bottom: 0;
-  left: 0;
+    content: "";
+    box-sizing: border-box;
+    width: 100%;
+    height: 0;
+    opacity: 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
 
-.field__input:focus ~ .field__label-wrap::after {
-  opacity: 1;
+.field__input:focus~.field__label-wrap::after {
+    opacity: 1;
 }
 
 .field__label {
-  position: absolute;
-  left: var(--uiFieldPaddingLeft);
-  top: calc(50% - .5em);
-  color: #c4c4c4;
-  line-height: 1;
-  font-size: var(--fieldHintFontSize, inherit);
-  transition: top .2s cubic-bezier(0.9, -0.15, 0.1, 1.15), opacity .2s ease-out, font-size .2s ease-out;
-  will-change: bottom, opacity, font-size;
+    position: absolute;
+    left: var(--uiFieldPaddingLeft);
+    top: calc(50% - .5em);
+    color: #c4c4c4;
+    line-height: 1;
+    font-size: var(--fieldHintFontSize, inherit);
+    transition: top .2s cubic-bezier(0.9, -0.15, 0.1, 1.15), opacity .2s ease-out, font-size .2s ease-out;
+    will-change: bottom, opacity, font-size;
 }
 
-.field__input:focus ~ .field__label-wrap .field__label,
-.field__input:not(:placeholder-shown) ~ .field__label-wrap .field__label {
-  --fieldHintFontSize: var(--fieldHintFontSizeFocused, .75rem);
-  top: var(--fieldHintTopHover, .25rem);
+.field__input:focus~.field__label-wrap .field__label,
+.field__input:not(:placeholder-shown)~.field__label-wrap .field__label {
+    --fieldHintFontSize: var(--fieldHintFontSizeFocused, .75rem);
+    top: var(--fieldHintTopHover, .25rem);
 }
 
 .field_v1 .field__label-wrap::after {
-  border-bottom: var(--uiFieldBorderWidth) solid var(--uiFieldBorderColorActive);
-  transition: opacity .2s ease-out;
-  will-change: opacity;
+    border-bottom: var(--uiFieldBorderWidth) solid var(--uiFieldBorderColorActive);
+    transition: opacity .2s ease-out;
+    will-change: opacity;
 }
+
 
 /* BUTTON 1 */
 
 .btn1 {
-  margin-left: 10px;
-  margin-right: 10px;
-  margin-top: 6px;
-  box-sizing: border-box;
-  background-color: #00ff40;
-  border-radius: 0.6em;
-  color: #000000;
-  font-size: 15px;
-  font-weight: bold;
-  line-height: 1;
-  padding: 10px;
-  text-decoration: none;
-  text-align: center;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  box-shadow: none;
-  border: none;
-  width: 160px;
-  height: 40px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 6px;
+    box-sizing: border-box;
+    background-color: #00ff40;
+    border-radius: 0.6em;
+    color: #000000;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 1;
+    padding: 10px;
+    text-decoration: none;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    box-shadow: none;
+    border: none;
+    width: 160px;
+    height: 40px;
 }
+
 
 /* BUTTON 2 */
 
 .btn2 button {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: 5px;
-  margin-right: 5px;
-  width: 140px;
-  height: 50px;
-  padding: 0;
-  font-weight: bold;
-  font-size: 20px;
-  background: #1a1a1a;
-  border: 2px solid #ffbb00;
-  color: #ffbb00;
-  border-radius: 10px;
-  overflow: hidden;
-  transition: 0.4s;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 140px;
+    height: 50px;
+    padding: 0;
+    font-weight: bold;
+    font-size: 20px;
+    background: #1a1a1a;
+    border: 2px solid #ffbb00;
+    color: #ffbb00;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: 0.4s;
 }
 
 .btn2 button:hover:enabled {
-  background: #ffbb00;
-  border: 2px solid #000000;
-  color: #000000;
+    background: #ffbb00;
+    border: 2px solid #000000;
+    color: #000000;
+}
+
+
+/* ANIMATION */
+
+.example-enter {
+    opacity: 0.01;
+}
+
+.example-enter.example-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+}
+
+.example-leave {
+    opacity: 1;
+}
+
+.example-leave.example-leave-active {
+    opacity: 0.01;
+    transition: opacity 300ms ease-in;
+}
+
+.chest {
+    display: inline-block;
+    padding: 50px;
+}
+
+.infoChests {
+    font-size: 20px;
+    margin: 0 auto;
+    border: none;
+    border-radius: 4;
+    margin-bottom: 20px;
+}
+
+.chestButton {
+    background-color: #ffc107;
+    width: 200px;
+    height: 40px;
+    border: none;
+}
+
+.carta-box {
+    margin: 50px;
+    width: 130px;
+    height: 130px;
+    position: relative;
+    perspective: 1000px;
+}
+
+.carta-box:hover .carta {
+    transform: rotateY(180deg);
+}
+
+.carta {
+    transform-style: preserve-3d;
+    transition: all 0.3s linear;
+}
+
+.cara {
+    position: absolute;
+    backface-visibility: hidden;
+}
+
+.cara.detras {
+    transform: rotateY(180deg);
+}
+
+#herreriaModal {
+    background-image: url('./images/Game/herreria_fondo.jpg');
+    background-size: 600px 300px;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 30px;
+}
+
+#hachaModal {
+    background-image: url('./images/Game/fondo_hacha.jpg');
+    background-size: 600px 300px;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 30px;
+}
+
+#picoModal {
+    background-image: url('./images/Game/mina.jpg');
+    background-size: 600px 300px;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 30px;
+}
+
+#herreria {
+    background-image: url('./images/Game/yunke.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 30px;
+}
+
+#hacha {
+    background-image: url('./images/Game/troncos.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 30px;
+}
+
+#pico {
+    background-image: url('./images/Game/gem.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 30px;
+}
+
+#buttonCastle {
+    background: transparent;
+    border: none;
+    background-image: url('./images/Game/button_castle.png');
+    background-size: 64px 64px;
+    width: 64px;
+    height: 64px;
+}
+
+#buttonShop {
+    background: transparent;
+    border: none;
+    background-image: url('./images/Game/button_shop.png');
+    background-size: 64px 64px;
+    width: 64px;
+    height: 64px;
+}
+
+#buttonBag {
+    background: transparent;
+    border: none;
+    background-image: url('./images/Game/button_bag.png');
+    background-size: 64px 64px;
+    width: 64px;
+    height: 64px;
+}
+
+.off {
+    background: transparent;
 }

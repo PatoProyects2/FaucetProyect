@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import {
   BrowserRouter as Router,
-  Switch, 
-  Route, 
+  Switch,
+  Route,
   NavLink
 } from "react-router-dom";
 import Web3 from 'web3'
@@ -13,20 +13,21 @@ import PatoVerde from './abis/PatoVerde.json'
 import FaucetAbi from './abis/Faucet.json'
 import StakingAbi from './abis/Staking.json'
 
-import LoadingPage from './components/LoadingPage'
-import LoadingTransaction from './components/LoadingTransaction'
-import ConnectWalletButton from './components/ConnectWalletButton'
-import AddTokenButton from './components/AddTokenButton'
-import chains from './components/AvailableChains'
-import WrongNetwork from './components/WrongNetwork'
-import NotFound from './components/NotFound'
-import Footer from './components/Footer'
+import ConnectWalletButton from './components/Buttons/ConnectWalletButton'
+import AddTokenButton from './components/Buttons/AddTokenButton'
+import chains from './components/Blockchain/AvailableChains'
+import Footer from './components/Footer/Footer'
 
-import Home from './views/Home'
-import Claim from './views/Claim'
-import Pool from './views/Pool'
-import Soon from './views/Soon'
-import Maintenance from './views/Maintenance'
+import Home from './views/Home/Home'
+import Claim from './views/Faucet/Claim'
+import Pool from './views/Pool/Pool'
+import Game from './views/Game/Game'
+import LoadingPage from './views/Status/LoadingPage'
+import LoadingTransaction from './views/Status/LoadingTransaction'
+import Maintenance from './views/Status/Maintenance'
+import Soon from './views/Status/Soon'
+import NotFound from './views/Status/NotFound'
+import WrongNetwork from './views/Status/WrongNetwork'
 
 import Logo from './images/patologo.png'
 
@@ -62,52 +63,51 @@ class App extends Component {
     let chainId = await web3.eth.getChainId()
     let chainInUse = null
 
-    for (let chainIndex in chains){
-            if(chains[chainIndex].id === chainId){
+    for (let chainIndex in chains) {
+      if (chains[chainIndex].id === chainId) {
         chainInUse = chains[chainIndex]
-      } 
+      }
     }
- 
-    if(!chainInUse){
+
+    if (!chainInUse) {
       this.setState({ loading: "INVALID_CHAIN" })
-      window.alert('INVALID NETWORK, CONNECT TO BSC-MAINNET NETWORK!')
+      window.alert('INVALID NETWORK, CONNECT TO POLYGON MAINNET NETWORK!')
     } else {
       this.setState({ chainInUse })
       this.setState({ account: accounts[0] })
-      try { 
+      try {
         const patoToken = new web3.eth.Contract(PatoVerde.abi, chainInUse.patoTokenAddress)
         this.setState({ patoToken })
         let patoTokenBalance = await patoToken.methods.balanceOf(this.state.account).call()
         this.setState({ patoTokenBalance: patoTokenBalance.toString() })
-        let faucetPatoTokenBalance = await patoToken.methods.balanceOf(chainInUse.faucetAddress).call()  
+        let faucetPatoTokenBalance = await patoToken.methods.balanceOf(chainInUse.faucetAddress).call()
         this.setState({ faucetPatoTokenBalance: faucetPatoTokenBalance.toString() })
-        let totalSupply = await patoToken.methods.totalSupply().call()  
+        let totalSupply = await patoToken.methods.totalSupply().call()
         this.setState({ totalSupply: totalSupply.toString() })
-        let maxSupply = await patoToken.methods.maxSupply().call()  
+        let maxSupply = await patoToken.methods.maxSupply().call()
         this.setState({ maxSupply: maxSupply.toString() })
         let tokenName = await patoToken.methods.name().call()
         this.setState({ tokenName: tokenName.toString() })
         let tokenSymbol = await patoToken.methods.symbol().call()
         this.setState({ tokenSymbol: tokenSymbol.toString() })
 
-      } catch(e) {
+      } catch (e) {
         window.alert('PATO CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
       }
       try {
         const staking = new web3.eth.Contract(StakingAbi.abi, chainInUse.stakingAddress)
         this.setState({ staking })
-        // let perBlock = await staking.methods.rewardsPerDay(0, "0xcc73ede51729ed1122e6b9b34180c75b7f58acfb").call()
-        // this.setState({ perBlock: perBlock.toString() })
         let rewardsActive = await staking.methods.rewardsActive().call()
         this.setState({ rewardsActive: rewardsActive.toString() })
         let tokensInPool = await staking.methods.tokenInPool(0).call()
         this.setState({ tokensInPool: tokensInPool.toString() })
         let stakingStaked = await this.state.staking.methods.userInfo(0, this.state.account).call()
         let stakingPending = await this.state.staking.methods.pendingPATO(0, this.state.account).call()
-        this.setState({ stakingStaked: stakingStaked[0],
-                        stakingPending: stakingPending,              
-                      })
-      } catch(e) {
+        this.setState({
+          stakingStaked: stakingStaked[0],
+          stakingPending: stakingPending,
+        })
+      } catch (e) {
         window.alert('STAKING CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
       }
       try {
@@ -116,15 +116,16 @@ class App extends Component {
         let claimActive = await faucet.methods.setActiveOn().call()
         this.setState({ claimActive: claimActive.toString() })
         let patoExpiry = await this.state.faucet.methods.getExpiryOf(this.state.account, chainInUse.patoTokenAddress).call()
-        this.setState({ patoExpiry: patoExpiry})
-      } catch(e) {
+        this.setState({ patoExpiry: patoExpiry })
+      } catch (e) {
         window.alert('FAUCET CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
-      } 
+      }
       this.setState({ loading: 'FALSE' })
+      this.setState({ chest: 'FALSE' })
     }
   }
-  
-  addToken = async ()  => {
+
+  addToken = async () => {
     try {
       const provider = window.web3.currentProvider
       await provider.sendAsync({
@@ -144,22 +145,22 @@ class App extends Component {
     }
   }
 
-  addNetwork = async ()  => {
+  addNetwork = async () => {
     try {
       const provider = window.web3.currentProvider
       await provider.sendAsync({
         method: 'wallet_addEthereumChain',
         params: [{
-            chainId: "0x38",
-            chainName: "BSC - Mainnet",
-            rpcUrls: ["https://bsc-dataseed.binance.org/"],
-            iconUrls: ["https://queesunbitcoin.com/wp-content/uploads/2021/05/curso-sobre-binance-online.png"],
-            nativeCurrency: {
-              name: "BNB",
-              symbol: "BNB",
-              decimals: 18,
-            },
-            blockExplorerUrls: ["https://bscscan.com/"],
+          chainId: "0x89",
+          chainName: "Polygon Mainnet",
+          rpcUrls: ["https://rpc-mainnet.maticvigil.com/"],
+          iconUrls: ["https://queesunbitcoin.com/wp-content/uploads/2021/05/curso-sobre-binance-online.png"],
+          nativeCurrency: {
+            name: "MATIC",
+            symbol: "MATIC",
+            decimals: 18,
+          },
+          blockExplorerUrls: ["https://explorer.matic.network/"],
         }],
       });
     } catch (error) {
@@ -167,88 +168,88 @@ class App extends Component {
     }
   }
 
-  switchNetwork = async ()  => {
+  switchNetwork = async () => {
     try {
       const provider = window.web3.currentProvider
       await provider.sendAsync({
         method: 'wallet_switchEthereumChain',
         params: [{
-            chainId: "0x38",
+          chainId: "0x38",
         }],
       });
     } catch (error) {
       console.log(error);
     }
   }
- 
+
   claimToken = async () => {
     this.setState({ loading: 'TRANSACTION' })
     this.state.faucet.methods
-    .claim(this.state.chainInUse.patoTokenAddress)
-    .send({from: this.state.account})
-    .on('receipt', (hash) => {
-      window.location.reload()
-    })
-    .on('error', function(error) {
-      window.location.reload()
-    });
+      .claim(this.state.chainInUse.patoTokenAddress)
+      .send({ from: this.state.account })
+      .on('receipt', (hash) => {
+        window.location.reload()
+      })
+      .on('error', function (error) {
+        window.location.reload()
+      });
   }
-  
+
 
   approveToken = async () => {
     this.setState({ loading: 'TRANSACTION' })
     this.state.patoToken.methods
-    .approve(this.state.chainInUse.stakingAddress, window.web3.utils.toWei(window.web3.utils.toBN(new BigNumber(100000000000000000000000000000000000000000000000000)).toString(), 'Ether'))
-    .send({from: this.state.account})
-    .on('receipt', (hash) => {
-      window.location.reload()
-    })
-    .on('error', function(error) {
-      window.location.reload()
-    });
+      .approve(this.state.chainInUse.stakingAddress, window.web3.utils.toWei(window.web3.utils.toBN(new BigNumber(100000000000000000000000000000000000000000000000000)).toString(), 'Ether'))
+      .send({ from: this.state.account })
+      .on('receipt', (hash) => {
+        window.location.reload()
+      })
+      .on('error', function (error) {
+        window.location.reload()
+      });
   }
 
   depositToken = async (value) => {
     this.setState({ loading: 'TRANSACTION' })
     this.state.staking.methods
-    .deposit(0, window.web3.utils.toWei(value.toString(), 'Ether'))
-    .send({from: this.state.account})
-    .on('receipt', (hash) => {
-      window.location.reload()
-    })
-    .on('error', function(error) {
-      window.location.reload()
-    });
+      .deposit(0, window.web3.utils.toWei(value.toString(), 'Ether'))
+      .send({ from: this.state.account })
+      .on('receipt', (hash) => {
+        window.location.reload()
+      })
+      .on('error', function (error) {
+        window.location.reload()
+      });
   }
 
   harvestToken = async () => {
     this.setState({ loading: 'TRANSACTION' })
     this.state.staking.methods
-    .brrr(0)
-    .send({from: this.state.account})
-    .on('receipt', async (hash) =>  {
-      window.location.reload()
-    })
-    .on('error', function(error) {
-      window.location.reload()
-    });
+      .brrr(0)
+      .send({ from: this.state.account })
+      .on('receipt', async (hash) => {
+        window.location.reload()
+      })
+      .on('error', function (error) {
+        window.location.reload()
+      });
   }
 
   withdrawToken = async (value) => {
     this.setState({ loading: 'TRANSACTION' })
     this.state.staking.methods
-    .withdraw(0, window.web3.utils.toWei(value.toString(), 'Ether'))
-    .send({from: this.state.account})
-    .on('receipt', async (hash) =>  {
-      window.location.reload()
-    })
-    .on('error', function(error) {
-      window.location.reload()
-    });
+      .withdraw(0, window.web3.utils.toWei(value.toString(), 'Ether'))
+      .send({ from: this.state.account })
+      .on('receipt', async (hash) => {
+        window.location.reload()
+      })
+      .on('error', function (error) {
+        window.location.reload()
+      });
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value});
+    this.setState({ value: event.target.value });
   }
 
   constructor(props) {
@@ -274,60 +275,60 @@ class App extends Component {
       rewardsActive: undefined,
       chainInUse: undefined,
       claimActive: undefined,
-
     }
     this.handleChange = this.handleChange.bind(this);
   }
 
   render() {
 
+    let addToken
+    addToken = <div id="addBtn">
+      <AddTokenButton
+        addToken={this.addToken}
+      />
+    </div>
+
     let loading
-    if(this.state.loading === 'WEB3') {
+    if (this.state.loading === 'WEB3') {
       loading = <main>
         <LoadingPage />
       </main>
-    } 
-    if(this.state.loading === 'TRANSACTION') {
-      loading = <main>
-        <LoadingTransaction />
-      </main>
     }
-    if(this.state.loading === 'INVALID_CHAIN') {
-      loading = <main>
-        <WrongNetwork 
+    if (this.state.loading === 'TRANSACTION') {
+      loading = <article>
+        <LoadingTransaction />
+      </article>
+    }
+    if (this.state.loading === 'INVALID_CHAIN') {
+      loading = <article>
+        <WrongNetwork
           addNetwork={this.addNetwork}
         />
-      </main>
+      </article>
     }
-  
-    let addToken
-      addToken = <div id="addBtn">
-        <AddTokenButton 
-          addToken={this.addToken}
-        />
-      </div>
 
     let soon
-    if(this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
-      soon = <div>
+    if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
+      soon = <article>
         <Soon
-        
+
         />
-      </div>
+      </article>
     }
 
     let maintenance
-    if(this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
-      maintenance = <div>
+    if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
+      maintenance = <article>
         <Maintenance
-        
+
         />
-      </div>
+      </article>
     }
 
     let home
-    if(this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
-      home = <div>
+    if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
+      home = <article>
+        <h1 class="titles">Pato Verde Projects (PVP)</h1>
         <Home
           patoPerBlock={this.state.perBlock}
           rewardsActive={this.state.rewardsActive}
@@ -342,43 +343,55 @@ class App extends Component {
           faucetPatoTokenBalance={this.state.faucetPatoTokenBalance}
           claimActive={this.state.claimActive}
         />
-      </div>
+      </article>
     }
 
     let claim
-    if(this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
-      claim = <div>
+    if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
+      claim = <article>
+        <h1 class="titles">Active Claims (1)</h1>
         <Claim
           patoToken={this.state.patoToken}
           faucet={this.state.faucet}
-          claimToken={this.claimToken} 
+          claimToken={this.claimToken}
           patoTokenBalance={this.state.patoTokenBalance}
           faucetPatoTokenBalance={this.state.faucetPatoTokenBalance}
-          patoExpiry={this.state.patoExpiry} 
+          patoExpiry={this.state.patoExpiry}
           tokenSymbol={this.state.tokenSymbol}
         />
-      </div>
-    } 
- 
+      </article>
+    }
+
     let pool
-    if(this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
-      pool = <div>
+    if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
+      pool = <article>
+        <h1 class="titles">Active Pools (1)</h1>
         <Pool
           patoToken={this.state.patoToken}
           staking={this.state.staking}
           approveToken={this.approveToken}
-          harvestToken={this.harvestToken} 
+          harvestToken={this.harvestToken}
           handleChange={this.handleChange}
           depositToken={this.depositToken}
           withdrawToken={this.withdrawToken}
-          approveValue={this.state.approveValue} 
+          approveValue={this.state.approveValue}
           value={this.state.value}
-          patoTokenBalance={this.state.patoTokenBalance}      
+          patoTokenBalance={this.state.patoTokenBalance}
           stakingPending={this.state.stakingPending}
           stakingStaked={this.state.stakingStaked}
           tokenSymbol={this.state.tokenSymbol}
         />
-      </div>
+      </article>
+    }
+
+    let game
+    if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
+      game = <article>
+        <h1 class="titles">Active Games (1)</h1>
+        <Game
+
+        />
+      </article>
     }
 
     return (
@@ -388,46 +401,62 @@ class App extends Component {
             <header>
               <div id="tokenModal">
                 <a href="/" id="hh1">
-                  <img src={Logo} width="30" height="30" alt="" /> 
+                  <img src={Logo} width="30" height="30" alt="" />
                   <h1>Pato</h1><h1>Verde</h1><h1>Projects</h1>
                 </a>
                 <nav>
-                  <ul id="menu">                                                          
-                    <NavLink className="inactive" activeClassName="active" to="/claim"><li><a>Claim</a></li></NavLink>                                     
-                    <NavLink className="inactive" activeClassName="active" to="/pool"><li><a>Pool</a></li></NavLink>                                     
-                    <NavLink className="inactive" activeClassName="active" to="/vote"><li><a>Vote</a></li></NavLink>                               
-                    <NavLink className="inactive" activeClassName="active" to="/nft"><li><a>Nft</a></li></NavLink>    
-                    <NavLink className="inactive" activeClassName="active" to="/games"><li><a>Games</a></li></NavLink>                   
-                  </ul> 
-                </nav> 
-              </div>                           
+                  <ul id="menu">
+                    <NavLink className="inactive" activeClassName="active" to="/claim">
+                      <li>
+                        Claim
+                      </li>
+                    </NavLink>
+                    <NavLink className="inactive" activeClassName="active" to="/pool">
+                      <li>
+                        Pool
+                      </li>
+                    </NavLink>
+                    <NavLink className="inactive" activeClassName="active" to="/game">
+                      <li
+                      >Game
+                      </li>
+                    </NavLink>
+                  </ul>
+                </nav>
+              </div>
               <div id="walletModal">
                 {addToken}
                 <ConnectWalletButton />
-              </div> 
+              </div>
             </header>
             <main>
-              <section>   
-                <Switch>             
+              <section>
+                <Switch>
                   {loading}
-                  <Route exact path="/">{maintenance}</Route>         
-                  <Route path="/claim">{maintenance}</Route>
-                  <Route path="/pool">{maintenance}</Route>
-                  <Route path="/vote">{soon}</Route>
-                  <Route path="/nft">{soon}</Route>
-                  <Route path="/games">{soon}</Route> 
-                  <Route component={NotFound} /> 
+                  <Route exact path="/">
+                    {home}
+                  </Route>
+                  <Route path="/claim">
+                    {claim}
+                  </Route>
+                  <Route path="/pool">
+                    {pool}
+                  </Route>
+                  <Route path="/game">
+                    {maintenance}
+                  </Route>
+                  <Route component={NotFound} />
                 </Switch>
               </section>
             </main>
             <footer>
-              <Footer /> 
-            </footer> 
-          </Router>     
-        </div> 
+              <Footer />
+            </footer>
+          </Router>
+        </div>
       </Web3ReactProvider>
     );
   }
 }
- 
+
 export default App;
