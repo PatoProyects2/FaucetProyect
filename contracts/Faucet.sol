@@ -93,8 +93,8 @@ contract Faucet is AccessControlEnumerable{
   function getEthBalance() external view returns(uint){
     return address(this).balance;
   }
-  function ActivateFaucet() public onlyAdmin{
-    setActiveOn = true;    
+  function ActivateFaucet(bool _setOnOFF) public onlyAdmin{
+    setActiveOn = _setOnOFF;
   }
 
 }

@@ -77,6 +77,7 @@ contract Staking is Ownable {
 
     //Variable para el timelock. Permite activar desactivar harvest and reinvet brrr.
     bool public rewardsActive = false;
+    //hola
     
 
     event Deposit(address indexed user, uint256 indexed pid, uint256 amount);
@@ -253,14 +254,18 @@ contract Staking is Ownable {
         }
         if (user.amount == 0){
             cantUsers = cantUsers.add(1);
-        }        
+        }
+        
         if (_amount > 0) {
             pool.stakedToken.safeTransferFrom(address(msg.sender), address(this), _amount);            
             pool.totalTokensInPool = pool.totalTokensInPool.add(_amount);
             
             user.amount = user.amount.add(_amount);
-        }       
-        user.rewardDebt = user.amount.mul(pool.accPATOPerShare).div(1e12);      
+        } 
+        if(rewardsActive){      
+            user.rewardDebt = user.amount.mul(pool.accPATOPerShare).div(1e12);
+        }
+
         
         //multiplierAutomatic();
         emit Deposit(msg.sender, _pid, _amount);
@@ -292,10 +297,8 @@ contract Staking is Ownable {
             
             pool.totalTokensInPool = pool.totalTokensInPool.sub(_amount);
         }
-
-        if(rewardsActive ){
-            user.rewardDebt = user.amount.mul(pool.accPATOPerShare).div(1e12);
-        }
+       
+        user.rewardDebt = user.amount.mul(pool.accPATOPerShare).div(1e12);
 
         if(user.amount == 0){
             cantUsers =cantUsers.sub(1);
@@ -311,6 +314,10 @@ contract Staking is Ownable {
         emit EmergencyWithdraw(msg.sender, _pid, user.amount);
         user.amount = 0;
         user.rewardDebt = 0;
+        if(user.amount == 0){
+            cantUsers =cantUsers.sub(1);
+        }  
+
     }
 
     // Update dev address by the previous dev.

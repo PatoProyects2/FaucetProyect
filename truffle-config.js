@@ -4,7 +4,7 @@ require("dotenv").config();
 module.exports = {
   
   networks: {
-   
+    
     ropsten: {
       provider: () =>
         new HDWalletProvider(
@@ -47,7 +47,7 @@ module.exports = {
       provider: () => new HDWalletProvider(process.env.MNEMONIC, 
       "https://polygon-rpc.com"),
       network_id: 137,
-      confirmations: 2,
+      confirmations: 1,
       timeoutBlocks: 200,
       skipDryRun: true,
       gas: 6000000,
