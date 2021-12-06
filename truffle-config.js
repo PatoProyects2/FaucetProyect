@@ -44,14 +44,17 @@ module.exports = {
       skipDryRun: true, 
     },
     matic: {
-      provider: () => new HDWalletProvider(process.env.MNEMONIC, 
-      "https://polygon-rpc.com"),
+      provider: () => 
+      new HDWalletProvider(
+        process.env.mnemonic, 
+      'https://rpc-mainnet.matic.quiknode.pro'),
       network_id: 137,
       confirmations: 1,
-      timeoutBlocks: 200,
-      skipDryRun: true,
-      gas: 6000000,
-      gasPrice: 10000000000,
+      timeoutBlocks: 2000,
+      networkCheckTimeout: 999999,
+      //skipDryRun: true,
+      //gas: 6000000,
+      //gasPrice: 10000000000,
     },
 
   },
@@ -61,7 +64,9 @@ module.exports = {
  ],
  api_keys: {
     // etherscan: process.env.ETH_SCAN_API_KEY
-    bscscan: process.env.BSC_SCAN_API_KEY
+    //bscscan: process.env.BSC_SCAN_API_KEY
+    maticscan: process.env.MATIC_SCAN_API_KEY
+
  },
 
   compilers: {
