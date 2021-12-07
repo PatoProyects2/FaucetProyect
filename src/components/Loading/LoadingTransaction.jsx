@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Spinner } from 'reactstrap'
 
+import './Loading.css'
+
 class LoadingTransaction extends Component {
 
   render() {

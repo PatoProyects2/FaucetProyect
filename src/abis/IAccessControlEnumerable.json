@@ -787,7 +787,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-12-05T22:31:02.947Z",
+  "updatedAt": "2021-12-06T19:51:11.217Z",
   "devdoc": {
     "details": "External interface of AccessControlEnumerable declared to support ERC165 detection.",
     "kind": "dev",

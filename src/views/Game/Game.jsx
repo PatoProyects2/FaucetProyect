@@ -13,6 +13,8 @@ import Gold from '../../images/Game/gold.png'
 import Gems from '../../images/Game/gema.png'
 import Wood from '../../images/Game/wood.png'
 
+import './Game.css'
+
 const GameStyled = styled.div`
 margin: 0 auto;
 position: absolute;

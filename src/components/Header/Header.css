@@ -1,0 +1,86 @@
+header {
+    display: inline-block;
+    text-align: center;
+    background-color: #161616;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+#hh1 {
+    margin-left: 15px;
+    margin-right: 40px;
+    font-size: 30px;
+}
+
+#hh1 h1 {
+    padding: 5px;
+    color: #00ff40;
+}
+
+#hh1 img {
+    margin-top: 7px;
+    border-radius: 30px;
+}
+
+header a {
+    display: inline-flex;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 0;
+}
+
+nav {
+    width: 100%;
+}
+
+nav ul li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px;
+    display: inline-block;
+}
+
+#tokenModal {
+    display: inline-flex;
+    left: 0;
+    position: absolute;
+}
+
+#walletModal {
+    display: inline-flex;
+    right: 0;
+    position: absolute;
+    color: #c4c4c4;
+}
+
+#walletModal small {
+    margin: 16px;
+}
+
+.btn1 {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 6px;
+    box-sizing: border-box;
+    background-color: #00ff40;
+    border-radius: 0.6em;
+    color: #000000;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 1;
+    padding: 10px;
+    text-decoration: none;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    box-shadow: none;
+    border: none;
+    width: 160px;
+    height: 40px;
+}

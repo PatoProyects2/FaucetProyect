@@ -7,6 +7,8 @@ import Twitter from '../../images/Social/twitter_logo.png'
 import YouTube from '../../images/Social/tube_logo.png'
 import Instagram from '../../images/Social/instagram.png'
 
+import './Footer.css'
+
 class Footer extends Component {
 
   render() {

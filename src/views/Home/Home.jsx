@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import ReactPlayer from "react-player"
 import Footer from '../../components/Footer/Footer'
 
+import './Home.css'
+
 class Home extends Component {
 
   render() {

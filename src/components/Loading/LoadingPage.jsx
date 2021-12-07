@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import { Spinner } from 'reactstrap'
+
+import './Loading.css'
 
 class LoadingPage extends Component {
 
@@ -6,7 +9,11 @@ class LoadingPage extends Component {
     return ( 
       <div>
         <article>
-          <h1>Connect Metamask Wallet</h1>
+          <div class="loader">
+            <div class="spinner">
+              <Spinner class="circle"/>
+            </div>
+          </div>
         </article>
       </div>
     ); 

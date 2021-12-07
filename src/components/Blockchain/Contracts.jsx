@@ -1,4 +1,4 @@
-export const PatoTokenAddress = "0x63197D1294C659dDf64811A08428cf8637E55AEb"
-export const StakingAddress = "0xD350b27B3e98DB4a4Cb6436Caa8Deb5a3c79De84"
-export const FaucetAddress = "0x5399FE0286202D0d1B736343344529Da00f9D22E"
+export const PatoTokenAddress = "0xde7da56b1223A06930189fef7cbd64AC4CB1C4B8"
+export const StakingAddress = "0x4657550f34855342D4b21F1F6182CA8C2c0ec8c3"
+export const FaucetAddress = "0xA0621a004BB2BDbCEEC4C1BEfAec904f66afe7b5"
 

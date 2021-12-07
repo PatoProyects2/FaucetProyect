@@ -1,0 +1,31 @@
+footer {
+    margin-top: 450px;
+    background-color: #161616;
+    font-size: 20px;
+}
+
+#about {
+    display: inline-flex;
+    left: 0;
+    position: absolute;
+    margin-top: 6px;
+    margin-left: 15px;
+}
+
+#about a {
+    color: #c4c4c4;
+    text-decoration: none;
+}
+
+#about a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+#social {
+    display: inline-flex;
+    right: 0;
+    position: absolute;
+    margin-top: 8px;
+    margin-right: 15px;
+}

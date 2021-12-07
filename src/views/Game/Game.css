@@ -1,0 +1,152 @@
+.gameModal {
+    display: inline-block;
+    text-align: left;
+    padding: 40px;
+}
+
+#gameNav {
+    display: inline-block;
+}
+
+
+/* ANIMATION */
+
+.example-enter {
+    opacity: 0.01;
+}
+
+.example-enter.example-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+}
+
+.example-leave {
+    opacity: 1;
+}
+
+.example-leave.example-leave-active {
+    opacity: 0.01;
+    transition: opacity 300ms ease-in;
+}
+
+.chest {
+    display: inline-block;
+    padding: 50px;
+}
+
+.infoChests {
+    font-size: 20px;
+    margin: 0 auto;
+    border: none;
+    border-radius: 4;
+    margin-bottom: 20px;
+}
+
+.chestButton {
+    background-color: #ffc107;
+    width: 200px;
+    height: 40px;
+    border: none;
+}
+
+.carta-box {
+    margin: 50px;
+    width: 130px;
+    height: 130px;
+    position: relative;
+    perspective: 1000px;
+}
+
+.carta-box:hover .carta {
+    transform: rotateY(180deg);
+}
+
+.carta {
+    transform-style: preserve-3d;
+    transition: all 0.3s linear;
+}
+
+.cara {
+    position: absolute;
+    backface-visibility: hidden;
+}
+
+.cara.detras {
+    transform: rotateY(180deg);
+}
+
+#herreriaModal {
+    background-image: url('../../images/Game/herreria_fondo.jpg');
+    background-size: 600px 300px;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 30px;
+}
+
+#hachaModal {
+    background-image: url('../../images/Game/fondo_hacha.jpg');
+    background-size: 600px 300px;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 30px;
+}
+
+#picoModal {
+    background-image: url('../../images/Game/mina.jpg');
+    background-size: 600px 300px;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 30px;
+}
+
+#herreria {
+    background-image: url('../../images/Game/yunke.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 30px;
+}
+
+#hacha {
+    background-image: url('../../images/Game/troncos.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 30px;
+}
+
+#pico {
+    background-image: url('../../images/Game/gem.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 30px;
+}
+
+#buttonCastle {
+    background: transparent;
+    border: none;
+    background-image: url('../../images/Game/button_castle.png');
+    background-size: 64px 64px;
+    width: 64px;
+    height: 64px;
+}
+
+#buttonShop {
+    background: transparent;
+    border: none;
+    background-image: url('../../images/Game/button_shop.png');
+    background-size: 64px 64px;
+    width: 64px;
+    height: 64px;
+}
+
+#buttonBag {
+    background: transparent;
+    border: none;
+    background-image: url('../../images/Game/button_bag.png');
+    background-size: 64px 64px;
+    width: 64px;
+    height: 64px;
+}
+
+.off {
+    background: transparent;
+}
