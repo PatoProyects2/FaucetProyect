@@ -56,8 +56,7 @@ nav ul li {
 
 main {
     background-color: #161616;
-    margin-top: 200px;
-    margin-bottom: 530px;
+    margin: 200px;
 }
 
 section {
@@ -69,7 +68,7 @@ section {
 article {
     text-align: center;
     display: flexbox;
-    margin-bottom: 20px;
+    margin: 20px;
 }
 
 article h1 {
@@ -81,6 +80,7 @@ article a:hover {
 }
 
 footer {
+    margin-top: 450px;
     background-color: #161616;
     font-size: 20px;
 }
@@ -176,13 +176,6 @@ p {
     height: 100%;
     padding: 20px;
     box-shadow: 0px 0px 10px #00ff40;
-}
-
-.footerModal {
-    border-top: 1px solid #c4c4c4ab;
-    margin-top: 50px;
-    padding: 15px;
-    text-align: center;
 }
 
 .footerModal p {
@@ -488,6 +481,29 @@ p {
 }
 
 
+/* BUTTON 1 SMALL */
+
+.btn1_small {
+    margin: 10px;
+    box-sizing: border-box;
+    background-color: #00ff40;
+    border-radius: 0.6em;
+    color: #000000;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 1;
+    padding: 10px;
+    text-decoration: none;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    box-shadow: none;
+    border: none;
+    width: 35px;
+    height: 35px;
+}
+
+
 /* BUTTON 2 */
 
 .btn2 button {
@@ -655,4 +671,32 @@ p {
 
 .off {
     background: transparent;
+}
+
+.page {
+    position: absolute;
+    top: 200px;
+    left: 0;
+    right: 0;
+}
+
+.fade-appear,
+.fade-enter {
+    opacity: 0;
+    z-index: 1;
+}
+
+.fade-appear-active,
+.fade-enter.fade-enter-active {
+    opacity: 1;
+    transition: opacity 300ms linear 150ms;
+}
+
+.fade-exit {
+    opacity: 1;
+}
+
+.fade-exit.fade-exit-active {
+    opacity: 0;
+    transition: opacity 150ms linear;
 }

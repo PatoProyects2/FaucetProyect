@@ -11,7 +11,7 @@ class Footer extends Component {
 
   render() {
     return (
-      <div>
+      <footer>
         <div id="about">
           <a href="https://poocoin.app/tokens/0x63197d1294c659ddf64811a08428cf8637e55aeb" target="_blank" rel="noopener noreferrer">Chart</a>
           <a href="https://github.com/LeandroCDN/FaucetProyect" target="_blank" rel="noopener noreferrer">GitHub</a>
@@ -38,7 +38,7 @@ class Footer extends Component {
             <img src={Twitch} width="25" height="25" className="d-inline-block align-top" alt="" />
           </a>
         </div>
-      </div>
+      </footer>
     );
   }
 }

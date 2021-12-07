@@ -15,9 +15,10 @@ import Wood from '../../images/Game/wood.png'
 
 const GameStyled = styled.div`
 margin: 0 auto;
-width: 700px;
-height: 100%;
-border: 3px solid #c4c4c4;
+position: absolute;
+top: 200px;
+left: 0;
+right: 0;
 `
 
 const HeaderStyled = styled.div`

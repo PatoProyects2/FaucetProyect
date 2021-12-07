@@ -5,9 +5,11 @@ import {
   Route,
   NavLink
 } from "react-router-dom";
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import Web3 from 'web3'
 import { Web3ReactProvider } from '@web3-react/core'
 import { BigNumber } from 'bignumber.js'
+
 
 import PatoVerde from './abis/PatoVerde.json'
 import FaucetAbi from './abis/Faucet.json'
@@ -16,10 +18,9 @@ import StakingAbi from './abis/Staking.json'
 import ConnectWalletButton from './components/Buttons/ConnectWalletButton'
 import AddTokenButton from './components/Buttons/AddTokenButton'
 import chains from './components/Blockchain/AvailableChains'
-import Footer from './components/Footer/Footer'
 
 import Home from './views/Home/Home'
-import Claim from './views/Faucet/Claim'
+import Faucet from './views/Faucet/Faucet'
 import Pool from './views/Pool/Pool'
 import Game from './views/Game/Game'
 import LoadingPage from './views/Status/LoadingPage'
@@ -252,6 +253,14 @@ class App extends Component {
     this.setState({ value: event.target.value });
   }
 
+  ClaimHelpOn() {
+    this.setState({ claimHelp: true });
+  }
+
+  ClaimHelpOff() {
+    this.setState({ claimHelp: false });
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -275,6 +284,7 @@ class App extends Component {
       rewardsActive: undefined,
       chainInUse: undefined,
       claimActive: undefined,
+      claimHelp: undefined,
     }
     this.handleChange = this.handleChange.bind(this);
   }
@@ -328,7 +338,6 @@ class App extends Component {
     let home
     if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
       home = <article>
-        <h1 class="titles">Pato Verde Projects (PVP)</h1>
         <Home
           patoPerBlock={this.state.perBlock}
           rewardsActive={this.state.rewardsActive}
@@ -349,8 +358,7 @@ class App extends Component {
     let claim
     if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
       claim = <article>
-        <h1 class="titles">Active Claims (1)</h1>
-        <Claim
+        <Faucet
           patoToken={this.state.patoToken}
           faucet={this.state.faucet}
           claimToken={this.claimToken}
@@ -365,7 +373,6 @@ class App extends Component {
     let pool
     if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
       pool = <article>
-        <h1 class="titles">Active Pools (1)</h1>
         <Pool
           patoToken={this.state.patoToken}
           staking={this.state.staking}
@@ -387,7 +394,6 @@ class App extends Component {
     let game
     if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
       game = <article>
-        <h1 class="titles">Active Games (1)</h1>
         <Game
 
         />
@@ -396,64 +402,67 @@ class App extends Component {
 
     return (
       <Web3ReactProvider getLibrary={getLibrary}>
-        <div>
-          <Router>
-            <header>
-              <div id="tokenModal">
-                <a href="/" id="hh1">
-                  <img src={Logo} width="30" height="30" alt="" />
-                  <h1>Pato</h1><h1>Verde</h1><h1>Projects</h1>
-                </a>
-                <nav>
-                  <ul id="menu">
-                    <NavLink className="inactive" activeClassName="active" to="/claim">
-                      <li>
-                        Claim
-                      </li>
-                    </NavLink>
-                    <NavLink className="inactive" activeClassName="active" to="/pool">
-                      <li>
-                        Pool
-                      </li>
-                    </NavLink>
-                    <NavLink className="inactive" activeClassName="active" to="/game">
-                      <li
-                      >Game
-                      </li>
-                    </NavLink>
-                  </ul>
-                </nav>
-              </div>
-              <div id="walletModal">
-                {addToken}
-                <ConnectWalletButton />
-              </div>
-            </header>
-            <main>
-              <section>
-                <Switch>
-                  {loading}
-                  <Route exact path="/">
-                    {home}
-                  </Route>
-                  <Route path="/claim">
-                    {claim}
-                  </Route>
-                  <Route path="/pool">
-                    {pool}
-                  </Route>
-                  <Route path="/game">
-                    {maintenance}
-                  </Route>
-                  <Route component={NotFound} />
-                </Switch>
-              </section>
-            </main>
-            <footer>
-              <Footer />
-            </footer>
-          </Router>
-        </div>
+          <header>
+            <div id="tokenModal">
+              <a href="/" id="hh1">
+                <img src={Logo} width="30" height="30" alt="" />
+                <h1>Pato</h1><h1>Verde</h1><h1>Projects</h1>
+              </a>
+              <nav>
+                <ul id="menu">
+                  <NavLink className="inactive" activeClassName="active" to="/claim">
+                    <li>
+                      Claim
+                    </li>
+                  </NavLink>
+                  <NavLink className="inactive" activeClassName="active" to="/pool">
+                    <li>
+                      Pool
+                    </li>
+                  </NavLink>
+                  <NavLink className="inactive" activeClassName="active" to="/game">
+                    <li
+                    >Game
+                    </li>
+                  </NavLink>
+                </ul>
+              </nav>
+            </div>
+            <div id="walletModal">
+              {addToken}
+              <ConnectWalletButton />
+            </div>
+          </header>
+          <main>
+            <section>
+              <Route render={({ location }) => (
+                <TransitionGroup>
+                  <CSSTransition
+                    key={location.key}
+                    timeout={450}
+                    classNames="fade"
+                  >
+                    <Switch location={location}>
+                      {loading}
+                      <Route exact path="/">
+                        {home}
+                      </Route>
+                      <Route path="/claim">
+                        {claim}
+                      </Route>
+                      <Route path="/pool">
+                        {pool}
+                      </Route>
+                      <Route path="/game">
+                        {soon}
+                      </Route>
+                      <Route component={NotFound} />
+                    </Switch>
+                  </CSSTransition>
+                </TransitionGroup>
+              )} />
+            </section>
+          </main>
       </Web3ReactProvider>
     );
   }

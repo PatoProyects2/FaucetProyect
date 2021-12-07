@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ReactPlayer from "react-player"
+import Footer from '../../components/Footer/Footer'
 
 class Home extends Component {
 
@@ -7,7 +8,8 @@ class Home extends Component {
     let decimals;
     decimals = 1000000000000000000;
     return (
-      <div>
+      <div className="page">
+        <h1 class="titles">Pato Verde Projects (PVP)</h1>
         <article>
           <div class="homes2">
             <h3>Your Stats</h3>
@@ -119,7 +121,7 @@ class Home extends Component {
             </div>
           </div>
         </article>
-
+        <Footer />
       </div>
     );
   }
