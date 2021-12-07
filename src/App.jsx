@@ -42,6 +42,7 @@ class App extends Component {
       stakingPending: 0,
       stakingStaked: 0,
       patoExpiry: 0,
+      patoAllowance: 0,
       patoTokenBalance: '0',
       faucetPatoTokenBalance: '0',
       tokensInPool: '0',
@@ -95,6 +96,8 @@ class App extends Component {
       try {
         const patoToken = new web3.eth.Contract(PatoVerde.abi, chainInUse.patoTokenAddress)
         this.setState({ patoToken })
+        let patoAllowance = await patoToken.methods.allowance(this.state.chainInUse.stakingAddress, this.state.account).call()
+        this.setState({ patoAllowance: patoAllowance.toString() })
         let patoTokenBalance = await patoToken.methods.balanceOf(this.state.account).call()
         this.setState({ patoTokenBalance: patoTokenBalance.toString() })
         let faucetPatoTokenBalance = await patoToken.methods.balanceOf(chainInUse.faucetAddress).call()
@@ -204,6 +207,7 @@ class App extends Component {
           stakingPending={this.state.stakingPending}
           stakingStaked={this.state.stakingStaked}
           tokenSymbol={this.state.tokenSymbol}
+          patoAllowance={this.state.patoAllowance}
         />
       </article>
     }

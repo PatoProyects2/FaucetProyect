@@ -28,7 +28,7 @@ class Pool extends Component {
 
   PoolHelpOff = async () => {
     this.setState({ poolHelp: 'OFF' });
-  }
+  } 
 
   approveToken = async () => {
     this.setState({ loading: 'TRANSACTION' })
@@ -141,7 +141,7 @@ class Pool extends Component {
                         <td>
                           <div class="btn2" id="approveModal">
                             <button
-                              disabled={this.props.stakingStaked > 0}
+                              disabled={this.props.patoAllowance != 0}
                               className="slide_from_left"
                               type="submit"
                               onClick={(event) => {
