@@ -28,7 +28,7 @@ class Pool extends Component {
 
   PoolHelpOff = async () => {
     this.setState({ poolHelp: 'OFF' });
-  } 
+  }
 
   approveToken = async () => {
     this.setState({ loading: 'TRANSACTION' })
@@ -119,106 +119,122 @@ class Pool extends Component {
                 <div class="boxModal">
                   <h3>PVP</h3>
                   <button class="btn1_small" onClick={this.PoolHelpOn}>?</button>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th scope="col">Deposit</th>
-                        <th scope="col">Profit</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          {Math.round(window.web3.utils.fromWei(this.props.stakingStaked.toString(), 'Ether') * 100) / 100}
-                        </td>
-                        <td>
-                          {Math.round(window.web3.utils.fromWei(this.props.stakingPending.toString(), 'Ether') * 100) / 100}
-                        </td>
-                      </tr>
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <td>
-                          <div class="btn2" id="approveModal">
-                            <button
-                              disabled={this.props.patoAllowance != 0}
-                              className="slide_from_left"
-                              type="submit"
-                              onClick={(event) => {
-                                event.preventDefault()
-                                this.approveToken()
-                              }}>
-                              APPROVE
-                            </button>
-                          </div>
-                        </td>
-                        <td>
-                          <div class="btn2" id="claimModal">
-                            <button
-                              disabled={this.props.stakingPending <= 0}
-                              className="slide_from_left"
-                              type="submit"
-                              onClick={(event) => {
-                                event.preventDefault()
-                                this.harvestToken()
-                              }}>
-                              CLAIM
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    </tfoot>
-                  </table>
-                  <div>
-                    <label class="field field_v1">
-                      <input
-                        class="field__input"
-                        placeholder="Minimum amount: 1"
-                        type="number"
-                        min="1"
-                        max={Math.round(this.props.patoTokenBalance) / decimals}
-                        onChange={this.handleChange}
-                      />
-                      <span class="field__label-wrap">
-                        <span class="field__label">PVP Amount</span>
-                      </span>
-                    </label>
-                  </div>
-                  <div class="btn2">
-                    <table>
-                      <tfoot id="farmButton">
-                        <tr>
-                          <td>
-                            <button
-                              disabled={this.state.value <= 0}
-                              className="slide_from_left"
-                              type="submit"
-                              onClick={(event) => {
-                                event.preventDefault()
-                                this.depositToken(this.props.value)
-                              }}>
-                              DEPOSIT
-                            </button>
-                          </td>
-                          <td>
-                            <button
-                              disabled={this.state.value <= 0}
-                              className="slide_from_left"
-                              type="submit"
-                              onClick={(event) => {
-                                event.preventDefault()
-                                this.withdrawToken(this.props.value)
-                              }}>
-                              WITHDRAW
-                            </button>
-                          </td>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
-                  <h4>Wallet Balance: &nbsp;<span>{Math.round(window.web3.utils.fromWei(this.props.patoTokenBalance.toString(), 'Ether') * 100) / 100 + " " + this.props.tokenSymbol.toString()}</span></h4>
+                  {this.props.patoAllowance == '0' ? (
+                    <div class="btn2" id="approveModal">
+                      <button
+                        className="slide_from_left"
+                        type="submit"
+                        onClick={(event) => {
+                          event.preventDefault()
+                          this.approveToken()
+                        }}>
+                        APPROVE
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <table>
+                        <thead>
+                          <tr>
+                            <th scope="col">Deposit</th>
+                            <th scope="col">Profit</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              {Math.round(window.web3.utils.fromWei(this.props.stakingStaked.toString(), 'Ether') * 100) / 100}
+                            </td>
+                            <td>
+                              {Math.round(window.web3.utils.fromWei(this.props.stakingPending.toString(), 'Ether') * 100) / 100}
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <td>
+                              <div class="btn2" id="approveModal">
+                                <button
+                                  disabled={this.props.patoAllowance != 0}
+                                  className="slide_from_left"
+                                  type="submit"
+                                  onClick={(event) => {
+                                    event.preventDefault()
+                                    this.approveToken()
+                                  }}>
+                                  APPROVED
+                                </button>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="btn2" id="claimModal">
+                                <button
+                                  disabled={this.props.stakingPending <= 0}
+                                  className="slide_from_left"
+                                  type="submit"
+                                  onClick={(event) => {
+                                    event.preventDefault()
+                                    this.harvestToken()
+                                  }}>
+                                  CLAIM
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                      <div>
+                        <label class="field field_v1">
+                          <input
+                            class="field__input"
+                            placeholder="Minimum amount: 1"
+                            type="number"
+                            min="1"
+                            max={Math.round(this.props.patoTokenBalance) / decimals}
+                            onChange={this.handleChange}
+                          />
+                          <span class="field__label-wrap">
+                            <span class="field__label">PVP Amount</span>
+                          </span>
+                        </label>
+                      </div>
+                      <div class="btn2">
+                        <table>
+                          <tfoot id="farmButton">
+                            <tr>
+                              <td>
+                                <button
+                                  disabled={this.state.value <= 0}
+                                  className="slide_from_left"
+                                  type="submit"
+                                  onClick={(event) => {
+                                    event.preventDefault()
+                                    this.depositToken(this.props.value)
+                                  }}>
+                                  DEPOSIT
+                                </button>
+                              </td>
+                              <td>
+                                <button
+                                  disabled={this.state.value <= 0}
+                                  className="slide_from_left"
+                                  type="submit"
+                                  onClick={(event) => {
+                                    event.preventDefault()
+                                    this.withdrawToken(this.props.value)
+                                  }}>
+                                  WITHDRAW
+                                </button>
+                              </td>
+                            </tr>
+                          </tfoot>
+                        </table>
+                      </div>
+                      <h4>Wallet Balance: &nbsp;<span>{Math.round(window.web3.utils.fromWei(this.props.patoTokenBalance.toString(), 'Ether') * 100) / 100 + " " + this.props.tokenSymbol.toString()}</span></h4>
+                    </div>
+                  )
+                  }
                 </div>
-
               )}
               <Footer />
             </div >
