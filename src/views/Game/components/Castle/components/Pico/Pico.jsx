@@ -15,7 +15,6 @@ class Pico extends Component {
 
     return (
       <div id="picoModal">
-        <h1>PICO</h1>
         <PicoStats />
         <img src={PicoNft} width="200px" height="200px" alt="" />
       </div>

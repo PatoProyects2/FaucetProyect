@@ -7,7 +7,6 @@ class Soon extends Component {
     return ( 
       <div>
         <h1 class="titles">Coming Soon</h1>
-        <Footer />
       </div>
     );
   }

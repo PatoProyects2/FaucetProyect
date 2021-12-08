@@ -6,7 +6,6 @@ class Elements extends Component {
 
     return (
       <div>
-          <h1>ELEMENTS</h1>
       </div>
     );
   }

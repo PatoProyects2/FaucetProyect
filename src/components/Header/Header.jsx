@@ -3,7 +3,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  NavLink
+  NavLink,
+  Link,
 } from "react-router-dom";
 import PatoLogo from '../../images/patologo.png'
 import ConnectWalletButton from '../Buttons/ConnectWalletButton'
@@ -36,6 +37,11 @@ class Header extends Component {
               <NavLink className="inactive" activeClassName="active" to="/game">
                 <li
                 >Game
+                </li>
+              </NavLink>
+              <NavLink className="inactive" activeClassName="active" to="/marketplace">
+                <li
+                >Marketplace
                 </li>
               </NavLink>
             </ul>

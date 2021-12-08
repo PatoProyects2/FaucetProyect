@@ -67,7 +67,6 @@ class Shop extends Component {
 
     return (
       <ShopStyled>
-        <h1>SHOP</h1>
         <Chest>
           <div class="carta-box">
             <div class="carta">

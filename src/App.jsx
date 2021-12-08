@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import {
   Switch,
-  Route
+  Route,
+  Redirect
 } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import Web3 from 'web3'
@@ -23,6 +24,7 @@ import Pool from './views/Pool/Pool'
 import Game from './views/Game/Game'
 import Maintenance from './views/Status/Maintenance'
 import Soon from './views/Status/Soon'
+import MarketPlace from './views/MarketPlace'
 
 import './App.css'
 
@@ -149,19 +151,19 @@ class App extends Component {
 
     let loading
     if (this.state.loading === 'WEB3') {
-      loading = <main>
+      loading = <main className="page">
         <LoadingPage />
       </main>
     }
     if (this.state.loading === 'INVALID_CHAIN') {
-      loading = <article>
+      loading = <article className="page">
         <WrongNetwork />
       </article>
     }
 
     let home
     if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
-      home = <article>
+      home = <article className="page">
         <Home
           patoPerBlock={this.state.perBlock}
           rewardsActive={this.state.rewardsActive}
@@ -181,7 +183,7 @@ class App extends Component {
 
     let claim
     if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
-      claim = <article>
+      claim = <article className="page">
         <Faucet
           chainInUse={this.state.chainInUse}
           account={this.state.account}
@@ -197,7 +199,7 @@ class App extends Component {
 
     let pool
     if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
-      pool = <article>
+      pool = <article className="page">
         <Pool
           chainInUse={this.state.chainInUse}
           account={this.state.account}
@@ -214,21 +216,21 @@ class App extends Component {
 
     let game
     if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
-      game = <article>
+      game = <article className="page">
         <Game />
       </article>
     }
 
     let soon
     if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
-      soon = <article>
+      soon = <article className="page">
         <Soon />
       </article>
     }
 
     let maintenance
     if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
-      maintenance = <article>
+      maintenance = <article className="page">
         <Maintenance />
       </article>
     }
@@ -238,6 +240,7 @@ class App extends Component {
         <Header />
         <main>
           <section>
+          {loading}
             <Route render={({ location }) => (
               <TransitionGroup>
                 <CSSTransition
@@ -246,20 +249,41 @@ class App extends Component {
                   classNames="fade"
                 >
                   <Switch location={location}>
-                    {loading}
+
                     <Route exact path="/">
                       {home}
                     </Route>
-                    <Route path="/claim">
+
+                    <Route exact path="/claim">
                       {claim}
                     </Route>
-                    <Route path="/pool">
+                    <Route exact path="/faucet">
+                      <Redirect to="/claim"></Redirect>
+                    </Route>
+                    <Route exact path="/free">
+                      <Redirect to="/claim"></Redirect>
+                    </Route>
+
+                    <Route exact path="/pool">
                       {pool}
                     </Route>
+                    <Route exact path="/stake">
+                      <Redirect to="/pool"></Redirect>
+                    </Route>
+                    <Route exact path="/pools">
+                      <Redirect to="/pool"></Redirect>
+                    </Route>
+                    <Route exact path="/piscina">
+                      <Redirect to="/pool"></Redirect>
+                    </Route>
+
                     <Route path="/game">
                       {soon}
                     </Route>
-                    <Route component={NotFound} />
+                    <Route exact path="/marketplace">
+                      {soon}
+                    </Route>
+                    <Route path="/:notFound" component={NotFound} />
                   </Switch>
                 </CSSTransition>
               </TransitionGroup>

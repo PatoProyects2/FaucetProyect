@@ -17,7 +17,7 @@ class Herreria extends Component {
 
     return (
       <div id="herreriaModal">
-        <h1>HERRERIA</h1>
+
         <HerreriaStats />
         <img src={HerreriaNft} width="200px" height="200px" alt="" />
       </div>

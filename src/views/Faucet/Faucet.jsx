@@ -50,7 +50,7 @@ class Faucet extends Component {
             <LoadingTransaction />
 
           ) : (
-            <div className="page">
+            <div>
               <h1 class="titles">Active Claims (1)</h1>
               {this.state.claimHelp == 'ON' ? (
                 <div class="boxModal">

@@ -93,7 +93,7 @@ class Pool extends Component {
             <LoadingTransaction />
 
           ) : (
-            <div className="page">
+            <div>
               <h1 class="titles">Active Pools (1)</h1>
               {this.state.poolHelp == 'ON' ? (
                 <div class="boxModal">

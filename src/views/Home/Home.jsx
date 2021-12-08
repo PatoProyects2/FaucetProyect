@@ -12,7 +12,7 @@ class Home extends Component {
     let rewardsPerDay;
     rewardsPerDay = 1964;
     return (
-      <div className="page">
+      <div>
         <h1 class="titles">Pato Verde Projects (PVP)</h1>
         <article>
           <div class="homes2">

@@ -24,10 +24,7 @@
 
 .boxModal {
     display: inline-block;
-    margin: 0 auto;
-    margin-top: 10px;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin: 20px auto;
     background-color: #181818;
     border-radius: 30px;
     text-align: center;

@@ -1,10 +1,11 @@
-import React, { Component } from 'react'
+import React from 'react'
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
-  NavLink
-} from "react-router-dom";
+  NavLink,
+  useRouteMatch,
+  useParams
+} from "react-router-dom"
 
 import HerreriaNft from '../../../../images/Game/NFT.png'
 import HachaNft from '../../../../images/Game/hacha.png'
@@ -14,37 +15,44 @@ import Herreria from './components/Herreria/Herreria'
 import Hacha from './components//Hacha/Hacha'
 import Pico from './components/Pico/Pico'
 
-class Castle extends Component {
+function Slide() {
+  let { slide } = useParams();
 
-  render() {
+  return (
+    <div>
+      <h1>{slide}</h1>
+    </div>
+  );
+};
 
-    return (
-      <div>
-        <Router>
-          <NavLink className="off" activeClassName="on" to="/animation/castle/herreria">
-            <img id="herreria" src={HerreriaNft} width="100px" height="100px" alt="" />
-          </NavLink>
-          <NavLink className="off" activeClassName="on" to="/animation/castle/hacha">
-            <img id="hacha" src={HachaNft} width="100px" height="100px" alt="" />
-          </NavLink>
-          <NavLink className="off" activeClassName="on" to="/animation/castle/pico">
-            <img id="pico" src={PicoNft} width="100px" height="100px" alt="" />
-          </NavLink>
-          <Switch>
-            <Route path="/animation/castle/herreria">
-              <Herreria />
-            </Route>
-            <Route path="/animation/castle/hacha">
-              <Hacha />
-            </Route>
-            <Route path="/animation/castle/pico">
-              <Pico />
-            </Route>
-          </Switch>
-        </Router>
-      </div>
-    );
-  }
-}
+function Castle() {
+  let { path, url } = useRouteMatch();
+
+  return (
+    <div>
+      <NavLink className="off" activeClassName="on" to={`${url}/smithy`}>
+        <img id="herreria" src={HerreriaNft} width="100px" height="100px" alt="" />
+      </NavLink>
+      <NavLink className="off" activeClassName="on" to={`${url}/axe`}>
+        <img id="hacha" src={HachaNft} width="100px" height="100px" alt="" />
+      </NavLink>
+      <NavLink className="off" activeClassName="on" to={`${url}/beak`}>
+        <img id="pico" src={PicoNft} width="100px" height="100px" alt="" />
+      </NavLink>
+      <Switch>
+        <Route exact path={path}>
+          <h1>Select NFT</h1>
+        </Route>
+        <Route path={`${path}/:slide`} component={Slide} />
+      </Switch>
+      <Switch>
+        <Route path={`${path}/smithy`} component={Herreria} />
+        <Route path={`${path}/axe`} component={Hacha} />
+        <Route path={`${path}/beak`} component={Pico} />
+      </Switch>
+    </div>
+  );
+
+};
 
 export default Castle;

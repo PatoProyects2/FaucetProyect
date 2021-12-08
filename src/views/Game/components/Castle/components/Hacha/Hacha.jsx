@@ -18,7 +18,6 @@ class Hacha extends Component {
 
     return (
       <div id="hachaModal">
-        <h1>HACHA</h1>
         <HachaStats />
         <img src={HachaNft} width="200px" height="200px" alt="" />
       </div>
