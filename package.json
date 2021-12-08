@@ -16,11 +16,16 @@
     "@remix-project/remixd": "0.4.0",
     "ganache-cli": "6.12.2",
     "truffle": "5.3.11",
-    "truffle-plugin-verify": "^0.5.15"
+    "truffle-plugin-verify": "^0.5.19"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@openzeppelin/contracts": "^4.4.0",
     "@truffle/hdwallet-provider": "^1.5.1",
+=======
+    "@openzeppelin/contracts": "^4.1.0",
+    "@truffle/hdwallet-provider": "^1.7.0",
+>>>>>>> blockEnd
     "dotenv": "^10.0.0",
     "web3": "^1.3.6"
   }

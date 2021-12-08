@@ -10,14 +10,19 @@ contract Faucet is AccessControlEnumerable{
   mapping(address=>address) owner;
   mapping(address=>uint) secs;
   mapping(address=>uint) amounts;
+<<<<<<< HEAD
   bool public setActiveOn = false; //for activate or desactivate.
   //hola
+=======
+  bool public setActiveOn = false; //for activate in launch.//
+>>>>>>> blockEnd
 
   constructor(address admin, address tokenFaucet) {
     _setupRole(DEFAULT_ADMIN_ROLE, admin);
     owner[tokenFaucet] = admin;
     secs[tokenFaucet] = 86399;
     amounts[tokenFaucet] = 1 ether; 
+
   }
 
   modifier onlyAdmin(){
@@ -94,8 +99,13 @@ contract Faucet is AccessControlEnumerable{
   function getEthBalance() external view returns(uint){
     return address(this).balance;
   }
+<<<<<<< HEAD
   function ActivateFaucet(bool _activeBool) public onlyAdmin{
     setActiveOn = _activeBool;    
+=======
+  function ActivateFaucet(bool _setOnOFF) public onlyAdmin{
+    setActiveOn = _setOnOFF;
+>>>>>>> blockEnd
   }
 
 }

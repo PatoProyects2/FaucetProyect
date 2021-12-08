@@ -262,22 +262,19 @@ contract Staking is Ownable {
             
             user.amount = user.amount.add(_amount);
         } 
-        if(rewardsActive){      
-            user.rewardDebt = user.amount.mul(pool.accPATOPerShare).div(1e12);
-        }
+            
+        user.rewardDebt = user.amount.mul(pool.accPATOPerShare).div(1e12);     
 
-        
         //multiplierAutomatic();
         emit Deposit(msg.sender, _pid, _amount);
     }
 
     // Withdraw LP tokens from MasterChef.
     function withdraw(uint256 _pid, uint256 _amount) public {
-        //require(rewardsActive == true, "Las recompenza aun no estan preparadas");
+        require(rewardsActive == true, "Las recompenza aun no estan preparadas");
         PoolInfo storage pool = poolInfo[_pid];
         UserInfo storage user = userInfo[_pid][msg.sender];        
-        require(user.amount >= _amount, "withdraw exceeds user balance");
-        
+        require(user.amount >= _amount, "withdraw exceeds user balance");        
 
         updatePool(_pid);
         uint256 pending = user.amount.mul(pool.accPATOPerShare).div(1e12).sub(user.rewardDebt);
@@ -297,10 +294,8 @@ contract Staking is Ownable {
             
             pool.totalTokensInPool = pool.totalTokensInPool.sub(_amount);
         }
-
-        if(rewardsActive ){
-            user.rewardDebt = user.amount.mul(pool.accPATOPerShare).div(1e12);
-        }
+       
+        user.rewardDebt = user.amount.mul(pool.accPATOPerShare).div(1e12);
 
         if(user.amount == 0){
             cantUsers =cantUsers.sub(1);

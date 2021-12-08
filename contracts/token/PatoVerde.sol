@@ -18,7 +18,7 @@ contract PatoVerde is ERC20 {
    * account that deploys the contract and mint 1million tokens to master chef address
    *
    * See {ERC20-constructor}.
-   */
+   *///
   constructor(address masterChef) ERC20('Pato Verde Projects', 'PVP') {
     uint initial = 10000000 ether;
     _mint(masterChef, initial);    

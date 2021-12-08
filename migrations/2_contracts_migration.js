@@ -7,7 +7,7 @@ const Faucet = artifacts.require("Faucet");
 module.exports = async function (deployer, network, accounts) {
   
   //const viellasPerBlock = web3.utils.toWei('0.1', 'ether');
-  const viellasPerBlock = web3.utils.toWei('50000000000000000', 'wei');
+  const viellasPerBlock = web3.utils.toWei('45000000000000000', 'wei');
   var PATO;
   var stk;
   var rwrd;

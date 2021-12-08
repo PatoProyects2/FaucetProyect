@@ -12,6 +12,7 @@ contract Reward {
   constructor(IERC20 _PATO) {
     admin = msg.sender;
     PATO = _PATO;
+    // hola
   }
 
   function setStakingAddress(address _staking) external{
