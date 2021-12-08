@@ -47,7 +47,7 @@ module.exports = {
       provider: () => 
       new HDWalletProvider(
         process.env.mnemonic, 
-      'https://rpc-mainnet.matic.quiknode.pro'),
+      "https://matic-mainnet.chainstacklabs.com"),
       network_id: 137,
       confirmations: 1,
       timeoutBlocks: 2000,
@@ -65,8 +65,7 @@ module.exports = {
  api_keys: {
     // etherscan: process.env.ETH_SCAN_API_KEY
     //bscscan: process.env.BSC_SCAN_API_KEY
-    maticscan: process.env.MATIC_SCAN_API_KEY
-
+    polygonscan: process.env.MATIC_SCAN_API_KEY
  },
 
   compilers: {

@@ -16,7 +16,7 @@
     "@remix-project/remixd": "0.4.0",
     "ganache-cli": "6.12.2",
     "truffle": "5.3.11",
-    "truffle-plugin-verify": "^0.5.15"
+    "truffle-plugin-verify": "^0.5.19"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.1.0",

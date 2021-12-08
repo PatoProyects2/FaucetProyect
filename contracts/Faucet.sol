@@ -10,13 +10,14 @@ contract Faucet is AccessControlEnumerable{
   mapping(address=>address) owner;
   mapping(address=>uint) secs;
   mapping(address=>uint) amounts;
-  bool public setActiveOn = false; //for activate in launch.
+  bool public setActiveOn = false; //for activate in launch.//
 
   constructor(address admin, address tokenFaucet) {
     _setupRole(DEFAULT_ADMIN_ROLE, admin);
     owner[tokenFaucet] = admin;
     secs[tokenFaucet] = 86400;
     amounts[tokenFaucet] = 1 ether; 
+
   }
 
   modifier onlyAdmin(){
