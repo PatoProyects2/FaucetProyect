@@ -104,7 +104,7 @@ class Pool extends Component {
                       In this section you can stake your PVP tokens to earn more PVP tokens.
                     </p>
                     <p>
-                      You have to approve it once to be able to use the pool. (Don't use the approve button more than once)
+                      Profit (Rewards) will be available 31/12/2021.
                     </p>
                     <p>
                       A total of 1964 PVP are distributed per day among all depositors.
@@ -169,7 +169,7 @@ class Pool extends Component {
                             <td>
                               <div class="btn2" id="claimModal">
                                 <button
-                                  disabled={this.props.stakingPending <= 0}
+                                  disabled={this.props.patoAllowance != 0}
                                   className="slide_from_left"
                                   type="submit"
                                   onClick={(event) => {

@@ -10,7 +10,7 @@ class WrongNetwork extends Component {
         params: [{
           chainId: "0x89",
           chainName: "Polygon Mainnet",
-          rpcUrls: ["https://rpc-mainnet.maticvigil.com/"],
+          rpcUrls: ["https://polygon-rpc.com/"],
           iconUrls: ["https://queesunbitcoin.com/wp-content/uploads/2021/05/curso-sobre-binance-online.png"],
           nativeCurrency: {
             name: "MATIC",
@@ -31,7 +31,7 @@ class WrongNetwork extends Component {
       await provider.sendAsync({
         method: 'wallet_switchEthereumChain',
         params: [{
-          chainId: "0x38",
+          chainId: "0x89",
         }],
       });
     } catch (error) {
@@ -47,7 +47,7 @@ class WrongNetwork extends Component {
         <article>
           <div class="boxModal">
             <h3>Polygon Mainnet</h3>
-            <h4>https://rpc-mainnet.maticvigil.com/</h4>
+            <h4>https://polygon-rpc.com/</h4>
             <h4>137</h4 >
             <h4>MATIC</h4>
             <h4>https://explorer.matic.network/</h4>

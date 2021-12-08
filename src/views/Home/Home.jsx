@@ -9,6 +9,8 @@ class Home extends Component {
   render() {
     let decimals;
     decimals = 1000000000000000000;
+    let rewardsPerDay;
+    rewardsPerDay = 1964;
     return (
       <div className="page">
         <h1 class="titles">Pato Verde Projects (PVP)</h1>
@@ -17,7 +19,7 @@ class Home extends Component {
             <h3>Your Stats</h3>
             <div>
               <h4>Total In Pool (Deposit + Profit):</h4>
-              <h5>{(this.props.stakingStaked + this.props.stakingPending) / decimals + " " + this.props.tokenSymbol}</h5>
+              <h5>{((this.props.stakingStaked / decimals) + (this.props.stakingPending / decimals)) + " " + this.props.tokenSymbol}</h5>
               <h4>Wallet Balance:</h4>
               <h5>{Math.round(window.web3.utils.fromWei(this.props.patoTokenBalance.toString(), 'Ether') * 100) / 100 + " " + this.props.tokenSymbol}</h5>
             </div>
@@ -58,9 +60,9 @@ class Home extends Component {
               <h4>Active Rewards:</h4>
               <h5>{this.props.rewardsActive}</h5>
               <h4>Total Deposited In Pool:</h4>
-              <h5>{Math.round(this.props.tokensInPool / decimals) + " " + this.props.tokenSymbol}</h5>
+              <h5>{(this.props.tokensInPool / decimals) + " " + this.props.tokenSymbol}</h5>
               <h4>Rewards Per Day:</h4>
-              <h5>1964 PVP</h5>
+              <h5>{rewardsPerDay + " " + this.props.tokenSymbol}</h5>
             </div>
           </div>
         </article>

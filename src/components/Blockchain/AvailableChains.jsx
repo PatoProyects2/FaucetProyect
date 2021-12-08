@@ -12,7 +12,7 @@ chains.push(
         "Polygon Mainnet",
         137,
         "MATIC",
-        "https://rpc-mainnet.maticvigil.com/",
+        "https://polygon-rpc.com/",
         "https://explorer.matic.network/",
         PatoTokenAddress,
         StakingAddress,
