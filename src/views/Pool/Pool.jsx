@@ -209,7 +209,7 @@ class Pool extends Component {
                                   type="submit"
                                   onClick={(event) => {
                                     event.preventDefault()
-                                    this.depositToken(this.props.value)
+                                    this.depositToken(this.state.value)
                                   }}>
                                   DEPOSIT
                                 </button>
@@ -221,7 +221,7 @@ class Pool extends Component {
                                   type="submit"
                                   onClick={(event) => {
                                     event.preventDefault()
-                                    this.withdrawToken(this.props.value)
+                                    this.withdrawToken(this.state.value)
                                   }}>
                                   WITHDRAW
                                 </button>
