@@ -1,31 +1,21 @@
 footer {
-    margin-top: 350px;
-    background-color: #161616;
-    font-size: 20px;
+    min-height: 70px;
+    background-color: #191919;
+    background-image: -moz-linear-gradient(top, #191919, #000000);
+    background-image: -o-linear-gradient(top, #191919, #000000);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #191919), color-stop(1, #000000));
+    background-image: -webkit-linear-gradient(#191919, #000000);
+    background-image: linear-gradient(top, #191919, #000000);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorStr='#191919', endColorStr='#000000');
+    border-top: 1px solid rgba(50, 50, 50, 0.3);
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    padding: 10px;
 }
 
 #about {
-    display: inline-flex;
-    left: 0;
-    position: absolute;
-    margin-top: 6px;
-    margin-left: 15px;
+    margin-bottom: 10px;
 }
 
-#about a {
-    color: #c4c4c4;
-    text-decoration: none;
-}
-
-#about a:hover {
-    color: #ffffff;
-    text-decoration: underline;
-}
-
-#social {
-    display: inline-flex;
-    right: 0;
-    position: absolute;
-    margin-top: 8px;
-    margin-right: 15px;
-}
+#social {}

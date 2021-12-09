@@ -1,24 +1,7 @@
-.homes {
-    display: inline-block;
-    margin: 0 auto;
-    margin-top: 10px;
-    margin-left: 20px;
-    margin-right: 20px;
-    background-color: #181818;
-    border-radius: 30px;
-    text-align: center;
-    width: 800px;
-    height: 100%;
-    padding: 20px;
-    box-shadow: 0px 0px 10px #00ff40;
-}
-
-.homes div {
-    padding: 20px;
-}
-
 .homes2 {
     display: inline-block;
+    align-items: center;
+    justify-content: center;
     margin: 0 auto;
     margin-top: 10px;
     margin-left: 20px;
@@ -26,10 +9,14 @@
     background-color: #181818;
     border-radius: 30px;
     text-align: center;
-    width: 800px;
+    width: 500px;
     height: 100%;
     padding: 20px;
     box-shadow: 0px 0px 10px #00ff40;
+}
+
+.homes2 h3 {
+    margin: 20px;
 }
 
 .homes2 h4 {
@@ -42,5 +29,12 @@
 }
 
 #twitch {
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+#homePage {
+    margin: 0 auto;
 }

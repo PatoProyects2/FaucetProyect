@@ -1,7 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { NavbarWrapper } from "./Styles/NavLinkStyles";
-import styled from 'styled-components'
 
 import ConnectWalletButton from '../Buttons/ConnectWalletButton'
 import AddTokenButton from '../Buttons/AddTokenButton'

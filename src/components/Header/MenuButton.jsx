@@ -3,12 +3,13 @@ import styled from 'styled-components'
 
 const MenuButtonWrapper = styled.button`
   border: none;
+  display: inline-block;
   position: relative;
   box-shadow: 0px 0px 1px rgb(50, 50, 50);
   top: 40px;
   background: transparent;
 
-  @media only screen and (min-width: 624px) {
+  @media only screen and (min-width: 1400px) {
     display: none;
   }
 `

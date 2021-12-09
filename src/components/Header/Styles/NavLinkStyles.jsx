@@ -14,7 +14,7 @@ export const NavbarWrapper = styled.nav`
   font-size: 20px;
   padding: 10px;
 
-  @media only screen and (min-width: 624px) {
+  @media only screen and (min-width: 1400px) {
     flex-direction: row;
     position: initial;
     height: auto;
