@@ -46,6 +46,7 @@ class App extends Component {
       patoExpiry: 0,
       patoAllowance: '0',
       patoTokenBalance: '0',
+      rewardsPerDay: '0',
       faucetPatoTokenBalance: '0',
       tokensInPool: '0',
       totalSupply: '0',
@@ -121,6 +122,8 @@ class App extends Component {
         this.setState({ staking })
         let rewardsActive = await staking.methods.rewardsActive().call()
         this.setState({ rewardsActive: rewardsActive.toString() })
+        let rewardsPerDay = await staking.methods.rewardsPerDay(0, this.state.account).call()
+        this.setState({ rewardsPerDay: rewardsPerDay.toString() })
         let tokensInPool = await staking.methods.tokenInPool(0).call()
         this.setState({ tokensInPool: tokensInPool.toString() })
         let stakingStaked = await this.state.staking.methods.userInfo(0, this.state.account).call()
@@ -177,6 +180,7 @@ class App extends Component {
           patoTokenBalance={this.state.patoTokenBalance}
           faucetPatoTokenBalance={this.state.faucetPatoTokenBalance}
           claimActive={this.state.claimActive}
+          rewardsPerDay={this.state.rewardsPerDay}
         />
       </article>
     }
@@ -220,6 +224,14 @@ class App extends Component {
         <Game />
       </article>
     }
+
+    let marketplace
+    if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
+      marketplace = <article className="page">
+        <MarketPlace />
+      </article>
+    }
+
 
     let soon
     if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {

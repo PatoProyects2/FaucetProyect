@@ -8,6 +8,8 @@ import {
 } from "react-router-dom"
 import styled from 'styled-components'
 
+import Footer from '../../components/Footer/Footer'
+
 import Shop from './components/Shop/Shop'
 import Elements from './components/Elements/Elements'
 import Castle from './components/Castle/Castle'
@@ -21,7 +23,9 @@ import './Game.css'
 const GameStyled = styled.div`
 margin: 0 auto;
 position: absolute;
-top: 200px;
+width: 1200px;
+height: 720px;
+border: 2px solid #ffffff;
 left: 0;
 right: 0;
 `
@@ -37,13 +41,6 @@ display: inline-block;
 padding: 15px;
 `
 
-const Routes = styled.div`
-margin: 0 auto;
-color: white;
-padding: 10px;
-bottom: 0px;
-`
-
 function Slide() {
     let { slide } = useParams();
 
@@ -51,7 +48,6 @@ function Slide() {
         <div>
             <h1>{slide}</h1>
         </div>
-
     );
 };
 
@@ -103,7 +99,7 @@ function Game() {
                 >
                 </button>
             </NavLink>
-
+          
         </GameStyled>
     );
 };

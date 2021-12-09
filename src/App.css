@@ -19,7 +19,7 @@ section {
 article {
     text-align: center;
     display: flexbox;
-    margin: 20px;
+    margin-top: 60px;
 }
 
 h1 {
