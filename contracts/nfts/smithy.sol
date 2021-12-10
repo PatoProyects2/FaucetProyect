@@ -23,8 +23,8 @@ contract SMITHY is  ERC721, ERC721Enumerable, Ownable{
 
     struct smithy{
         string name; //delete this var
-        uint256 id; //delete this var
-        uint256 dna; //why this var
+        uint256 id; //
+        uint256 dna; //delete this var
         uint256 serie; 
         uint256 maxEnergy; // Energia maxima del nft, se puede mejorar.
         uint256 actEnergy; // Energia acutal del nft, se puede recargar a maxEnergy.
@@ -145,15 +145,14 @@ contract SMITHY is  ERC721, ERC721Enumerable, Ownable{
         smithy memory _smiti = smithys[_id-1];
         require(_smiti.id == _id, "errore al encontrar el nft ingresado por parametro");
         require(_user == ownerOf(_id), "Quien llama no tiene este nft" );
-        //require (msg.sender sea el dueño del nft)
         uint cost = costLevelUp(smithys[_id-1].level);
-
         require(tokensUpgrade.levelUPToken.balanceOf(_user) >= cost, "No tiene fondos suficientes");
+        //agregar prov de fallo.
         tokensUpgrade.levelUPToken.transferFrom(_user, address(feeWallet), cost);
         smithys[_id-1].level++;
         smithys[_id-1].actEnergy = smithys[_id-1].maxEnergy;
+        smithys[_id-1].stars = 0;
         //smithys[_id-1].eficiencia = getEficiencia.
-        //smithys[_id-1].stars = 0;
         /*
         afecta a energy, eficienci y stars... que tela de funcion.
         */       
@@ -181,9 +180,16 @@ contract SMITHY is  ERC721, ERC721Enumerable, Ownable{
         smithys[_id-1].actEnergy = smithys[_id-1].maxEnergy; 
         return true;
     }
-    //Mejora energia maxima
+    //Aumenta la estadistica de energia maxima
     function upgradeEnergy(address _user,uint _id)public {
+        smithy memory _smiti = smithys[_id-1];
+        require(_smiti.id == _id, "errore al encontrar el nft ingresado por parametro");
+        require(_user == ownerOf(_id), "Quien llama no tiene este nft" );
+        uint cost = costOfUpgradeEnergy();
+        tokensUpgrade.levelUPToken.transferFrom(_user, address(feeWallet), cost);// $wood o $gold
+        smithys[_id-1].maxEnergy +=10;
 
+        //emit 
     }
     //Reducir Energia, usada por el stake.
     //-----------------------------------Modificar onlyOwner a onlyStake.
@@ -192,12 +198,33 @@ contract SMITHY is  ERC721, ERC721Enumerable, Ownable{
         smithys[_id-1].actEnergy = smithys[_id-1].actEnergy - _value;
     }
     
-    //Cantidad de tokens que se requiere para recargar energia
+    //Cantidad de tokens que se requiere para RECARGAR energia
     function costOfRechargeEnergy(uint _level, uint _DifEnergy) public pure returns(uint256){
         return _DifEnergy+_level; //editar cuando se tengan numeros de produccion / dia.
     }
+    //Cantidad de tokens que requiere MEJORAR la energia.
+    function costOfUpgradeEnergy() public pure returns(uint256) {
+        return 6;//editar cuando se tengan numeros de produccion / dia.
+    }
+    
 
-
+    //---- smithy.stars functions ----
+    /*Strellas: Variable de 0 - 5, se usa para medir la probabilidad de fallo al mejorar 
+    (5 estrellas = 0% de fallo).  Si se mejora herrería, la variable regresa a 0. se usa $Gems para mejorar
+    */
+    function upgradeStars(address _user,uint _id)public {
+        smithy memory _smiti = smithys[_id-1];
+        require(_smiti.id == _id, "errore al encontrar el nft ingresado por parametro");
+        require(_user == ownerOf(_id), "Quien llama no tiene este nft" );
+        require(smithys[_id-1].stars <= 5, "Ya tienes maximo de stars");
+        uint cost =costOfUpgradeStars(smithys[_id-1].level, smithys[_id-1].stars);
+        tokensUpgrade.starsUpToken.transferFrom(_user, address(feeWallet), cost);
+        smithys[_id-1].stars++;
+    }
+    function costOfUpgradeStars(uint _level, uint _stars) public pure returns(uint){
+        return (_level+_stars)*2 ; //editar cuando se tenga economics
+    }
+    
 
     // funciones para evitar conflictos erc721 standar con erc721enumerable standar.
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
