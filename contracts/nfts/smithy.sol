@@ -23,10 +23,11 @@ contract SMITHY is  ERC721, ERC721Enumerable, Ownable{
 
     struct smithy{
         string name; //delete this var
-        uint256 id;
+        uint256 id; //delete this var
         uint256 dna; //why this var
         uint256 serie; 
-        uint256 energy; // Esta var es para mantener la produccion del staking.
+        uint256 maxEnergy; // Energia maxima del nft, se puede mejorar.
+        uint256 actEnergy; // Energia acutal del nft, se puede recargar a maxEnergy.
         uint256 efficiency; // Esta var es para mantener la produccion del staking.
         uint256 level;
         uint256 stars; // This var is for more chance to upgrade your level
@@ -107,7 +108,7 @@ contract SMITHY is  ERC721, ERC721Enumerable, Ownable{
     //creation
     function _createSmithy(string memory _name, uint256 _serie) internal {
         uint256 randDna =  _createRandomNum(10*16);
-        smithy memory newSmithy = smithy (_name, COUNTER, randDna, _serie, 100, 10, 1, 1);
+        smithy memory newSmithy = smithy (_name, COUNTER, randDna, _serie, 100, 100, 10, 1, 1);
         smithys.push(newSmithy);
         _safeMint(msg.sender, COUNTER);        //erc721 standar func
         emit NewSmithy(msg.sender, COUNTER, randDna);
@@ -150,7 +151,12 @@ contract SMITHY is  ERC721, ERC721Enumerable, Ownable{
         require(tokensUpgrade.levelUPToken.balanceOf(_user) >= cost, "No tiene fondos suficientes");
         tokensUpgrade.levelUPToken.transferFrom(_user, address(feeWallet), cost);
         smithys[_id-1].level++;
-        
+        smithys[_id-1].actEnergy = smithys[_id-1].maxEnergy;
+        //smithys[_id-1].eficiencia = getEficiencia.
+        //smithys[_id-1].stars = 0;
+        /*
+        afecta a energy, eficienci y stars... que tela de funcion.
+        */       
             
         emit levelUp(_id,smithys[_id-1].level);
         return true;        
@@ -168,17 +174,27 @@ contract SMITHY is  ERC721, ERC721Enumerable, Ownable{
         smithy memory _smiti = smithys[_id-1];
         require(_smiti.id == _id, "errore al encontrar el nft ingresado por parametro");
         require(_user == ownerOf(_id), "Quien llama no tiene este nft" );
-        uint cost= costOfRechargeEnergy(_smiti.level);
+        uint difOfEnergy =  _smiti.maxEnergy- _smiti.actEnergy;
+        uint cost= costOfRechargeEnergy(_smiti.level, difOfEnergy);
         require(tokensUpgrade.energyRecharge.balanceOf(_user) >= cost, "no tiene fondos suficientes");
         tokensUpgrade.energyRecharge.transferFrom(_user, address(feeWallet), cost); //$gems
-        //no te quemes pato...
-
+        smithys[_id-1].actEnergy = smithys[_id-1].maxEnergy; 
         return true;
+    }
+    //Mejora energia maxima
+    function upgradeEnergy(address _user,uint _id)public {
+
+    }
+    //Reducir Energia, usada por el stake.
+    //-----------------------------------Modificar onlyOwner a onlyStake.
+    function redEnergy(uint _id, uint _value) external onlyOwner{
+        require(smithys[_id-1].actEnergy - _value >= 0, "error en disminuir energia");
+        smithys[_id-1].actEnergy = smithys[_id-1].actEnergy - _value;
     }
     
     //Cantidad de tokens que se requiere para recargar energia
-    function costOfRechargeEnergy(uint _level) public pure returns(uint256){
-        return 1*_level; //editar cuando se tengan numeros de produccion / dia.
+    function costOfRechargeEnergy(uint _level, uint _DifEnergy) public pure returns(uint256){
+        return _DifEnergy+_level; //editar cuando se tengan numeros de produccion / dia.
     }
 
 
