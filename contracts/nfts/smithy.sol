@@ -7,11 +7,12 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "./Random.sol";
 
 
 //import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract SMITHY is  ERC721, ERC721Enumerable, Ownable{
+contract SMITHY is  ERC721, ERC721Enumerable, Ownable, Random{
 
     //using SafeERC20 for IERC20;
     uint256 COUNTER = 1;
@@ -148,17 +149,17 @@ contract SMITHY is  ERC721, ERC721Enumerable, Ownable{
         uint cost = costLevelUp(smithys[_id-1].level);
         require(tokensUpgrade.levelUPToken.balanceOf(_user) >= cost, "No tiene fondos suficientes");
         //agregar prov de fallo.
-        tokensUpgrade.levelUPToken.transferFrom(_user, address(feeWallet), cost);
-        smithys[_id-1].level++;
-        smithys[_id-1].actEnergy = smithys[_id-1].maxEnergy;
-        smithys[_id-1].stars = 0;
-        //smithys[_id-1].eficiencia = getEficiencia.
-        /*
-        afecta a energy, eficienci y stars... que tela de funcion.
-        */       
-            
-        emit levelUp(_id,smithys[_id-1].level);
+        uint probUpgrade = (_smiti.level*5)-(_smiti.level*5)*((_smiti.stars*20)/100);
+        if(probUpgrade > randrange(1,100)){// cuidado, siempre false, modificar 10 por random (0-100)
+            tokensUpgrade.levelUPToken.transferFrom(_user, address(feeWallet), cost);
+            smithys[_id-1].level++;
+            smithys[_id-1].actEnergy = smithys[_id-1].maxEnergy;
+            smithys[_id-1].stars = 0;
+            smithys[_id-1].efficiency = getEfficiencyPerLvl(smithys[_id-1].level);            
+            emit levelUp(_id,smithys[_id-1].level);
         return true;        
+        }
+        return false;    
     }
     //Tokens que se requieren para subir 1 nivel
     function costLevelUp(uint256 _level) public pure returns(uint256){
@@ -209,9 +210,10 @@ contract SMITHY is  ERC721, ERC721Enumerable, Ownable{
     
 
     //---- smithy.stars functions ----
-    /*Strellas: Variable de 0 - 5, se usa para medir la probabilidad de fallo al mejorar 
-    (5 estrellas = 0% de fallo).  Si se mejora herrería, la variable regresa a 0. se usa $Gems para mejorar
-    */
+    /** 
+     * Strellas: Variable de 0 - 5, se usa para medir la probabilidad de fallo al mejorar o reparar
+     * (5 estrellas = 0% de fallo).  Si se mejora herrería, la variable regresa a 0. se usa $Gems para mejorar
+     */
     function upgradeStars(address _user,uint _id)public {
         smithy memory _smiti = smithys[_id-1];
         require(_smiti.id == _id, "errore al encontrar el nft ingresado por parametro");
@@ -221,10 +223,31 @@ contract SMITHY is  ERC721, ERC721Enumerable, Ownable{
         tokensUpgrade.starsUpToken.transferFrom(_user, address(feeWallet), cost);
         smithys[_id-1].stars++;
     }
+    //costo para mejorar las stars
     function costOfUpgradeStars(uint _level, uint _stars) public pure returns(uint){
-        return (_level+_stars)*2 ; //editar cuando se tenga economics
+        return (_level+_stars)*2; //editar cuando se tenga economics
     }
-    
+
+    // --------- smithy.eficciency ----
+    /**
+     * Afecta a la durabilidad de las hachas, desbloquea reparaciones,
+     * disminulle en cada interaccion. 
+    */
+    /*
+    function rechargeEfficiency(address _user, uint _id) public returns(uint){
+        smithy memory _smiti = smithys[_id-1];
+        require(_smiti.id == _id, "errore al encontrar el nft ingresado por parametro");
+        require(_user == ownerOf(_id), "Quien llama no tiene este nft" );
+        
+        uint cost= costOfRechargeEnergy(_smiti.level, difOfEnergy);
+        require(tokensUpgrade.energyRecharge.balanceOf(_user) >= cost, "no tiene fondos suficientes");
+        tokensUpgrade.energyRecharge.transferFrom(_user, address(feeWallet), cost); //$gems
+    }
+    */
+    //retorna el valor que debe tener maximo de eficiencia.
+    function getEfficiencyPerLvl(uint _level) internal pure returns(uint) {
+        return _level*10;
+    }    
 
     // funciones para evitar conflictos erc721 standar con erc721enumerable standar.
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
