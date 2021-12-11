@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 
-import NavLinks from './NavLinks'
-import MenuButton from './MenuButton'
+import NavLinks from './components/NavLinks'
+import MenuButton from './components/MenuButton'
+import Toggle from "./components/Toggle";
+
 import { HeaderWrapper } from "./Styles/HeaderStyles";
 
-import PatoLogo from '../../images/patologo.png'
+import ConnectWalletButton from '../Buttons/ConnectWalletButton'
+import AddTokenButton from '../Buttons/AddTokenButton'
 
 import './Header.css'
 
@@ -17,12 +20,11 @@ function Header() {
 
   return (
     <HeaderWrapper>
-      <a href="/" id="hh1">
-        <img src={PatoLogo} width="30" height="30" alt="" />
-        <h1>Pato</h1><h1>Verde</h1><h1>Projects</h1>
-      </a>
       <NavLinks open={open} />
       <MenuButton open={open} handleClick={handleClick} />
+      <Toggle />
+      <AddTokenButton />
+      <ConnectWalletButton />
     </HeaderWrapper>
   );
 }

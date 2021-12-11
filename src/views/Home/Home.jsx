@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ReactPlayer from "react-player"
+
 import Footer from '../../components/Footer/Footer'
 
 import './Home.css'
@@ -13,12 +14,12 @@ class Home extends Component {
     actualRewardsPerDay = 1964;
     return (
       <div>
-        <h1 class="titles">Pato Verde Projects (PVP)</h1>
+        <h1>Pato Verde Projects (PVP)</h1>
 
-        <div class="homes2">
+        <div class="boxModalHome">
           <h3>My Stats</h3>
           <div>
-            <h4>Total In Pool (Deposit + Profit):</h4>
+            <h4>Total In Pool:</h4>
             <h5>{Math.round((this.props.stakingStaked / decimals) + (this.props.stakingPending / decimals)) + " " + this.props.tokenSymbol}</h5>
             <h4>My Rewards Per Day:</h4>
             <h5>{Math.round((this.props.rewardsPerDay / decimals)) + " " + this.props.tokenSymbol}</h5>

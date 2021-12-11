@@ -11,7 +11,6 @@ class Pool extends Component {
   constructor() {
     super();
     this.state = {
-      poolHelp: 'OFF',
       value: 0,
       loading: 'WEB3',
     };
@@ -20,14 +19,6 @@ class Pool extends Component {
 
   handleChange(event) {
     this.setState({ value: event.target.value });
-  }
-
-  PoolHelpOn = async () => {
-    this.setState({ poolHelp: 'ON' });
-  }
-
-  PoolHelpOff = async () => {
-    this.setState({ poolHelp: 'OFF' });
   }
 
   approveToken = async () => {
@@ -83,9 +74,6 @@ class Pool extends Component {
   }
 
   render() {
-    let decimals = 1000000000000000000;
-
-
     return (
       <div>
         {
@@ -94,148 +82,225 @@ class Pool extends Component {
 
           ) : (
             <div>
-              <h1 class="titles">Active Pools (1)</h1>
-              {this.state.poolHelp == 'ON' ? (
-                <div class="boxModal">
-                  <div class="footerModal">
-                    <h3>About</h3>
-                    <button class="btn1_small" onClick={this.PoolHelpOff}>X</button>
-                    <p>
-                      In this section you can stake your PVP tokens to earn more PVP tokens.
-                    </p>
-                    <p>
-                      Profit (Rewards) will be available 31/12/2021.
-                    </p>
-                    <p>
-                      A total of 1964 PVP are distributed per day among all depositors.
-                    </p>
-                    <p>
-                      2% fee in withdrawals.
-                    </p>
-                    <a href="https://polygonscan.com/address/0x4657550f34855342D4b21F1F6182CA8C2c0ec8c3" target="_blank" rel="noopener noreferrer">View Smart Contract</a>
-                  </div>
-                </div>
-              ) : (
-                <div class="boxModal">
-                  <h3>PVP</h3>
-                  <button class="btn1_small" onClick={this.PoolHelpOn}>?</button>
-                  {this.props.patoAllowance == '0' ? (
-                    <div class="btn2" id="approveModal">
-                      <button
-                        className="slide_from_left"
-                        type="submit"
-                        onClick={(event) => {
-                          event.preventDefault()
-                          this.approveToken()
-                        }}>
-                        APPROVE
-                      </button>
+              <h1>Active Pools (1)</h1>
+              <div class="boxModal">
+                <h3>PVP</h3>
+                {this.props.patoAllowance === '0' ? (
+                  <div class="btn2" id="approveModal">
+                    <button
+                      className="slide_from_left"
+                      type="submit"
+                      onClick={(event) => {
+                        event.preventDefault()
+                        this.approveToken()
+                      }}>
+                      APPROVE
+                    </button>
+                    <div class="container">
+                      <details>
+                        <summary>
+                          <div class="button">
+                            More information
+                          </div>
+                          <div class="details-modal-overlay"></div>
+                        </summary>
+                        <div class="details-modal">
+                          <div class="details-modal-close">
+                            <svg
+                              className="close-modal"
+                              width="14"
+                              height="14"
+                              viewBox="0 0 14 14"
+                            >
+                              <path
+                                d="M13.7071 1.70711C14.0976 1.31658 14.0976 0.683417 13.7071 0.292893C13.3166 -0.0976311 12.6834 -0.0976311 12.2929 0.292893L7 5.58579L1.70711 0.292893C1.31658 -0.0976311 0.683417 -0.0976311 0.292893 0.292893C-0.0976311 0.683417 -0.0976311 1.31658 0.292893 1.70711L5.58579 7L0.292893 12.2929C-0.0976311 12.6834 -0.0976311 13.3166 0.292893 13.7071C0.683417 14.0976 1.31658 14.0976 1.70711 13.7071L7 8.41421L12.2929 13.7071C12.6834 14.0976 13.3166 14.0976 13.7071 13.7071C14.0976 13.3166 14.0976 12.6834 13.7071 12.2929L8.41421 7L13.7071 1.70711Z"
+                              />
+                            </svg>
+                          </div>
+                          <div class="details-modal-title">
+                            <h1>About Pool</h1>
+                          </div>
+                          <div class="details-modal-content">
+                            <p>
+                              In this section you can stake your PVP tokens to earn more PVP tokens.
+                            </p>
+                            <p>
+                              Profit (Rewards) will be available 31/12/2021.
+                            </p>
+                            <p>
+                              A total of 1964 PVP are distributed per day among all depositors.
+                            </p>
+                            <p>
+                              2% fee in withdrawals.
+                            </p>
+                            <a
+                              href="https://polygonscan.com/address/0x4657550f34855342D4b21F1F6182CA8C2c0ec8c3"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              View Smart Contract
+                            </a>
+                          </div>
+                        </div>
+                      </details>
                     </div>
-                  ) : (
+                  </div>
+                ) : (
+                  <div>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th scope="col">Deposit</th>
+                          <th scope="col">Profit</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            {Math.round(window.web3.utils.fromWei(this.props.stakingStaked.toString(), 'Ether') * 100) / 100}
+                          </td>
+                          <td>
+                            {Math.round(window.web3.utils.fromWei(this.props.stakingPending.toString(), 'Ether') * 100) / 100}
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <td>
+                            <div class="btn2" id="approveModal">
+                              <button
+                                disabled={this.props.patoAllowance !== 0}
+                                className="slide_from_left"
+                                type="submit"
+                                onClick={(event) => {
+                                  event.preventDefault()
+                                  this.approveToken()
+                                }}>
+                                APPROVED
+                              </button>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="btn2" id="claimModal">
+                              <button
+                                disabled={this.props.rewardsActive !== true}
+                                className="slide_from_left"
+                                type="submit"
+                                onClick={(event) => {
+                                  event.preventDefault()
+                                  this.harvestToken()
+                                }}>
+                                CLAIM
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
                     <div>
+                      <label class="field field_v1">
+                        <input
+                          class="field__input"
+                          placeholder="Minimum amount: 1"
+                          type="number"
+                          min="1"
+                          onChange={this.handleChange}
+                        />
+                        <span class="field__label-wrap">
+                          <span class="field__label">PVP Amount</span>
+                        </span>
+                      </label>
+                    </div>
+                    <div class="btn2">
                       <table>
-                        <thead>
-                          <tr>
-                            <th scope="col">Deposit</th>
-                            <th scope="col">Profit</th>
-                          </tr>
-                        </thead>
-                        <tbody>
+                        <tfoot id="farmButton">
                           <tr>
                             <td>
-                              {Math.round(window.web3.utils.fromWei(this.props.stakingStaked.toString(), 'Ether') * 100) / 100}
+                              <button
+                                disabled={this.state.value <= 0}
+                                className="slide_from_left"
+                                type="submit"
+                                onClick={(event) => {
+                                  event.preventDefault()
+                                  this.depositToken(this.state.value)
+                                }}>
+                                DEPOSIT
+                              </button>
                             </td>
                             <td>
-                              {Math.round(window.web3.utils.fromWei(this.props.stakingPending.toString(), 'Ether') * 100) / 100}
-                            </td>
-                          </tr>
-                        </tbody>
-                        <tfoot>
-                          <tr>
-                            <td>
-                              <div class="btn2" id="approveModal">
-                                <button
-                                  disabled={this.props.patoAllowance != 0}
-                                  className="slide_from_left"
-                                  type="submit"
-                                  onClick={(event) => {
-                                    event.preventDefault()
-                                    this.approveToken()
-                                  }}>
-                                  APPROVED
-                                </button>
-                              </div>
-                            </td>
-                            <td>
-                              <div class="btn2" id="claimModal">
-                                <button
-                                  disabled={this.props.patoAllowance != 0}
-                                  className="slide_from_left"
-                                  type="submit"
-                                  onClick={(event) => {
-                                    event.preventDefault()
-                                    this.harvestToken()
-                                  }}>
-                                  CLAIM
-                                </button>
-                              </div>
+                              <button
+                                disabled={this.state.value <= 0}
+                                className="slide_from_left"
+                                type="submit"
+                                onClick={(event) => {
+                                  event.preventDefault()
+                                  this.withdrawToken(this.state.value)
+                                }}>
+                                WITHDRAW
+                              </button>
                             </td>
                           </tr>
                         </tfoot>
                       </table>
-                      <div>
-                        <label class="field field_v1">
-                          <input
-                            class="field__input"
-                            placeholder="Minimum amount: 1"
-                            type="number"
-                            min="1"
-                            max={Math.round(this.props.patoTokenBalance) / decimals}
-                            onChange={this.handleChange}
-                          />
-                          <span class="field__label-wrap">
-                            <span class="field__label">PVP Amount</span>
-                          </span>
-                        </label>
-                      </div>
-                      <div class="btn2">
-                        <table>
-                          <tfoot id="farmButton">
-                            <tr>
-                              <td>
-                                <button
-                                  disabled={this.state.value <= 0}
-                                  className="slide_from_left"
-                                  type="submit"
-                                  onClick={(event) => {
-                                    event.preventDefault()
-                                    this.depositToken(this.state.value)
-                                  }}>
-                                  DEPOSIT
-                                </button>
-                              </td>
-                              <td>
-                                <button
-                                  disabled={this.state.value <= 0}
-                                  className="slide_from_left"
-                                  type="submit"
-                                  onClick={(event) => {
-                                    event.preventDefault()
-                                    this.withdrawToken(this.state.value)
-                                  }}>
-                                  WITHDRAW
-                                </button>
-                              </td>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-                      <h4>Wallet Balance: &nbsp;<span>{Math.round(window.web3.utils.fromWei(this.props.patoTokenBalance.toString(), 'Ether') * 100) / 100 + " " + this.props.tokenSymbol.toString()}</span></h4>
                     </div>
-                  )
-                  }
-                </div>
-              )}
+                    <h4
+                    >Wallet Balance: &nbsp;
+                      <span>
+                        {Math.round(window.web3.utils.fromWei(this.props.patoTokenBalance.toString(), 'Ether') * 100) / 100 + " " + this.props.tokenSymbol.toString()}
+                      </span>
+                    </h4>
+                    <div class="container">
+                      <details>
+                        <summary>
+                          <div class="button">
+                            More information
+                          </div>
+                          <div class="details-modal-overlay"></div>
+                        </summary>
+                        <div class="details-modal">
+                          <div class="details-modal-close">
+                            <svg
+                              className="close-modal"
+                              width="14"
+                              height="14"
+                              viewBox="0 0 14 14"
+                            >
+                              <path
+                                d="M13.7071 1.70711C14.0976 1.31658 14.0976 0.683417 13.7071 0.292893C13.3166 -0.0976311 12.6834 -0.0976311 12.2929 0.292893L7 5.58579L1.70711 0.292893C1.31658 -0.0976311 0.683417 -0.0976311 0.292893 0.292893C-0.0976311 0.683417 -0.0976311 1.31658 0.292893 1.70711L5.58579 7L0.292893 12.2929C-0.0976311 12.6834 -0.0976311 13.3166 0.292893 13.7071C0.683417 14.0976 1.31658 14.0976 1.70711 13.7071L7 8.41421L12.2929 13.7071C12.6834 14.0976 13.3166 14.0976 13.7071 13.7071C14.0976 13.3166 14.0976 12.6834 13.7071 12.2929L8.41421 7L13.7071 1.70711Z"
+                              />
+                            </svg>
+                          </div>
+                          <div class="details-modal-title">
+                            <h1>About Pool</h1>
+                          </div>
+                          <div class="details-modal-content">
+                            <p>
+                              In this section you can stake your PVP tokens to earn more PVP tokens.
+                            </p>
+                            <p>
+                              Profit (Rewards) will be available 31/12/2021.
+                            </p>
+                            <p>
+                              A total of 1964 PVP are distributed per day among all depositors.
+                            </p>
+                            <p>
+                              2% fee in withdrawals.
+                            </p>
+                            <a
+                              href="https://polygonscan.com/address/0x4657550f34855342D4b21F1F6182CA8C2c0ec8c3"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              View Smart Contract
+                            </a>
+                          </div>
+                        </div>
+                      </details>
+                    </div>
+                  </div>
+                )
+                }
+              </div>
               <Footer />
             </div >
           )

@@ -1,19 +1,19 @@
 import React, { Component } from 'react'
+import Web3 from 'web3'
+import { Web3ReactProvider } from '@web3-react/core'
 import {
   Switch,
   Route,
   Redirect
 } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import Web3 from 'web3'
-import { Web3ReactProvider } from '@web3-react/core'
 
 import PatoVerde from './abis/PatoVerde.json'
 import FaucetAbi from './abis/Faucet.json'
 import StakingAbi from './abis/Staking.json'
-
+ 
 import chains from './components/Blockchain/AvailableChains'
-import Header from './components/Header/Header'
+import Layout from './components/Header/Layout'
 import LoadingPage from './components/Loading/LoadingPage'
 import NotFound from './components/NotFound'
 import WrongNetwork from './components/WrongNetwork'
@@ -26,7 +26,7 @@ import Maintenance from './views/Status/Maintenance'
 import Soon from './views/Status/Soon'
 import MarketPlace from './views/MarketPlace'
 
-import './App.css'
+import './App.scss'
 
 function getLibrary(provider) {
   return new Web3(provider)
@@ -214,6 +214,7 @@ class App extends Component {
           stakingStaked={this.state.stakingStaked}
           tokenSymbol={this.state.tokenSymbol}
           patoAllowance={this.state.patoAllowance}
+          rewardsActive={this.state.rewardsActive}
         />
       </article>
     }
@@ -249,7 +250,7 @@ class App extends Component {
 
     return (
       <Web3ReactProvider getLibrary={getLibrary}>
-        <Header />
+        <Layout />
         <main>
           <section>
           {loading}

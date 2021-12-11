@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 export const HeaderWrapper = styled.header`
-  margin-top: -2.25rem;
-  height: 15vh;
+  text-align: center;
+  background-color: var(--dark-background);
+  width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 `;

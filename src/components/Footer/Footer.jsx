@@ -22,22 +22,13 @@ class Footer extends Component {
         </div>
         <div id="social">
           <a href="https://www.youtube.com/channel/UCoxr0mC9BpLIpajYDepgnFQ/featured" target="_blank" rel="noopener noreferrer">
-            <img src={YouTube} width="30" height="30" className="d-inline-block align-top" alt="" />
-          </a>
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-            <img src={Instagram} width="25" height="25" className="d-inline-block align-top" alt="" />
-          </a>
-          <a href="https://telegram.org/" target="_blank" rel="noopener noreferrer">
-            <img src={Telegram} width="25" height="25" className="d-inline-block align-top" alt="" />
+            <img src={YouTube} width="25" height="25" alt="" />
           </a>
           <a href="https://twitter.com/PatoProjects" target="_blank" rel="noopener noreferrer">
-            <img src={Twitter} width="25" height="25" className="d-inline-block align-top" alt="" />
+            <img src={Twitter} width="20" height="20" alt="" />
           </a>
-          <a href="https://discord.gg/whfCeyXQ" target="_blank" rel="noopener noreferrer">
-            <img src={Discord} width="25" height="25" className="d-inline-block align-top" alt="" />
-          </a>
-          <a href="https://www.twitch.tv/patoverde_pv" target="_blank" rel="noopener noreferrer">
-            <img src={Twitch} width="25" height="25" className="d-inline-block align-top" alt="" />
+          <a href="https://discord.gg/GJmVPJdY" target="_blank" rel="noopener noreferrer">
+            <img src={Discord} width="20" height="20" alt="" />
           </a>
         </div>
       </footer>

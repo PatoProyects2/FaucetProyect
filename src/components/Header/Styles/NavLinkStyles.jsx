@@ -1,29 +1,29 @@
 import styled from "styled-components";
 
-export const NavbarWrapper = styled.nav`
+export const NavLinkWrapper = styled.nav`
   display: flex;
-  margin: 0 auto;
+  padding: 10px;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  position: fixed;
+  position: absolute;
   top: 40px;
   right: ${props => (props.open ? "0" : "100%")};
   width: 100%;
   transition: right 0.3s linear;
   font-size: 20px;
-  padding: 10px;
 
   @media only screen and (min-width: 1400px) {
     flex-direction: row;
-    position: initial;
     height: auto;
-    justify-content: center;
-    background-color: #161616;
+    justify-content: left;
+    background-color: var(--dark-background);
+    position: initial;
   }
 
   a {
     padding: 0.5rem 0.8rem;
+    background-color: transparent;
   }
 
   p {
