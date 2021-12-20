@@ -161,24 +161,7 @@ contract Staking is Ownable {
         BONUS_MULTIPLIER = multiplierNumber;
     }    
 
-    // Add a new staking token to the pool. Can only be called by the owner.
-    // XXX DO NOT add the same staking token more than once. Rewards will be messed up if you do.
-    function addPool(uint256 _allocPoint, IERC20 _stakedToken, bool _withUpdate) public onlyOwner {
-        if (_withUpdate) {
-            massUpdatePools();
-        }
-        uint256 lastRewardBlock = block.number > startBlock ? block.number : startBlock;
-        totalAllocPoint = totalAllocPoint.add(_allocPoint);
-        poolInfo.push(PoolInfo({
-            stakedToken: _stakedToken,
-            allocPoint: _allocPoint,
-            lastRewardBlock: lastRewardBlock,
-            accPATOPerShare: 0,
-            totalTokensInPool: 0
-        }));
-        updateStakingPool();
-    }
-
+  
     // Update the given pool's TUpato allocation point. Can only be called by the owner.
     function set(uint256 _pid, uint256 _allocPoint, bool _withUpdate) public onlyOwner {
         if (_withUpdate) {
