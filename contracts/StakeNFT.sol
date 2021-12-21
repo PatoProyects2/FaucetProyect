@@ -14,15 +14,15 @@ import "./token/silver.sol";
 contract Staking is Ownable {
     struct user {
         uint[] nftIdStake;
-        uint256 power; //Suma total de las recompenzas que generan sus nfts por bloque.
+        //uint256 power; //Suma total de las recompenzas que generan sus nfts por bloque.
         uint256 rewardDebt; //recompenzas ya pagadas.
         uint256 lastRewardBlock; //Recompenzas del ultimo pago al usuario
     }
 
 
     mapping (address => user) public listOfUsers;
-    mapping (uint256 => uint256) public expireOfStaking; //vincular con energia y listofuser[user].id
-
+    mapping (uint256 => uint256) public blocEndRw; //vincular id => energia.
+    mapping (uint256 => uint256) public power; //vincular id => power 
     //PatoVerde public PATO; //token de recompenza.
     IERC721 public smiti;
 
@@ -70,10 +70,9 @@ contract Staking is Ownable {
 
     function claim(address _user) public{
         //listOfUsers(_user);
-        //require
-        uint256 _last = listOfUsers[_user].lastRewardBlock;
-        uint256 bloksOfReward = bloksNoPagos(_last);
-        uint256 pending = bloksOfReward * listOfUsers[_user].power; // es lo que se le debe al user. Crear funcion aparte
+        require(listOfUsers[_user].nftIdStake.length > 0,"No tiene nfts en stake");       
+        uint256 bloksOfReward = bloksNoPagos(listOfUsers[_user].lastRewardBlock);
+        uint256 pending = pendingPay(listOfUsers[_user].nftIdStake, bloksOfReward, listOfUsers[_user].lastRewardBlock); // toquens a pagar. 
         require(pending > 0, "No pending to brrr");
         //payTo(_user, pending); FLATA IMPLEMENTAR
         listOfUsers[_user].lastRewardBlock = block.number;
@@ -82,17 +81,19 @@ contract Staking is Ownable {
 
     //------------FUNCIONES DE DEPOSITO ---------
     function deposit(address _user, uint _id) public {
-        //listOfUsers(_user);
-         //CAMBIAR POR PENDING PATO ------
-        uint256 bloksOfReward = bloksNoPagos(listOfUsers[_user].lastRewardBlock);
-        uint256 pending = bloksOfReward * listOfUsers[_user].power;
-        if(pending > 0){
-            //pagar lo adeudado
-             //payTo(_user, pending); FLATA IMPLEMENTAR
+        //requiere que el user tenga el nft. xD
+
+        if(listOfUsers[_user].nftIdStake.length > 0){
+            uint256 bloksOfReward = bloksNoPagos(listOfUsers[_user].lastRewardBlock);
+            uint256 pending = pendingPay(listOfUsers[_user].nftIdStake, bloksOfReward, listOfUsers[_user].lastRewardBlock);
+            if(pending > 0){
+                //pagar lo adeudado
+                //payTo(_user, pending); FLATA IMPLEMENTAR
+                listOfUsers[_user].rewardDebt +=pending;
+            }
         }
-         //CAMBIAR POR PENDING PATO ------
         smiti.safeTransferFrom(_user,address(this),_id);
-       //agregar los del usuario, perfil
+       //USER PERFIL
         uint[] memory _nftIdStake = listOfUsers[_user].nftIdStake;
         if(_nftIdStake.length < 1 ){
             listOfUsers[_user].nftIdStake.push(_id);
@@ -105,8 +106,12 @@ contract Staking is Ownable {
                 }
             }
         }
-        listOfUsers[_user].lastRewardBlock = block.number;
-        //cacular new power.
+        listOfUsers[_user].lastRewardBlock = block.number;        
+        blocEndRw[_id] = 0/* smiti.getEnergy(_id) */; 
+        power[_id] = 0 /* smiti.getPower(_id) */;
+
+        
+        
         //emit
     }
     
@@ -121,7 +126,7 @@ contract Staking is Ownable {
         require (listOfUsers[_user].nftIdStake[_pos] == _id, "No es propietario de ese nft");
         //CAMBIAR POR PENDING PATO ------
         uint256 bloksOfReward = bloksNoPagos(listOfUsers[_user].lastRewardBlock);
-        uint256 pending = bloksOfReward * listOfUsers[_user].power;
+        //uint256 pending = bloksOfReward * listOfUsers[_user].power;
         if(pending > 0){
             //pagar lo adeudado
              //payTo(_user, pending); FLATA IMPLEMENTAR
@@ -140,7 +145,7 @@ contract Staking is Ownable {
     }
     //retorna las recompenzas por bloque que genera el usuario
     function rewardsPerBLOCK() public view returns (uint){         
-        return  listOfUsers[msg.sender].power; 
+        return  0; 
     }
     function dev(address _devaddr) public {
         require(msg.sender == devSetter, "devSetter: wut?");
@@ -150,12 +155,39 @@ contract Staking is Ownable {
     //CALCULOS DE BLOQUES
     function segToBlocks(uint256 _segs) internal view returns(uint256){
         return ((_segs*10) / AvrgBlock)/10;
-    }
+    }//se debe setear en el deposit
+
     function bloksNoPagos(uint256 _lastBlock) internal view returns(uint256){
         return block.number - _lastBlock;
-    } 
-    //Funcion para calcular bloques que se deben pagar, retorna "POWER"
+    }
 
+    //Debe ingresar 
+    // el id nft
+    // la cantidad de bloques sin pagar(blocksNoPagos),
+    // El ultimo claim del user. RETORNA los tokens que se deben pagar por ese nft.
+    function rewardPerNFT(uint _id, uint _blocksToReward,uint _lastClaim) internal view returns(uint256){
+        uint blockEndReward = blocEndRw[_id];
+        uint blockPower = power[_id];
+        if (blockEndReward >= block.number){
+            return _blocksToReward * blockPower;
+        }else if(blockEndReward > _lastClaim){
+            return (block.number - blockEndReward) * blockPower;
+        }else {
+            return 0;
+        }
+    }
+
+    //regresa los toquens TOTALES que se le deben pagar al user
+    function pendingPay(uint[] memory _nfts, uint _blocksToReward,uint _lastClaim) internal view returns(uint256){
+        uint total = 0;        
+        for (uint256 index = 0; index < _nfts.length; index++) {
+            if(_nfts[index] != 0){
+                total += rewardPerNFT(_nfts[index],_blocksToReward,_lastClaim);                
+            }
+        }
+        return total;
+    } 
+    
 /*
 
 
