@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { BigNumber } from 'bignumber.js'
 
 import Footer from '../../components/Footer/Footer'
 
@@ -8,7 +9,7 @@ class PairSwap extends Component {
   constructor() {
     super();
     this.state = {
-      pairValue: '0x0',
+      pairValue: '',
       checkPairWBNB: '0x0',
       checkPairBUSD: '0x0',
       checkPairUSDT: '0x0',
@@ -17,22 +18,32 @@ class PairSwap extends Component {
       checkPairBTCB: '0x0',
       checkPairETH: '0x0',
       checkPairCAKE: '0x0',
-      tokenAddress: '0x0',
       searchTime: 600,
       bnbAmount: 0,
       deadLine: 0,
+      gasAmount: 0,
       searchOn: false,
       buyingOn: false,
     };
-    this.handleChange = this.handleChange.bind(this);
+    this.pairValue = this.pairValue.bind(this);
+    this.bnbAmount = this.bnbAmount.bind(this);
+    this.gasAmount = this.gasAmount.bind(this);
+    this.deadLine = this.deadLine.bind(this);
   }
 
-  handleChange(event) {
+  pairValue(event) {
     this.setState({ pairValue: event.target.value });
+  }
+  bnbAmount(event) {
     this.setState({ bnbAmount: event.target.value });
-    this.setState({ tokenAddress: event.target.value });
+  }
+  gasAmount(event) {
+    this.setState({ gasAmount: event.target.value });
+  }
+  deadLine(event) {
     this.setState({ deadLine: event.target.value });
   }
+  
 
   checkPairToken = async (pairValue) => {
     this.setState({ searchOn: true });
@@ -67,16 +78,20 @@ class PairSwap extends Component {
     }
   }
 
-  buyBnbToken = async (bnbAmount, tokenAddress, deadLine) => {
-    this.setState({ buyingOn: true });
+  buyBnbToken = async (bnbAmount, gasAmount , deadLine) => {
+    
     this.props.swap.methods
-      .swapExactETHForTokens(window.web3.utils.toWei(bnbAmount.toString(), 'Ether'), ['0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', tokenAddress.toString()], this.props.account, window.web3.utils.toWei(deadLine.toString(), 'Ether'))
-      .send({ from: this.props.account })
+      .swapExactETHForTokens(0, ['0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', '0xc9849e6fdb743d08faee3e34dd2d1bc69ea11a51'], this.props.account, deadLine)
+      .send({
+        gasLimit: window.web3.utils.toWei((gasAmount).toString(), "wei"),
+        from: this.props.account,
+        value: window.web3.utils.toWei((bnbAmount).toString(), "ether"),
+      })
       .on('receipt', async (hash) => {
         window.location.reload()
       })
       .on('error', function (error) {
-        window.location.reload()
+       
       });
   }
 
@@ -137,7 +152,7 @@ class PairSwap extends Component {
                 class="field__input"
                 placeholder="0x00000000..."
                 type="text"
-                onChange={this.handleChange}
+                onChange={this.pairValue}
               />
               <span class="field__label-wrap">
                 <span class="field__label">Token Address</span>
@@ -355,7 +370,7 @@ class PairSwap extends Component {
                 placeholder="0.00"
                 type="number"
                 min="1"
-                onChange={this.handleChange}
+                onChange={this.bnbAmount}
               />
               <span class="field__label-wrap">
                 <span class="field__label">BNB Amount</span>
@@ -369,7 +384,7 @@ class PairSwap extends Component {
                 class="field__input"
                 placeholder="0x00000000..."
                 type="text"
-                onChange={this.handleChange}
+                onChange={this.pairValue}
               />
               <span class="field__label-wrap">
                 <span class="field__label">Token Address</span>
@@ -384,7 +399,22 @@ class PairSwap extends Component {
                 placeholder="1234322"
                 type="number"
                 min="1"
-                onChange={this.handleChange}
+                onChange={this.gasAmount}
+              />
+              <span class="field__label-wrap">
+                <span class="field__label">Gas Amount</span>
+              </span>
+            </label>
+          </div>
+
+          <div>
+            <label class="field field_v1">
+              <input
+                class="field__input"
+                placeholder="1234322"
+                type="number"
+                min="1"
+                onChange={this.deadLine}
               />
               <span class="field__label-wrap">
                 <span class="field__label">Dead Line</span>
@@ -403,7 +433,7 @@ class PairSwap extends Component {
                       type="submit"
                       onClick={(event) => {
                         event.preventDefault()
-                        this.buyBnbToken(this.state.bnbAmount, this.state.tokenAddress, this.state.deadLine)
+                        this.buyBnbToken(this.state.bnbAmount, this.state.gasAmount, this.state.deadLine)
                       }}>
                       {this.state.buyingOn === true ? "WAIT" : "BUY TOKEN"}
                     </button>
