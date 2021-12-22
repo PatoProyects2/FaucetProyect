@@ -116,7 +116,7 @@ contract Staking is Ownable {
     }
     
     function Withdraw(address _user, uint _id) public {
-        uint256 _pos;
+        /*uint256 _pos;
         uint[] memory _nftIdStake = listOfUsers[_user].nftIdStake;
         for(uint256 i = 0; i <= _nftIdStake.length; i++){
              if(listOfUsers[_user].nftIdStake[i] == _id){                
@@ -136,7 +136,7 @@ contract Staking is Ownable {
         //calcular el new power
         listOfUsers[_user].lastRewardBlock = block.number;
         //emit withdraw
-
+*/
     }
 
     //retorna el vector de los ids que tiene EN stake el msg.sender

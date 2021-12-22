@@ -123,10 +123,14 @@ contract SMITHY is  ERC721, ERC721Enumerable, Ownable, Random{
         _createSmithy(_name, serie);
     }
 
-    //getter and Setters
+    //---------GETTERS --------------- 
     function getSmithy() public  view returns(smithy[] memory){
         return smithys;
     }
+    /* Creaar funciones getter para obtener la energia y obtener el "poder de minado" .*/
+
+    
+    //------------------ SETTERS ---------
     //fee to go tokens of CreateRandomSmithy function
     function setFeeWallet(address _newFeeWallet)public onlyOwner{
         feeWallet = _newFeeWallet;
