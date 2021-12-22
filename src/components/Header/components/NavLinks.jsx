@@ -19,6 +19,7 @@ function NavLinks({ open }) {
                 </svg>
             </a>
             <p>
+                {/* ENLACES  */}
                 <NavLink className="inactive" activeClassName="active" to="/claim">Claim</NavLink>
                 <NavLink className="inactive" activeClassName="active" to="/pool">Pool</NavLink>
                 <NavLink className="inactive" activeClassName="active" to="/game">Game</NavLink>

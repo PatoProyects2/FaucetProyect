@@ -11,15 +11,15 @@
 }
 
 .theme-dark {
-    --color-background: #001329;
+    --color-background: #001935;
     --color-text: #ffffff;
-    --color-link: #ffa600;
+    --color-link: #009625;
 }
 
 .theme-light {
-    --color-background: #e0dede;
+    --color-background: #ececec;
     --color-text: #000000;
-    --color-link: #ffa600;
+    --color-link: #009625;
 }
 
 @media screen and (max-width:412px) {
@@ -222,7 +222,7 @@ body::-webkit-scrollbar-thumb {
     margin-bottom: 20px;
     margin-left: 5px;
     margin-right: 5px;
-    width: 140px;
+    width: 150px;
     height: 50px;
     padding: 0;
     font-weight: bold;

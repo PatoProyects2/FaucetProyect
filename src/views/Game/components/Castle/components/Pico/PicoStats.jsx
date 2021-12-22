@@ -1,9 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 import Level from '../../../../../../images/Game/flecha.png'
-import Repair from '../../../../../../images/Game/repair.png'
-import Claim from '../../../../../../images/Game/repair.png'
 
 const StatStyled = styled.div`
 display: block;

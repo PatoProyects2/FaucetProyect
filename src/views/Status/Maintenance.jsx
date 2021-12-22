@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 
-import Footer from '../../components/Footer/Footer'
-
 class Maintenance extends Component {
 
   render() {

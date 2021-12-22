@@ -8,8 +8,6 @@ import {
 } from "react-router-dom"
 import styled from 'styled-components'
 
-import Footer from '../../components/Footer/Footer'
-
 import Shop from './components/Shop/Shop'
 import Elements from './components/Elements/Elements'
 import Castle from './components/Castle/Castle'
@@ -39,6 +37,7 @@ padding: 10px;
 const Tokens = styled.div`
 display: inline-block;
 padding: 15px;
+color: var(--color-text);
 `
 
 function Slide() {
@@ -99,7 +98,6 @@ function Game() {
                 >
                 </button>
             </NavLink>
-          
         </GameStyled>
     );
 };

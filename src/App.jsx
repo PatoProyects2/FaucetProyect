@@ -11,7 +11,9 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import PatoVerde from './abis/PatoVerde.json'
 import FaucetAbi from './abis/Faucet.json'
 import StakingAbi from './abis/Staking.json'
- 
+import PairAbi from './abis/Pair/PancakeFactory.json'
+import SwapAbi from './abis/Swap/PancakeRouter.json'
+
 import chains from './components/Blockchain/AvailableChains'
 import Layout from './components/Header/Layout'
 import LoadingPage from './components/Loading/LoadingPage'
@@ -25,6 +27,7 @@ import Game from './views/Game/Game'
 import Maintenance from './views/Status/Maintenance'
 import Soon from './views/Status/Soon'
 import MarketPlace from './views/MarketPlace'
+import PairSwap from './views/PairSwap/PairSwap'
 
 import './App.scss'
 
@@ -37,13 +40,15 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      account: '0x0',
+      pair: {},
+      swap: {},
       patoToken: {},
       faucet: {},
       staking: {},
       stakingPending: 0,
       stakingStaked: 0,
       patoExpiry: 0,
+      account: '0x0',
       patoAllowance: '0',
       patoTokenBalance: '0',
       rewardsPerDay: '0',
@@ -57,7 +62,7 @@ class App extends Component {
       chainInUse: undefined,
       rewardsActive: undefined,
       claimActive: undefined,
-    }
+    };
   }
 
   async componentWillMount() {
@@ -99,19 +104,19 @@ class App extends Component {
       try {
         const patoToken = new web3.eth.Contract(PatoVerde.abi, chainInUse.patoTokenAddress)
         this.setState({ patoToken })
-        let patoAllowance = await patoToken.methods.allowance(this.state.account, chainInUse.stakingAddress).call()
+        let patoAllowance = await this.state.patoToken.methods.allowance(this.state.account, chainInUse.stakingAddress).call()
         this.setState({ patoAllowance: patoAllowance.toString() })
-        let patoTokenBalance = await patoToken.methods.balanceOf(this.state.account).call()
+        let patoTokenBalance = await this.state.patoToken.methods.balanceOf(this.state.account).call()
         this.setState({ patoTokenBalance: patoTokenBalance.toString() })
-        let faucetPatoTokenBalance = await patoToken.methods.balanceOf(chainInUse.faucetAddress).call()
+        let faucetPatoTokenBalance = await this.state.patoToken.methods.balanceOf(chainInUse.faucetAddress).call()
         this.setState({ faucetPatoTokenBalance: faucetPatoTokenBalance.toString() })
-        let totalSupply = await patoToken.methods.totalSupply().call()
+        let totalSupply = await this.state.patoToken.methods.totalSupply().call()
         this.setState({ totalSupply: totalSupply.toString() })
-        let maxSupply = await patoToken.methods.maxSupply().call()
+        let maxSupply = await this.state.patoToken.methods.maxSupply().call()
         this.setState({ maxSupply: maxSupply.toString() })
-        let tokenName = await patoToken.methods.name().call()
+        let tokenName = await this.state.patoToken.methods.name().call()
         this.setState({ tokenName: tokenName.toString() })
-        let tokenSymbol = await patoToken.methods.symbol().call()
+        let tokenSymbol = await this.state.patoToken.methods.symbol().call()
         this.setState({ tokenSymbol: tokenSymbol.toString() })
 
       } catch (e) {
@@ -120,30 +125,42 @@ class App extends Component {
       try {
         const staking = new web3.eth.Contract(StakingAbi.abi, chainInUse.stakingAddress)
         this.setState({ staking })
-        let rewardsActive = await staking.methods.rewardsActive().call()
+        let rewardsActive = await this.state.staking.methods.rewardsActive().call()
         this.setState({ rewardsActive: rewardsActive.toString() })
-        let rewardsPerDay = await staking.methods.rewardsPerDay(0, this.state.account).call()
+        let rewardsPerDay = await this.state.staking.methods.rewardsPerDay(0, this.state.account).call()
         this.setState({ rewardsPerDay: rewardsPerDay.toString() })
-        let tokensInPool = await staking.methods.tokenInPool(0).call()
+        let tokensInPool = await this.state.staking.methods.tokenInPool(0).call()
         this.setState({ tokensInPool: tokensInPool.toString() })
         let stakingStaked = await this.state.staking.methods.userInfo(0, this.state.account).call()
+        this.setState({ stakingStaked: stakingStaked[0] })
         let stakingPending = await this.state.staking.methods.pendingPATO(0, this.state.account).call()
-        this.setState({
-          stakingStaked: stakingStaked[0],
-          stakingPending: stakingPending,
-        })
+        this.setState({ stakingPending: stakingPending })
       } catch (e) {
         window.alert('STAKING CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
       }
       try {
         const faucet = new web3.eth.Contract(FaucetAbi.abi, chainInUse.faucetAddress)
         this.setState({ faucet })
-        let claimActive = await faucet.methods.setActiveOn().call()
+        let claimActive = await this.state.faucet.methods.setActiveOn().call()
         this.setState({ claimActive: claimActive.toString() })
         let patoExpiry = await this.state.faucet.methods.getExpiryOf(this.state.account, chainInUse.patoTokenAddress).call()
         this.setState({ patoExpiry: patoExpiry })
       } catch (e) {
         window.alert('FAUCET CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
+      }
+      try {
+        const pair = new web3.eth.Contract(PairAbi.abi, chainInUse.pancakePairAddress)
+        this.setState({ pair })
+       
+      } catch (e) {
+        window.alert('PAIR CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
+      }
+      try {
+        const swap = new web3.eth.Contract(SwapAbi.abi, chainInUse.pancakeSwapAddress)
+        this.setState({ swap })
+       
+      } catch (e) {
+        window.alert('SWAP CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
       }
       this.setState({ loading: 'FALSE' })
       this.setState({ chest: 'FALSE' })
@@ -233,6 +250,16 @@ class App extends Component {
       </article>
     }
 
+    let pairSwap
+    if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
+      pairSwap = <article className="page">
+        <PairSwap
+          pair={this.state.pair}
+          swap={this.state.swap}
+          account={this.state.account}
+        />
+      </article>
+    }
 
     let soon
     if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
@@ -253,7 +280,7 @@ class App extends Component {
         <Layout />
         <main>
           <section>
-          {loading}
+            {loading}
             <Route render={({ location }) => (
               <TransitionGroup>
                 <CSSTransition
@@ -267,6 +294,7 @@ class App extends Component {
                       {home}
                     </Route>
 
+                    {/* RUTAS */}
                     <Route exact path="/claim">
                       {claim}
                     </Route>
@@ -276,7 +304,17 @@ class App extends Component {
                     <Route exact path="/free">
                       <Redirect to="/claim"></Redirect>
                     </Route>
+                    <Route path="/game">
+                      {game}
+                    </Route>
+                    <Route exact path="/marketplace">
+                      {marketplace}
+                    </Route>
+                    <Route exact path="/bot">
+                      {pairSwap}
+                    </Route>
 
+                    {/* REDIRECCIONES */}
                     <Route exact path="/pool">
                       {pool}
                     </Route>
@@ -290,12 +328,6 @@ class App extends Component {
                       <Redirect to="/pool"></Redirect>
                     </Route>
 
-                    <Route path="/game">
-                      {soon}
-                    </Route>
-                    <Route exact path="/marketplace">
-                      {soon}
-                    </Route>
                     <Route path="/:notFound" component={NotFound} />
                   </Switch>
                 </CSSTransition>

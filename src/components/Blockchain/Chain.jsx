@@ -1,5 +1,4 @@
 class Chain {
-
   name = "-"
   id = "-"
   symbol = "-"
@@ -8,8 +7,10 @@ class Chain {
   patoTokenAddress = "-"
   stakingAddress = "-"
   faucetAddress = "-"
+  pancakePairAddress = "-"
+  pancakeSwapAddress = "-"
 
-  constructor(name, id, symbol, rpcUrl, blockExplorerUrl, patoTokenAddress, stakingAddress, faucetAddress){
+  constructor(name, id, symbol, rpcUrl, blockExplorerUrl, patoTokenAddress, stakingAddress, faucetAddress, pancakePairAddress, pancakeSwapAddress){
     this.name = name
     this.id = id
     this.symbol = symbol
@@ -18,6 +19,8 @@ class Chain {
     this.patoTokenAddress = patoTokenAddress
     this.stakingAddress = stakingAddress
     this.faucetAddress = faucetAddress
+    this.pancakePairAddress = pancakePairAddress
+    this.pancakeSwapAddress = pancakeSwapAddress
   } 
 }
 

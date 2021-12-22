@@ -2,7 +2,9 @@ import Chain from "./Chain"
 import {
     PatoTokenAddress,
     StakingAddress,
-    FaucetAddress
+    FaucetAddress,
+    PancakePairAddress,
+    PancakeSwapAddress
 } from './Contracts'
 
 let chains = []
@@ -16,7 +18,19 @@ chains.push(
         "https://explorer.matic.network/",
         PatoTokenAddress,
         StakingAddress,
-        FaucetAddress
+        FaucetAddress,
+        PancakePairAddress,
+        PancakeSwapAddress
+
+        // "Binance Smart Chain Mainnet",
+        // 56,
+        // "BNB",
+        // "https://bsc-dataseed.binance.org/",
+        // "https://bscscan.com/",
+        // PatoTokenAddress,
+        // StakingAddress,
+        // FaucetAddress,
+        // PancakePairAddress
     )
 )
 

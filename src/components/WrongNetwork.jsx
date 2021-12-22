@@ -57,7 +57,7 @@ class WrongNetwork extends Component {
                 event.preventDefault()
                 this.addNetwork()
               }}>
-              ADD NETWORK
+              ADD POLYGON
             </button>
             <form action="/">
               <button 
