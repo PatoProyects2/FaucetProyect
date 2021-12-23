@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { BigNumber } from 'bignumber.js'
 
 import Footer from '../../components/Footer/Footer'
 
@@ -9,7 +8,8 @@ class PairSwap extends Component {
   constructor() {
     super();
     this.state = {
-      pairValue: '',
+      tokenAddress: '',
+      tokenAddress2: '',
       checkPairWBNB: '0x0',
       checkPairBUSD: '0x0',
       checkPairUSDT: '0x0',
@@ -19,23 +19,27 @@ class PairSwap extends Component {
       checkPairETH: '0x0',
       checkPairCAKE: '0x0',
       searchTime: 600,
-      bnbAmount: 0,
+      tokenAmount: 0,
       deadLine: 0,
       gasAmount: 0,
       searchOn: false,
       buyingOn: false,
     };
-    this.pairValue = this.pairValue.bind(this);
-    this.bnbAmount = this.bnbAmount.bind(this);
+    this.tokenAddress = this.tokenAddress.bind(this);
+    this.tokenAddress2 = this.tokenAddress2.bind(this);
+    this.tokenAmount = this.tokenAmount.bind(this);
     this.gasAmount = this.gasAmount.bind(this);
     this.deadLine = this.deadLine.bind(this);
   }
 
-  pairValue(event) {
-    this.setState({ pairValue: event.target.value });
+  tokenAddress(event) {
+    this.setState({ tokenAddress: event.target.value });
   }
-  bnbAmount(event) {
-    this.setState({ bnbAmount: event.target.value });
+  tokenAddress2(event) {
+    this.setState({ tokenAddress2: event.target.value });
+  }
+  tokenAmount(event) {
+    this.setState({ tokenAmount: event.target.value });
   }
   gasAmount(event) {
     this.setState({ gasAmount: event.target.value });
@@ -45,7 +49,7 @@ class PairSwap extends Component {
   }
   
 
-  checkPairToken = async (pairValue) => {
+  checkPairToken = async (tokenAddress) => {
     this.setState({ searchOn: true });
 
     const sleep = (milliseconds) => {
@@ -53,22 +57,16 @@ class PairSwap extends Component {
     }
 
     for (var i = 0; i < 600; i++) {
-      let checkPairWBNB = await this.props.pair.methods.getPair(pairValue.toString(), '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c').call()
+      let checkPairWBNB = await this.props.pair.methods.getPair(tokenAddress.toString(), '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c').call()
       this.setState({ checkPairWBNB: checkPairWBNB.toString() })
-      let checkPairBUSD = await this.props.pair.methods.getPair(pairValue.toString(), '0xe9e7cea3dedca5984780bafc599bd69add087d56').call()
+      let checkPairBUSD = await this.props.pair.methods.getPair(tokenAddress.toString(), '0xe9e7cea3dedca5984780bafc599bd69add087d56').call()
       this.setState({ checkPairBUSD: checkPairBUSD.toString() })
-      let checkPairUSDT = await this.props.pair.methods.getPair(pairValue.toString(), '0x55d398326f99059ff775485246999027b3197955').call()
+      let checkPairUSDT = await this.props.pair.methods.getPair(tokenAddress.toString(), '0x55d398326f99059ff775485246999027b3197955').call()
       this.setState({ checkPairUSDT: checkPairUSDT.toString() })
-      let checkPairUSDC = await this.props.pair.methods.getPair(pairValue.toString(), '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d').call()
+      let checkPairUSDC = await this.props.pair.methods.getPair(tokenAddress.toString(), '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d').call()
       this.setState({ checkPairUSDC: checkPairUSDC.toString() })
-      let checkPairDAI = await this.props.pair.methods.getPair(pairValue.toString(), '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3').call()
+      let checkPairDAI = await this.props.pair.methods.getPair(tokenAddress.toString(), '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3').call()
       this.setState({ checkPairDAI: checkPairDAI.toString() })
-      let checkPairBTCB = await this.props.pair.methods.getPair(pairValue.toString(), '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c').call()
-      this.setState({ checkPairBTCB: checkPairBTCB.toString() })
-      let checkPairETH = await this.props.pair.methods.getPair(pairValue.toString(), '0x2170ed0880ac9a755fd29b2688956bd959f933f8').call()
-      this.setState({ checkPairETH: checkPairETH.toString() })
-      let checkPairCAKE = await this.props.pair.methods.getPair(pairValue.toString(), '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82').call()
-      this.setState({ checkPairCAKE: checkPairCAKE.toString() })
 
       this.setState({ searchTime: this.state.searchTime - 1 });
 
@@ -78,17 +76,31 @@ class PairSwap extends Component {
     }
   }
 
-  buyBnbToken = async (bnbAmount, gasAmount , deadLine) => {
-    
+  buyBnbToken = async (tokenAmount, tokenAddress, gasAmount, deadLine) => {
     this.props.swap.methods
-      .swapExactETHForTokens(0, ['0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', '0xc9849e6fdb743d08faee3e34dd2d1bc69ea11a51'], this.props.account, deadLine)
+      .swapExactETHForTokens(0, ['0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', `${tokenAddress.toString()}`], this.props.account, deadLine)
       .send({
-        gasLimit: window.web3.utils.toWei((gasAmount).toString(), "wei"),
+        gasPrice: window.web3.utils.toWei((gasAmount).toString(), "gwei"),
         from: this.props.account,
-        value: window.web3.utils.toWei((bnbAmount).toString(), "ether"),
+        value: window.web3.utils.toWei((tokenAmount).toString(), "ether"),
       })
       .on('receipt', async (hash) => {
-        window.location.reload()
+
+      })
+      .on('error', function (error) {
+       
+      });
+  }
+
+  buyToken = async (tokenAmount, tokenAddress, tokenAddress2, gasAmount, deadLine) => {
+    this.props.swap.methods
+      .swapExactTokensForTokens(window.web3.utils.toWei(tokenAmount.toString(), 'Ether'), 0, [`${tokenAddress.toString()}`, `${tokenAddress2.toString()}`], this.props.account, deadLine)
+      .send({
+        gasPrice: window.web3.utils.toWei((gasAmount).toString(), "gwei"),
+        from: this.props.account
+      })
+      .on('receipt', async (hash) => {
+
       })
       .on('error', function (error) {
        
@@ -152,7 +164,7 @@ class PairSwap extends Component {
                 class="field__input"
                 placeholder="0x00000000..."
                 type="text"
-                onChange={this.pairValue}
+                onChange={this.tokenAddress}
               />
               <span class="field__label-wrap">
                 <span class="field__label">Token Address</span>
@@ -170,7 +182,7 @@ class PairSwap extends Component {
                       type="submit"
                       onClick={(event) => {
                         event.preventDefault()
-                        this.checkPairToken(this.state.pairValue)
+                        this.checkPairToken(this.state.tokenAddress)
                       }}>
                       {this.state.searchOn === true ? "SEARCHING" : "CHECK PAIR"}
                     </button>
@@ -191,7 +203,6 @@ class PairSwap extends Component {
                   <span class="green">
                     Found! &nbsp;
                   </span>
-                  {this.state.checkPairWBNB}
                 </span>
               )
               :
@@ -213,7 +224,6 @@ class PairSwap extends Component {
                   <span class="green">
                     Found! &nbsp;
                   </span>
-                  {this.state.checkPairBUSD}
                 </span>
               )
               :
@@ -235,7 +245,6 @@ class PairSwap extends Component {
                   <span class="green">
                     Found! &nbsp;
                   </span>
-                  {this.state.checkPairUSDT}
                 </span>
               )
               :
@@ -257,7 +266,6 @@ class PairSwap extends Component {
                   <span class="green">
                     Found! &nbsp;
                   </span>
-                  {this.state.checkPairUSDC}
                 </span>
               )
               :
@@ -279,7 +287,6 @@ class PairSwap extends Component {
                   <span class="green">
                     Found! &nbsp;
                   </span>
-                  {this.state.checkPairDAI}
                 </span>
               )
               :
@@ -293,76 +300,10 @@ class PairSwap extends Component {
               )
             }
           </p >
-          <p>
-            {this.state.checkPairBTCB !== '0x0000000000000000000000000000000000000000' ?
-              (
-                <span>
-                  BTCB: &nbsp;
-                  <span class="green">
-                    Found! &nbsp;
-                  </span>
-                  {this.state.checkPairBTCB}
-                </span>
-              )
-              :
-              (
-                <span>
-                  BTCB: &nbsp;
-                  <span class="red">
-                    Not Found!
-                  </span>
-                </span>
-              )
-            }
-          </p >
-          <p>
-            {this.state.checkPairETH !== '0x0000000000000000000000000000000000000000' ?
-              (
-                <span>
-                  ETH: &nbsp;
-                  <span class="green">
-                    Found! &nbsp;
-                  </span>
-                  {this.state.checkPairETH}
-                </span>
-              )
-              :
-              (
-                <span>
-                  ETH: &nbsp;
-                  <span class="red">
-                    Not Found!
-                  </span>
-                </span>
-              )
-            }
-          </p >
-          <p>
-            {this.state.checkPairCAKE !== '0x0000000000000000000000000000000000000000' ?
-              (
-                <span>
-                  CAKE: &nbsp;
-                  <span class="green">
-                    Found! &nbsp;
-                  </span>
-                  {this.state.checkPairCAKE}
-                </span>
-              )
-              :
-              (
-                <span>
-                  CAKE: &nbsp;
-                  <span class="red">
-                    Not Found!
-                  </span>
-                </span>
-              )
-            }
-          </p >
         </div >
 
         <div class="boxModalPairs">
-          <h5>BNB SWAP</h5>
+          <h5>SWAP BNB FOR TOKEN</h5>
           <div>
             <label class="field field_v1">
               <input
@@ -384,7 +325,7 @@ class PairSwap extends Component {
                 class="field__input"
                 placeholder="0x00000000..."
                 type="text"
-                onChange={this.pairValue}
+                onChange={this.tokenAddress}
               />
               <span class="field__label-wrap">
                 <span class="field__label">Token Address</span>
@@ -396,13 +337,13 @@ class PairSwap extends Component {
             <label class="field field_v1">
               <input
                 class="field__input"
-                placeholder="1234322"
+                placeholder="10"
                 type="number"
                 min="1"
                 onChange={this.gasAmount}
               />
               <span class="field__label-wrap">
-                <span class="field__label">Gas Amount</span>
+                <span class="field__label">Gas Price</span>
               </span>
             </label>
           </div>
@@ -411,7 +352,7 @@ class PairSwap extends Component {
             <label class="field field_v1">
               <input
                 class="field__input"
-                placeholder="1234322"
+                placeholder="1640906725"
                 type="number"
                 min="1"
                 onChange={this.deadLine}
@@ -433,9 +374,106 @@ class PairSwap extends Component {
                       type="submit"
                       onClick={(event) => {
                         event.preventDefault()
-                        this.buyBnbToken(this.state.bnbAmount, this.state.gasAmount, this.state.deadLine)
+                        this.buyBnbToken(this.state.tokenAmount, this.state.tokenAddress, this.state.gasAmount, this.state.deadLine)
                       }}>
-                      {this.state.buyingOn === true ? "WAIT" : "BUY TOKEN"}
+                      {this.state.buyingOn === true ? "WAIT" : "SWAP"}
+                    </button>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div >
+
+        <div class="boxModalPairs">
+          <h5>SWAP TOKEN FOR TOKEN</h5>
+          <div>
+            <label class="field field_v1">
+              <input
+                class="field__input"
+                placeholder="0.00"
+                type="number"
+                min="1"
+                onChange={this.tokenAmount}
+              />
+              <span class="field__label-wrap">
+                <span class="field__label">Token1 Amount</span>
+              </span>
+            </label>
+          </div>
+
+          <div>
+            <label class="field field_v1">
+              <input
+                class="field__input"
+                placeholder="0x00000000..."
+                type="text"
+                onChange={this.tokenAddress}
+              />
+              <span class="field__label-wrap">
+                <span class="field__label">Token1 Address</span>
+              </span>
+            </label>
+          </div>
+
+          <div>
+            <label class="field field_v1">
+              <input
+                class="field__input"
+                placeholder="0x00000000..."
+                type="text"
+                onChange={this.tokenAddress2}
+              />
+              <span class="field__label-wrap">
+                <span class="field__label">Token2 Address</span>
+              </span>
+            </label>
+          </div>
+
+          <div>
+            <label class="field field_v1">
+              <input
+                class="field__input"
+                placeholder="10"
+                type="number"
+                min="1"
+                onChange={this.gasAmount}
+              />
+              <span class="field__label-wrap">
+                <span class="field__label">Gas Price</span>
+              </span>
+            </label>
+          </div>
+
+          <div>
+            <label class="field field_v1">
+              <input
+                class="field__input"
+                placeholder="1640906725"
+                type="number"
+                min="1"
+                onChange={this.deadLine}
+              />
+              <span class="field__label-wrap">
+                <span class="field__label">Dead Line</span>
+              </span>
+            </label>
+          </div>
+
+          <div class="btn2">
+            <table>
+              <tfoot id="farmButton">
+                <tr>
+                  <td>
+                    <button
+                      disabled={this.state.buyingOn === true}
+                      className="slide_from_left"
+                      type="submit"
+                      onClick={(event) => {
+                        event.preventDefault()
+                        this.buyToken(this.state.tokenAmount, this.state.tokenAddress, this.state.tokenAddress2, this.state.gasAmount, this.state.deadLine)
+                      }}>
+                      {this.state.buyingOn === true ? "WAIT" : "SWAP"}
                     </button>
                   </td>
                 </tr>
