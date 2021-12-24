@@ -22,6 +22,7 @@
         "babel-register": "6.26.0",
         "bignumber.js": "^9.0.1",
         "bootstrap": "^5.1.3",
+        "bsc-scan": "^1.2.0",
         "chai": "4.2.0",
         "chai-as-promised": "7.1.1",
         "chai-bignumber": "3.0.0",
@@ -45,7 +46,8 @@
         "reactstrap": "^9.0.0",
         "styled-components": "^5.3.3",
         "truffle": "5.1.39",
-        "web3": "^1.6.0"
+        "web3": "^1.6.0",
+        "web3-eth-contract": "^1.6.1"
     },
     "scripts": {
         "start": "react-scripts start",

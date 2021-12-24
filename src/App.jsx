@@ -40,6 +40,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      erc20: {},
       pair: {},
       swap: {},
       patoToken: {},
@@ -158,10 +159,10 @@ class App extends Component {
       try {
         const swap = new web3.eth.Contract(SwapAbi.abi, chainInUse.pancakeSwapAddress)
         this.setState({ swap })
-       
       } catch (e) {
         window.alert('SWAP CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
       }
+      
       this.setState({ loading: 'FALSE' })
       this.setState({ chest: 'FALSE' })
     }

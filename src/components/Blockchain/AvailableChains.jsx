@@ -20,7 +20,7 @@ chains.push(
         StakingAddress,
         FaucetAddress,
         PancakePairAddress,
-        PancakeSwapAddress
+        PancakeSwapAddress,
 
         // "Binance Smart Chain Mainnet",
         // 56,
