@@ -29,7 +29,10 @@ class PairSwap extends Component {
       tokenSymbolWBNB: 'Symbol',
       tokenSymbolBUSD: 'Symbol',
       tokenSymbolUSDT: 'Symbol',
+      bnbPrice: '0',
+      tokenDecimal: '1',
       decimals: 1000000000000000000,
+      tokenDecimals: 0,
       tokenAllowance: 0,
       searchRequests: 1200,
       bnbAmount: 0,
@@ -77,6 +80,21 @@ class PairSwap extends Component {
   checkPairToken = async (tokenAddress, bnbAmount, tokenAmount, gasAmount, deadLine) => {
     this.setState({ searchOn: true });
 
+    fetch('https://api.bscscan.com/api?module=stats&action=bnbprice&apikey=WQKUR4JEYNDRH7EWQZ13MW346Q1RKZ5MXI')
+      .then(response => response.json())
+      .then((jsonData) => {
+        // jsonData is parsed json object received from url
+
+        let bnbPrice = jsonData.result.ethusd
+        this.setState({ bnbPrice: bnbPrice.toString() });
+
+      })
+      .catch((error) => {
+        // handle your errors here
+        console.error(error)
+      })
+
+
     const sleep = (milliseconds) => {
       return new Promise(resolve => setTimeout(resolve, milliseconds))
     }
@@ -94,6 +112,8 @@ class PairSwap extends Component {
       this.setState({ erc20token })
       let tokenName = await this.state.erc20token.methods.name().call()
       this.setState({ tokenName: tokenName.toString() })
+      let tokenDecimals = await this.state.erc20token.methods.decimals().call()
+      this.setState({ tokenDecimals: tokenDecimals.toString() })
       let tokenSymbol = await this.state.erc20token.methods.symbol().call()
       this.setState({ tokenSymbol: tokenSymbol.toString() })
       let tokenBalance = await this.state.erc20token.methods.balanceOf(this.props.account).call()
@@ -109,7 +129,9 @@ class PairSwap extends Component {
 
       const erc20wbnb = new web3.eth.Contract(Erc20Abi.abi, this.state.addressWBNB.toString())
       this.setState({ erc20wbnb })
-      if (this.state.checkPairWBNB !== '0x0000000000000000000000000000000000000000') {
+      if (this.state.checkPairWBNB === '0x0000000000000000000000000000000000000000') {
+        this.setState({ checkValuePairWBNB: 0 })
+      } else {
         let checkValuePairWBNB = await this.state.erc20wbnb.methods.balanceOf(this.state.checkPairWBNB).call()
         this.setState({ checkValuePairWBNB: checkValuePairWBNB.toString() })
       }
@@ -118,19 +140,15 @@ class PairSwap extends Component {
 
       const erc20busd = new web3.eth.Contract(Erc20Abi.abi, this.state.addressBUSD.toString())
       this.setState({ erc20busd })
-      if (this.state.checkPairBUSD !== '0x0000000000000000000000000000000000000000') {
-        let checkValuePairBUSD = await this.state.erc20busd.methods.balanceOf(this.state.checkPairBUSD).call()
-        this.setState({ checkValuePairBUSD: checkValuePairBUSD.toString() })
-      }
+      let checkValuePairBUSD = await this.state.erc20busd.methods.balanceOf(this.state.checkPairBUSD).call()
+      this.setState({ checkValuePairBUSD: checkValuePairBUSD.toString() })
       let tokenSymbolBUSD = await this.state.erc20busd.methods.symbol().call()
       this.setState({ tokenSymbolBUSD: tokenSymbolBUSD.toString() })
 
       const erc20usdt = new web3.eth.Contract(Erc20Abi.abi, this.state.addressUSDT.toString())
       this.setState({ erc20usdt })
-      if (this.state.checkPairUSDT !== '0x0000000000000000000000000000000000000000') {
-        let checkValuePairUSDT = await this.state.erc20usdt.methods.balanceOf(this.state.checkPairUSDT).call()
-        this.setState({ checkValuePairUSDT: checkValuePairUSDT.toString() })
-      }
+      let checkValuePairUSDT = await this.state.erc20usdt.methods.balanceOf(this.state.checkPairUSDT).call()
+      this.setState({ checkValuePairUSDT: checkValuePairUSDT.toString() })
       let tokenSymbolUSDT = await this.state.erc20usdt.methods.symbol().call()
       this.setState({ tokenSymbolUSDT: tokenSymbolUSDT.toString() })
 
@@ -146,7 +164,7 @@ class PairSwap extends Component {
 
           })
           .on('error', function (error) {
-
+            window.location.reload()
           });
         break;
       }
@@ -159,10 +177,10 @@ class PairSwap extends Component {
             from: this.props.account
           })
           .on('receipt', async (hash) => {
-
+            window.location.reload()
           })
           .on('error', function (error) {
-
+            window.location.reload()
           });
         break;
       }
@@ -175,10 +193,10 @@ class PairSwap extends Component {
             from: this.props.account
           })
           .on('receipt', async (hash) => {
-
+            window.location.reload()
           })
           .on('error', function (error) {
-
+            window.location.reload()
           });
         break;
       }
@@ -188,6 +206,10 @@ class PairSwap extends Component {
       console.log(i);
 
       await sleep(1000);
+    }
+
+    for (var d = 0; d < this.state.tokenDecimals; d++) {
+      this.setState({ tokenDecimal: this.state.tokenDecimal.toString() + '0' })
     }
     this.setState({ searchOn: false });
   }
@@ -216,6 +238,20 @@ class PairSwap extends Component {
     }
   }
 
+  sellAllWbnb = async (tokenAddress, deadLine, gasAmount) => {
+    this.props.swap.methods
+      .swapExactTokensForTokens((this.state.tokenBalance / this.state.tokenDecimal).toFixed(2), 0, [`${tokenAddress.toString()}`, this.state.addressWBNB], this.props.account, deadLine)
+      .send({
+        gasPrice: window.web3.utils.toWei((gasAmount).toString(), "gwei"),
+        from: this.props.account
+      })
+      .on('receipt', async (hash) => {
+        window.location.reload()
+      })
+      .on('error', function (error) {
+        window.location.reload()
+      });
+  }
 
   buyTokenToken1 = async (tokenAmount, tokenAddress, tokenAddress1, deadLine, gasAmount) => {
     this.props.swap.methods
@@ -233,7 +269,7 @@ class PairSwap extends Component {
   }
 
   approveToken = async (tokenAddress) => {
-    this.state.erc20.methods
+    this.state.erc20token.methods
       .approve(`${tokenAddress.toString()}`, window.web3.utils.toWei(window.web3.utils.toBN(new BigNumber(100000000000000000000000000000000000000000000000000)).toString(), 'Ether'))
       .send({ from: this.props.account })
       .on('receipt', (hash) => {
@@ -308,7 +344,7 @@ class PairSwap extends Component {
               </span>
             </label>
             <span>
-              Balance: {(this.state.tokenBalance / this.state.decimals).toFixed(4)}
+              Balance: {(this.state.tokenBalance / this.state.tokenDecimal).toFixed(4)}
             </span>
           </div>
           <div>
@@ -322,20 +358,6 @@ class PairSwap extends Component {
               />
               <span class="field__label-wrap">
                 <span class="field__label">BNB Amount</span>
-              </span>
-            </label>
-          </div>
-          <div>
-            <label class="field field_v1">
-              <input
-                class="field__input"
-                placeholder="0.00"
-                type="number"
-                min="1"
-                onChange={this.tokenAmount}
-              />
-              <span class="field__label-wrap">
-                <span class="field__label">USD Amount</span>
               </span>
             </label>
           </div>
@@ -372,27 +394,79 @@ class PairSwap extends Component {
               <tfoot id="farmButton">
                 <tr>
                   <td>
-                    <button
-                      disabled={this.state.searchOn === true}
-                      className="slide_from_left"
-                      type="submit"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        this.checkPairToken(this.state.tokenAddress, this.state.bnbAmount, this.state.tokenAmount, this.state.gasAmount, this.state.deadLine,);
-                      }}>
-                      {this.state.searchOn === true ? "SEARCHING" : "CHECK PAIR"}
-                    </button>
+                    {this.state.searchOn === true
+                      ?
+                      (
+                        <button
+                          className="slide_from_left"
+                          type="submit"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            this.stopCheckPairToken();
+                          }}>
+                          STOP
+                        </button>
+
+                      )
+                      :
+                      (
+                        <button
+                          className="slide_from_left"
+                          type="submit"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            this.checkPairToken(this.state.tokenAddress, this.state.bnbAmount, this.state.tokenAmount, this.state.gasAmount, this.state.deadLine,);
+                          }}>
+                          START
+                        </button>
+                      )
+                    }
                   </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <div>
+            <label class="field field_v1">
+              <input
+                class="field__input"
+                placeholder="0.00"
+                type="number"
+                min="1"
+                onChange={this.tokenAmount}
+              />
+              <span class="field__label-wrap">
+                <span class="field__label">USD Amount</span>
+              </span>
+            </label>
+          </div>
+          <div>
+            <label class="field field_v1">
+              <input
+                class="field__input"
+                placeholder="0x00000000..."
+                type="text"
+                onChange={this.tokenAddress1}
+              />
+              <span class="field__label-wrap">
+                <span class="field__label">{this.state.tokenName1}</span>
+              </span>
+            </label>
+          </div>
+          <div class="btn2">
+            <table>
+              <tfoot id="farmButton">
+                <tr>
                   <td>
                     <button
-                      disabled={this.state.searchOn === false}
+                      disabled={this.state.buyingOn === true}
                       className="slide_from_left"
                       type="submit"
                       onClick={(event) => {
-                        event.preventDefault();
-                        this.stopCheckPairToken();
+                        event.preventDefault()
+                        this.buyTokenToken1(this.state.tokenAmount, this.state.tokenAddress, this.state.tokenAddress1, this.state.deadLine, this.state.gasAmount)
                       }}>
-                      STOP
+                      {this.state.buyingOn === true ? "WAIT" : "MANUALLY"}
                     </button>
                   </td>
                 </tr>
@@ -402,9 +476,18 @@ class PairSwap extends Component {
         </div>
         <div class="boxModalPairs">
           <br></br>
-          <span>
+          <p class="contrast">
             Requests: {this.state.searchRequests}
-          </span>
+          </p>
+          <p class="contrast">
+            BNB Price: {this.state.bnbPrice + ' $'}
+          </p>
+          <p class="contrast">
+            Name: {this.state.tokenName}
+          </p>
+          <p class="contrast">
+            Decimals: {this.state.tokenDecimals}
+          </p>
           <br></br>
           <div class="btn2">
             <table>
@@ -454,7 +537,7 @@ class PairSwap extends Component {
                               </span>
                             </td>
                             <td>
-                              {(this.state.checkValuePairTokenWBNB / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairWBNB / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolWBNB} &nbsp;
+                              {(this.state.checkValuePairTokenWBNB / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairWBNB / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolWBNB}
                             </td>
                             <td>
                               <a
@@ -464,6 +547,17 @@ class PairSwap extends Component {
                                 rel="noopener noreferrer">
                                 View LP
                               </a>
+                            </td>
+                            <td>
+                              <button
+                                className="slide_from_left"
+                                type="submit"
+                                onClick={(event) => {
+                                  event.preventDefault()
+                                  this.sellAllWbnb(this.state.tokenAddress, this.state.deadLine, this.state.gasAmount)
+                                }}>
+                                SELL MAX
+                              </button>
                             </td>
                           </tr>
                         </tfoot>
@@ -475,12 +569,12 @@ class PairSwap extends Component {
                         <tfoot id="farmButton">
                           <tr>
                             <td>
-                              <span class="green">
+                              <span class="red">
                                 Not Found! &nbsp;
                               </span>
                             </td>
                             <td>
-                              {(this.state.checkValuePairTokenWBNB / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairWBNB / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolWBNB} &nbsp;
+                              {(this.state.checkValuePairTokenWBNB / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairWBNB / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolWBNB}
                             </td>
                             <td>
                               <a
@@ -511,7 +605,7 @@ class PairSwap extends Component {
                               </span>
                             </td>
                             <td>
-                              {(this.state.checkValuePairTokenBUSD / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairBUSD / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolBUSD} &nbsp;
+                              {(this.state.checkValuePairTokenBUSD / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairBUSD / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolBUSD}
                             </td>
                             <td>
                               <a
@@ -532,12 +626,12 @@ class PairSwap extends Component {
                         <tfoot id="farmButton">
                           <tr>
                             <td>
-                              <span class="green">
+                              <span class="red">
                                 Not Found! &nbsp;
                               </span>
                             </td>
                             <td>
-                              {(this.state.checkValuePairTokenBUSD / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairBUSD / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolBUSD} &nbsp;
+                              {(this.state.checkValuePairTokenBUSD / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairBUSD / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolBUSD}
                             </td>
                             <td>
                               <a
@@ -568,7 +662,7 @@ class PairSwap extends Component {
                               </span>
                             </td>
                             <td>
-                              {(this.state.checkValuePairTokenUSDT / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairUSDT / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolUSDT} &nbsp;
+                              {(this.state.checkValuePairTokenUSDT / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairUSDT / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolUSDT}
                             </td>
                             <td>
                               <a
@@ -589,12 +683,12 @@ class PairSwap extends Component {
                         <tfoot id="farmButton">
                           <tr>
                             <td>
-                              <span class="green">
+                              <span class="red">
                                 Not Found! &nbsp;
                               </span>
                             </td>
                             <td>
-                              {(this.state.checkValuePairTokenUSDT / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairUSDT / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolUSDT} &nbsp;
+                              {(this.state.checkValuePairTokenUSDT / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairUSDT / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolUSDT} &nbsp;
                             </td>
                             <td>
                               <a
@@ -614,39 +708,6 @@ class PairSwap extends Component {
               </tr>
             </tfoot>
           </table>
-          <div>
-            <label class="field field_v1">
-              <input
-                class="field__input"
-                placeholder="0x00000000..."
-                type="text"
-                onChange={this.tokenAddress1}
-              />
-              <span class="field__label-wrap">
-                <span class="field__label">{this.state.tokenName1}</span>
-              </span>
-            </label>
-          </div>
-          <div class="btn2">
-            <table>
-              <tfoot id="farmButton">
-                <tr>
-                  <td>
-                    <button
-                      disabled={this.state.buyingOn === true}
-                      className="slide_from_left"
-                      type="submit"
-                      onClick={(event) => {
-                        event.preventDefault()
-                        this.buyTokenToken1(this.state.tokenAmount, this.state.tokenAddress, this.state.tokenAddress1, this.state.deadLine, this.state.gasAmount)
-                      }}>
-                      {this.state.buyingOn === true ? "WAIT" : "MANUALLY"}
-                    </button>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
         </div>
         <Footer />
       </div >
