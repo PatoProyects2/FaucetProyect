@@ -12,38 +12,40 @@ class PairSwap extends Component {
     super();
     this.state = {
       erc20token: {},
-      erc20token1: {},
       erc20wbnb: {},
       erc20busd: {},
       erc20usdt: {},
-      erc20dai: {},
       tokenAddress: '0x0',
       tokenAddress1: '0x0',
       checkPairWBNB: '0x0',
       checkPairBUSD: '0x0',
       checkPairUSDT: '0x0',
-      checkPairDAI: '0x0',
       addressWBNB: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
       addressBUSD: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
       addressUSDT: '0x55d398326f99059ff775485246999027b3197955',
-      addressDAI: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3',
       tokenName: 'Token 1',
       tokenName1: 'Token 2',
       tokenSymbol: 'Symbol',
+      tokenSymbolWBNB: 'Symbol',
+      tokenSymbolBUSD: 'Symbol',
+      tokenSymbolUSDT: 'Symbol',
+      decimals: 1000000000000000000,
       tokenAllowance: 0,
-      searchRequests: 600,
+      searchRequests: 1200,
       bnbAmount: 0,
       tokenAmount: 0,
       tokenBalance: 0,
-      tokenBalance1: 0,
       deadLine: 0,
       gasAmount: 0,
       checkValuePairWBNB: 0,
       checkValuePairBUSD: 0,
       checkValuePairUSDT: 0,
-      checkValuePairDAI: 0,
+      checkValuePairTokenWBNB: 0,
+      checkValuePairTokenBUSD: 0,
+      checkValuePairTokenUSDT: 0,
       searchOn: false,
       buyingOn: false,
+      searchActive: true,
     };
     this.tokenAddress = this.tokenAddress.bind(this);
     this.tokenAddress1 = this.tokenAddress1.bind(this);
@@ -79,15 +81,13 @@ class PairSwap extends Component {
       return new Promise(resolve => setTimeout(resolve, milliseconds))
     }
 
-    for (var i = 0; i < 600; i++) {
+    for (var i = 0; i < 1200; i++) {
       let checkPairWBNB = await this.props.pair.methods.getPair(tokenAddress.toString(), this.state.addressWBNB).call()
       this.setState({ checkPairWBNB: checkPairWBNB.toString() })
       let checkPairBUSD = await this.props.pair.methods.getPair(tokenAddress.toString(), this.state.addressBUSD).call()
       this.setState({ checkPairBUSD: checkPairBUSD.toString() })
       let checkPairUSDT = await this.props.pair.methods.getPair(tokenAddress.toString(), this.state.addressUSDT).call()
       this.setState({ checkPairUSDT: checkPairUSDT.toString() })
-      let checkPairDAI = await this.props.pair.methods.getPair(tokenAddress.toString(), this.state.addressDAI).call()
-      this.setState({ checkPairDAI: checkPairDAI.toString() })
 
       const web3 = window.web3
       const erc20token = new web3.eth.Contract(Erc20Abi.abi, tokenAddress.toString())
@@ -98,25 +98,43 @@ class PairSwap extends Component {
       this.setState({ tokenSymbol: tokenSymbol.toString() })
       let tokenBalance = await this.state.erc20token.methods.balanceOf(this.props.account).call()
       this.setState({ tokenBalance: tokenBalance.toString() })
+      let checkValuePairTokenWBNB = await this.state.erc20token.methods.balanceOf(this.state.checkPairWBNB).call()
+      this.setState({ checkValuePairTokenWBNB: checkValuePairTokenWBNB.toString() })
+      let checkValuePairTokenBUSD = await this.state.erc20token.methods.balanceOf(this.state.checkPairBUSD).call()
+      this.setState({ checkValuePairTokenBUSD: checkValuePairTokenBUSD.toString() })
+      let checkValuePairTokenUSDT = await this.state.erc20token.methods.balanceOf(this.state.checkPairUSDT).call()
+      this.setState({ checkValuePairTokenUSDT: checkValuePairTokenUSDT.toString() })
       let tokenAllowance = await this.state.erc20token.methods.allowance(this.props.account, tokenAddress.toString()).call()
       this.setState({ tokenAllowance: tokenAllowance.toString() })
 
       const erc20wbnb = new web3.eth.Contract(Erc20Abi.abi, this.state.addressWBNB.toString())
       this.setState({ erc20wbnb })
-      let checkValuePairWBNB = await this.state.erc20wbnb.methods.balanceOf(this.state.checkPairWBNB).call()
-      this.setState({ checkValuePairWBNB: checkValuePairWBNB.toString() })
+      if (this.state.checkPairWBNB !== '0x0000000000000000000000000000000000000000') {
+        let checkValuePairWBNB = await this.state.erc20wbnb.methods.balanceOf(this.state.checkPairWBNB).call()
+        this.setState({ checkValuePairWBNB: checkValuePairWBNB.toString() })
+      }
+      let tokenSymbolWBNB = await this.state.erc20wbnb.methods.symbol().call()
+      this.setState({ tokenSymbolWBNB: tokenSymbolWBNB.toString() })
 
-      const erc20busd = new web3.eth.Contract(Erc20Abi.abi, this.state.addressBUSD)
+      const erc20busd = new web3.eth.Contract(Erc20Abi.abi, this.state.addressBUSD.toString())
       this.setState({ erc20busd })
-      let checkValuePairBUSD = await this.state.erc20busd.methods.balanceOf(this.state.checkPairBUSD).call()
-      this.setState({ checkValuePairBUSD: checkValuePairBUSD.toString() })
+      if (this.state.checkPairBUSD !== '0x0000000000000000000000000000000000000000') {
+        let checkValuePairBUSD = await this.state.erc20busd.methods.balanceOf(this.state.checkPairBUSD).call()
+        this.setState({ checkValuePairBUSD: checkValuePairBUSD.toString() })
+      }
+      let tokenSymbolBUSD = await this.state.erc20busd.methods.symbol().call()
+      this.setState({ tokenSymbolBUSD: tokenSymbolBUSD.toString() })
 
-      const erc20usdt = new web3.eth.Contract(Erc20Abi.abi, this.state.addressUSDT)
+      const erc20usdt = new web3.eth.Contract(Erc20Abi.abi, this.state.addressUSDT.toString())
       this.setState({ erc20usdt })
-      let checkValuePairUSDT = await this.state.erc20usdt.methods.balanceOf(this.state.checkPairUSDT).call()
-      this.setState({ checkValuePairUSDT: checkValuePairUSDT.toString() })
+      if (this.state.checkPairUSDT !== '0x0000000000000000000000000000000000000000') {
+        let checkValuePairUSDT = await this.state.erc20usdt.methods.balanceOf(this.state.checkPairUSDT).call()
+        this.setState({ checkValuePairUSDT: checkValuePairUSDT.toString() })
+      }
+      let tokenSymbolUSDT = await this.state.erc20usdt.methods.symbol().call()
+      this.setState({ tokenSymbolUSDT: tokenSymbolUSDT.toString() })
 
-      if (this.state.checkValuePairWBNB > 0) {
+      if ((this.state.checkValuePairWBNB / this.state.decimals) !== 0) {
         this.props.swap.methods
           .swapExactETHForTokens(0, [this.state.addressWBNB, `${tokenAddress.toString()}`], this.props.account, deadLine)
           .send({
@@ -133,7 +151,7 @@ class PairSwap extends Component {
         break;
       }
 
-      if (this.state.checkValuePairBUSD > 0) {
+      if ((this.state.checkValuePairBUSD / this.state.decimals) !== 0) {
         this.props.swap.methods
           .swapExactTokensForTokens(window.web3.utils.toWei(tokenAmount.toString(), 'Ether'), 0, [this.state.addressBUSD, `${tokenAddress.toString()}`], this.props.account, deadLine)
           .send({
@@ -149,7 +167,7 @@ class PairSwap extends Component {
         break;
       }
 
-      if (this.state.checkValuePairUSDT > 0) {
+      if ((this.state.checkValuePairUSDT / this.state.decimals) !== 0) {
         this.props.swap.methods
           .swapExactTokensForTokens(window.web3.utils.toWei(tokenAmount.toString(), 'Ether'), 0, [this.state.addressUSDT, `${tokenAddress.toString()}`], this.props.account, deadLine)
           .send({
@@ -173,6 +191,31 @@ class PairSwap extends Component {
     }
     this.setState({ searchOn: false });
   }
+
+  stopCheckPairToken = async () => {
+    window.location.reload()
+  }
+
+  addToken = async (tokenAddress) => {
+    try {
+      const provider = window.web3.currentProvider
+      await provider.sendAsync({
+        method: 'wallet_watchAsset',
+        params: {
+          type: 'ERC20', // Initially only supports ERC20, but eventually more!
+          options: {
+            address: tokenAddress.toString(), // The address that the token is at.
+            symbol: this.state.tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+            decimals: 18, // The number of decimals in the token
+            image: ""
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   buyTokenToken1 = async (tokenAmount, tokenAddress, tokenAddress1, deadLine, gasAmount) => {
     this.props.swap.methods
@@ -238,7 +281,6 @@ class PairSwap extends Component {
     }
   }
   render() {
-    let decimals = 1000000000000000000;
 
     return (
       <div>
@@ -266,7 +308,7 @@ class PairSwap extends Component {
               </span>
             </label>
             <span>
-              Balance: {(this.state.tokenBalance / decimals).toFixed(4)}
+              Balance: {(this.state.tokenBalance / this.state.decimals).toFixed(4)}
             </span>
           </div>
           <div>
@@ -341,6 +383,18 @@ class PairSwap extends Component {
                       {this.state.searchOn === true ? "SEARCHING" : "CHECK PAIR"}
                     </button>
                   </td>
+                  <td>
+                    <button
+                      disabled={this.state.searchOn === false}
+                      className="slide_from_left"
+                      type="submit"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        this.stopCheckPairToken();
+                      }}>
+                      STOP
+                    </button>
+                  </td>
                 </tr>
               </tfoot>
             </table>
@@ -368,138 +422,198 @@ class PairSwap extends Component {
                       {this.state.tokenAllowance > 0 ? "APPROVED" : "APPROVE"}
                     </button>
                   </td>
+                  <td>
+                    <button
+                      className="slide_from_left"
+                      type="submit"
+                      onClick={(event) => {
+                        event.preventDefault()
+                        this.addToken(this.state.tokenAddress)
+                      }}>
+                      ADD TOKEN
+                    </button>
+                  </td>
                 </tr>
               </tfoot>
             </table>
           </div>
           <br></br>
           <br></br>
-          <p>
-            {this.state.checkPairWBNB !== '0x0000000000000000000000000000000000000000' ?
-              (
-                <span>
-                  {this.state.tokenSymbol} / WBNB: &nbsp;
-                  <span class="green">
-                    Found! &nbsp;
-                  </span>
-                  {(this.state.checkValuePairWBNB / decimals).toFixed(2)}
-                  <div class="btn2">
-                    <table>
-                      <tfoot id="farmButton">
-                        <tr>
-                          <td>
-                            <button
-                              disabled={this.state.buyingOn === true}
-                              className="slide_from_left"
-                              type="submit"
-                              onClick={(event) => {
-                                event.preventDefault()
-                                this.buyWbnbToken(this.state.tokenAddress, this.state.deadLine, this.state.gasAmount, this.state.bnbAmount)
-                              }}>
-                              {this.state.buyingOn === true ? "WAIT" : "SWAP"}
-                            </button>
-                          </td>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
-                </span>
-              )
-              :
-              (
-                <span>
-                  {this.state.tokenSymbol} / WBNB: &nbsp;
-                  <span class="red">
-                    Not Found!
-                  </span>
-                </span>
-              )
-            }
-          </p>
-          <p>
-            {this.state.checkPairBUSD !== '0x0000000000000000000000000000000000000000' ?
-              (
-                <span>
-                  {this.state.tokenSymbol} / BUSD: &nbsp;
-                  <span class="green">
-                    Found! &nbsp;
-                  </span>
-                  {(this.state.checkValuePairBUSD / decimals).toFixed(2)}
-                  <div class="btn2">
-                    <table>
-                      <tfoot id="farmButton">
-                        <tr>
-                          <td>
-                            <button
-                              disabled={this.state.buyingOn === true}
-                              className="slide_from_left"
-                              type="submit"
-                              onClick={(event) => {
-                                event.preventDefault()
-                                this.buyBusdToken(this.state.tokenAmount, this.state.tokenAddress, this.state.deadLine, this.state.gasAmount)
-                              }}>
-                              {this.state.buyingOn === true ? "WAIT" : "SWAP"}
-                            </button>
-                          </td>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
-                </span>
-              )
-              :
-              (
-                <span>
-                  {this.state.tokenSymbol} / BUSD: &nbsp;
-                  <span class="red">
-                    Not Found!
-                  </span>
-                </span>
-              )
-            }
-          </p>
-          <p>
-            {this.state.checkPairUSDT !== '0x0000000000000000000000000000000000000000' ?
-              (
-                <span>
-                  {this.state.tokenSymbol} / USDT: &nbsp;
-                  <span class="green">
-                    Found! &nbsp;
-                  </span>
-                  {(this.state.checkValuePairUSDT / decimals).toFixed(2)}
-                  <div class="btn2">
-                    <table>
-                      <tfoot id="farmButton">
-                        <tr>
-                          <td>
-                            <button
-                              disabled={this.state.buyingOn === true}
-                              className="slide_from_left"
-                              type="submit"
-                              onClick={(event) => {
-                                event.preventDefault()
-                                this.buyUsdtToken()
-                              }}>
-                              {this.state.buyingOn === true ? "WAIT" : "SWAP"}
-                            </button>
-                          </td>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
-                </span>
-              )
-              :
-              (
-                <span>
-                  {this.state.tokenSymbol} / USDT: &nbsp;
-                  <span class="red">
-                    Not Found!
-                  </span>
-                </span>
-              )
-            }
-          </p>
+          <table>
+            <tfoot>
+              <tr>
+                <td>
+                  {this.state.checkPairWBNB !== '0x0000000000000000000000000000000000000000' ?
+                    (
+                      <table>
+                        <tfoot id="farmButton">
+                          <tr>
+                            <td>
+                              <span class="green">
+                                Found! &nbsp;
+                              </span>
+                            </td>
+                            <td>
+                              {(this.state.checkValuePairTokenWBNB / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairWBNB / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolWBNB} &nbsp;
+                            </td>
+                            <td>
+                              <a
+                                class="contrast"
+                                href={'https://bscscan.com/address/' + `${this.state.checkPairWBNB}`}
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                View LP
+                              </a>
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    )
+                    :
+                    (
+                      <table>
+                        <tfoot id="farmButton">
+                          <tr>
+                            <td>
+                              <span class="green">
+                                Not Found! &nbsp;
+                              </span>
+                            </td>
+                            <td>
+                              {(this.state.checkValuePairTokenWBNB / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairWBNB / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolWBNB} &nbsp;
+                            </td>
+                            <td>
+                              <a
+                                class="contrast"
+                                href={'https://bscscan.com/address/' + `${this.state.checkPairWBNB}`}
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                View LP
+                              </a>
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    )
+                  }
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  {this.state.checkPairBUSD !== '0x0000000000000000000000000000000000000000' ?
+                    (
+                      <table>
+                        <tfoot id="farmButton">
+                          <tr>
+                            <td>
+                              <span class="green">
+                                Found! &nbsp;
+                              </span>
+                            </td>
+                            <td>
+                              {(this.state.checkValuePairTokenBUSD / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairBUSD / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolBUSD} &nbsp;
+                            </td>
+                            <td>
+                              <a
+                                class="contrast"
+                                href={'https://bscscan.com/address/' + `${this.state.checkPairBUSD}`}
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                View LP
+                              </a>
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    )
+                    :
+                    (
+                      <table>
+                        <tfoot id="farmButton">
+                          <tr>
+                            <td>
+                              <span class="green">
+                                Not Found! &nbsp;
+                              </span>
+                            </td>
+                            <td>
+                              {(this.state.checkValuePairTokenBUSD / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairBUSD / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolBUSD} &nbsp;
+                            </td>
+                            <td>
+                              <a
+                                class="contrast"
+                                href={'https://bscscan.com/address/' + `${this.state.checkPairBUSD}`}
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                View LP
+                              </a>
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    )
+                  }
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  {this.state.checkPairUSDT !== '0x0000000000000000000000000000000000000000' ?
+                    (
+                      <table>
+                        <tfoot id="farmButton">
+                          <tr>
+                            <td>
+                              <span class="green">
+                                Found! &nbsp;
+                              </span>
+                            </td>
+                            <td>
+                              {(this.state.checkValuePairTokenUSDT / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairUSDT / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolUSDT} &nbsp;
+                            </td>
+                            <td>
+                              <a
+                                class="contrast"
+                                href={'https://bscscan.com/address/' + `${this.state.checkPairUSDT}`}
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                View LP
+                              </a>
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    )
+                    :
+                    (
+                      <table>
+                        <tfoot id="farmButton">
+                          <tr>
+                            <td>
+                              <span class="green">
+                                Not Found! &nbsp;
+                              </span>
+                            </td>
+                            <td>
+                              {(this.state.checkValuePairTokenUSDT / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairUSDT / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolUSDT} &nbsp;
+                            </td>
+                            <td>
+                              <a
+                                class="contrast"
+                                href={'https://bscscan.com/address/' + `${this.state.checkPairUSDT}`}
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                View LP
+                              </a>
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    )
+                  }
+                </td>
+              </tr>
+            </tfoot>
+          </table>
           <div>
             <label class="field field_v1">
               <input

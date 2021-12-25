@@ -14,12 +14,14 @@
     --color-background: #001935;
     --color-text: #ffffff;
     --color-link: #009625;
+    --color-contrast: #000000;
 }
 
 .theme-light {
     --color-background: #ececec;
     --color-text: #000000;
     --color-link: #009625;
+    --color-contrast: #ffffff;
 }
 
 @media screen and (max-width:412px) {

@@ -152,7 +152,7 @@ class App extends Component {
       try {
         const pair = new web3.eth.Contract(PairAbi.abi, chainInUse.pancakePairAddress)
         this.setState({ pair })
-       
+
       } catch (e) {
         window.alert('PAIR CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
       }
@@ -162,7 +162,7 @@ class App extends Component {
       } catch (e) {
         window.alert('SWAP CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
       }
-      
+
       this.setState({ loading: 'FALSE' })
       this.setState({ chest: 'FALSE' })
     }

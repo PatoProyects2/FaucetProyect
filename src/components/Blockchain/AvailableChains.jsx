@@ -21,18 +21,25 @@ chains.push(
         FaucetAddress,
         PancakePairAddress,
         PancakeSwapAddress,
-
-        // "Binance Smart Chain Mainnet",
-        // 56,
-        // "BNB",
-        // "https://bsc-dataseed.binance.org/",
-        // "https://bscscan.com/",
-        // PatoTokenAddress,
-        // StakingAddress,
-        // FaucetAddress,
-        // PancakePairAddress
     )
 )
+
+chains.push(
+    new Chain(
+        "BSC Mainnet",
+        56,
+        "BNB",
+        "https://bsc-dataseed.binance.org/",
+        "https://bscscan.com/",
+        PatoTokenAddress,
+        StakingAddress,
+        FaucetAddress,
+        PancakePairAddress,
+        PancakeSwapAddress,
+    )
+)
+
+
 
 export default chains;
 
