@@ -21,10 +21,11 @@ contract Staking is Ownable {
 
 
     mapping (address => user) public listOfUsers;
+    mapping (uint256 => uint256) public blockidDeposit; // block number in deposit (id => block.number)
     mapping (uint256 => uint256) public blocEndRw; //vincular id => energia.
     mapping (uint256 => uint256) public power; //vincular id => power 
     //PatoVerde public PATO; //token de recompenza.
-    IERC721 public smiti;
+    smithy public smiti;
 
     address public devaddr;    
     address public devSetter;
@@ -93,7 +94,7 @@ contract Staking is Ownable {
             }
         }
         smiti.safeTransferFrom(_user,address(this),_id);
-       //USER PERFIL
+    // USER PERFIL
         uint[] memory _nftIdStake = listOfUsers[_user].nftIdStake;
         if(_nftIdStake.length < 1 ){
             listOfUsers[_user].nftIdStake.push(_id);
@@ -106,37 +107,33 @@ contract Staking is Ownable {
                 }
             }
         }
-        listOfUsers[_user].lastRewardBlock = block.number;        
-        blocEndRw[_id] = 0/* smiti.getEnergy(_id) */; 
-        power[_id] = 0 /* smiti.getPower(_id) */;
-
-        
+        listOfUsers[_user].lastRewardBlock = block.number;
+    // End user perfil
+        blockidDeposit[_id] = block.number; // block donde el nft empiza a consumir energia
+        blocEndRw[_id] = block.number + smiti.smithys[_id-1].actEnergy/* smiti.getEnergy(_id) */; 
+        power[_id] = 0 /* smiti.getPower(_id) */;       
         
         //emit
     }
     
     function Withdraw(address _user, uint _id) public {
-        /*uint256 _pos;
-        uint[] memory _nftIdStake = listOfUsers[_user].nftIdStake;
-        for(uint256 i = 0; i <= _nftIdStake.length; i++){
-             if(listOfUsers[_user].nftIdStake[i] == _id){                
-                _pos = i;
-             }
-        }
-        require (listOfUsers[_user].nftIdStake[_pos] == _id, "No es propietario de ese nft");
-        //CAMBIAR POR PENDING PATO ------
-        uint256 bloksOfReward = bloksNoPagos(listOfUsers[_user].lastRewardBlock);
-        //uint256 pending = bloksOfReward * listOfUsers[_user].power;
-        if(pending > 0){
-            //pagar lo adeudado
-             //payTo(_user, pending); FLATA IMPLEMENTAR
-        }
-        //CAMBIAR POR PENDING PATO ------
-        //retirar el nft
-        //calcular el new power
-        listOfUsers[_user].lastRewardBlock = block.number;
+        require(listOfUsers[_user].nftIdStake.length > 0, "no tiene nfts en stake");
+        // pagamos lo acumulado:
+         uint256 bloksOfReward = bloksNoPagos(listOfUsers[_user].lastRewardBlock);
+            uint256 pending = pendingPay(listOfUsers[_user].nftIdStake, bloksOfReward, listOfUsers[_user].lastRewardBlock);
+            if(pending > 0){
+                //pagar lo adeudado
+                //payTo(_user, pending); FLATA IMPLEMENTAR
+                listOfUsers[_user].rewardDebt +=pending;
+            }
+        // restamos energia al nft:
+        smiti.redEnergy(_id, calcEnergytored(_id));
+        // regresamos el nft
+        // actualizamos datos del usuario
+        // 
+        
         //emit withdraw
-*/
+
     }
 
     //retorna el vector de los ids que tiene EN stake el msg.sender
@@ -161,17 +158,25 @@ contract Staking is Ownable {
         return block.number - _lastBlock;
     }
 
-    //Debe ingresar 
-    // el id nft
-    // la cantidad de bloques sin pagar(blocksNoPagos),
-    // El ultimo claim del user. RETORNA los tokens que se deben pagar por ese nft.
+    function calcEnergytored(uint256 _id) internal pure returns(uint256){
+        if (blocEndRw[_id] > block.number){
+            return block.number - blockidDeposit[_id];
+        } else {
+            return 0;
+        }
+    }   
+
+    /* Debe ingresar: 
+     * El id nft
+     * La cantidad de bloques sin pagar(blocksNoPagos),
+     * El ultimo claim del user. RETORNA los tokens que se deben pagar por ese nft. */
     function rewardPerNFT(uint _id, uint _blocksToReward,uint _lastClaim) internal view returns(uint256){
         uint blockEndReward = blocEndRw[_id];
         uint blockPower = power[_id];
         if (blockEndReward >= block.number){
             return _blocksToReward * blockPower;
         }else if(blockEndReward > _lastClaim){
-            return (block.number - blockEndReward) * blockPower;
+            return (blockEndReward - _lastClaim) * blockPower;
         }else {
             return 0;
         }
