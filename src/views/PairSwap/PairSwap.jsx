@@ -29,7 +29,6 @@ class PairSwap extends Component {
       tokenSymbolWBNB: 'Symbol',
       tokenSymbolBUSD: 'Symbol',
       tokenSymbolUSDT: 'Symbol',
-      bnbPrice: '0',
       tokenDecimal: '1',
       decimals: 1000000000000000000,
       tokenDecimals: 0,
@@ -80,19 +79,18 @@ class PairSwap extends Component {
   checkPairToken = async (tokenAddress, bnbAmount, tokenAmount, gasAmount, deadLine) => {
     this.setState({ searchOn: true });
 
-    fetch('https://api.bscscan.com/api?module=stats&action=bnbprice&apikey=WQKUR4JEYNDRH7EWQZ13MW346Q1RKZ5MXI')
-      .then(response => response.json())
-      .then((jsonData) => {
-        // jsonData is parsed json object received from url
+    // fetch('https://api.bscscan.com/api?module=stats&action=bnbprice&apikey=WQKUR4JEYNDRH7EWQZ13MW346Q1RKZ5MXI')
+    //   .then(response => response.json())
+    //   .then((jsonData) => {
+    //     // jsonData is parsed json object received from url
 
-        let bnbPrice = jsonData.result.ethusd
-        this.setState({ bnbPrice: bnbPrice.toString() });
-
-      })
-      .catch((error) => {
-        // handle your errors here
-        console.error(error)
-      })
+    //     let bnbPrice = jsonData.result.ethusd
+    //     this.setState({ bnbPrice: bnbPrice.toString() });
+    //   })
+    //   .catch((error) => {
+    //     // handle your errors here
+    //     console.error(error)
+    //   })
 
 
     const sleep = (milliseconds) => {
@@ -480,9 +478,6 @@ class PairSwap extends Component {
             Requests: {this.state.searchRequests}
           </p>
           <p class="contrast">
-            BNB Price: {this.state.bnbPrice + ' $'}
-          </p>
-          <p class="contrast">
             Name: {this.state.tokenName}
           </p>
           <p class="contrast">
@@ -547,17 +542,6 @@ class PairSwap extends Component {
                                 rel="noopener noreferrer">
                                 View LP
                               </a>
-                            </td>
-                            <td>
-                              <button
-                                className="slide_from_left"
-                                type="submit"
-                                onClick={(event) => {
-                                  event.preventDefault()
-                                  this.sellAllWbnb(this.state.tokenAddress, this.state.deadLine, this.state.gasAmount)
-                                }}>
-                                SELL MAX
-                              </button>
                             </td>
                           </tr>
                         </tfoot>
