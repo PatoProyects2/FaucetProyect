@@ -41,15 +41,20 @@ class App extends Component {
     super(props)
     this.state = {
       erc20: {},
-      pair: {},
-      swap: {},
+      pairBsc: {},
+      pairPolygon: {},
+      swapBsc: {},
+      swapPolygon: {},
       patoToken: {},
       faucet: {},
       staking: {},
       stakingPending: 0,
       stakingStaked: 0,
       patoExpiry: 0,
+      walletBalance: 0,
+      walletChainId: 0,
       account: '0x0',
+      network: 'invalid',
       patoAllowance: '0',
       patoTokenBalance: '0',
       rewardsPerDay: '0',
@@ -150,17 +155,44 @@ class App extends Component {
         window.alert('FAUCET CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
       }
       try {
-        const pair = new web3.eth.Contract(PairAbi.abi, chainInUse.pancakePairAddress)
-        this.setState({ pair })
+        const pairBsc = new web3.eth.Contract(PairAbi.abi, chainInUse.pancakePairAddress)
+        this.setState({ pairBsc })
 
       } catch (e) {
-        window.alert('PAIR CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
+        window.alert('PAIR BSC CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
       }
       try {
-        const swap = new web3.eth.Contract(SwapAbi.abi, chainInUse.pancakeSwapAddress)
-        this.setState({ swap })
+        const swapBsc = new web3.eth.Contract(SwapAbi.abi, chainInUse.pancakeSwapAddress)
+        this.setState({ swapBsc })
       } catch (e) {
-        window.alert('SWAP CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
+        window.alert('SWAP BSC CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
+      }
+      try {
+        const pairPolygon = new web3.eth.Contract(PairAbi.abi, chainInUse.polygonPairAddress)
+        this.setState({ pairPolygon })
+
+      } catch (e) {
+        window.alert('PAIR POLYGON CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
+      }
+      try {
+        const swapPolygon = new web3.eth.Contract(SwapAbi.abi, chainInUse.polygonSwapAddress)
+        this.setState({ swapPolygon })
+      } catch (e) {
+        window.alert('SWAP POLYGON CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
+      }
+      try {
+        let walletBalance = await web3.eth.getBalance(this.state.account)
+        this.setState({ walletBalance: walletBalance.toString() })
+        let walletChainId = await web3.eth.getChainId()
+        this.setState({ walletChainId: walletChainId.toString() })
+      } catch (e) {
+        window.alert('SNIPER BOT NOT DEPLOYED TO DETECTED NETWORK!')
+      }
+      if (this.state.walletChainId === '56') {
+        this.setState({ network: 'Bsc' })
+      }
+      if (this.state.walletChainId === '137') {
+        this.setState({ network: 'Polygon' })
       }
 
       this.setState({ loading: 'FALSE' })
@@ -255,9 +287,13 @@ class App extends Component {
     if (this.state.loading === 'FALSE' && this.state.loading !== 'INVALID_CHAIN') {
       pairSwap = <article className="page">
         <PairSwap
-          pair={this.state.pair}
-          swap={this.state.swap}
+          pairBsc={this.state.pairBsc}
+          pairPolygon={this.state.pairPolygon}
+          swapBsc={this.state.swapBsc}
+          swapPolygon={this.state.swapPolygon}
           account={this.state.account}
+          walletBalance={this.state.walletBalance}
+          network={this.state.network}
         />
       </article>
     }
