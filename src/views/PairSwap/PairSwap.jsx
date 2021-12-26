@@ -276,9 +276,6 @@ class PairSwap extends Component {
       }
 
       this.setState({ searchRequests: this.state.searchRequests - 1 })
-
-      console.log(i);
-
       await sleep(1000);
     }
 
