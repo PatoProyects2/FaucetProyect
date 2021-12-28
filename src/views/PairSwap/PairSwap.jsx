@@ -17,23 +17,23 @@ class PairSwap extends Component {
       erc20matic: {},
       erc20busd: {},
       erc20usdt: {},
-      tokenAddress: '0x0',
-      tokenAddress1: '0x0',
-      checkPairWBNB: '0x0',
-      checkPairBUSD: '0x0',
-      checkPairUSDT: '0x0',
-      checkPairMATIC: '0x0',
+      tokenAddress: '',
+      tokenAddress1: '',
+      checkPairWBNB: '',
+      checkPairBUSD: '',
+      checkPairUSDT: '',
+      checkPairMATIC: '',
+      tokenName: '',
+      tokenName1: '',
+      tokenSymbol: '',
+      tokenSymbolWBNB: '',
+      tokenSymbolBUSD: '',
+      tokenSymbolUSDT: '',
+      tokenSymbolMATIC: '',
       addressWBNB: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
       addressBUSD: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
       addressUSDT: '0x55d398326f99059ff775485246999027b3197955',
       addressMATIC: '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
-      tokenName: 'Token To Buy',
-      tokenName1: 'USD Pair',
-      tokenSymbol: 'Symbol',
-      tokenSymbolWBNB: 'Symbol',
-      tokenSymbolBUSD: 'Symbol',
-      tokenSymbolUSDT: 'Symbol',
-      tokenSymbolMATIC: 'Symbol',
       tokenDecimal: '1',
       hour: 0,
       minute: 0,
@@ -60,6 +60,14 @@ class PairSwap extends Component {
       buyingOn: false,
       searchActive: true,
       mode: true,
+      hourVerify: undefined,
+      minuteVerify: undefined,
+      secondVerify: undefined,
+      tokenAddressVerify: undefined,
+      bnbAmountVerify: undefined,
+      tokenAmountVerify: undefined,
+      gasAmountVerify: undefined,
+      globalVerify: undefined,
     };
     this.tokenAddress = this.tokenAddress.bind(this);
     this.tokenAddress1 = this.tokenAddress1.bind(this);
@@ -100,7 +108,50 @@ class PairSwap extends Component {
   }
 
   startBot = async (hour, minute, second, tokenAddress, bnbAmount, tokenAmount, gasAmount) => {
-    this.setState({ searchOn: true });
+    
+    if (bnbAmount !== 0) {
+      this.setState({ bnbAmountVerify: true })
+    } else {
+      this.setState({ bnbAmountVerify: false })
+      return false
+    }
+    if (tokenAmount !== 0) {
+      this.setState({ tokenAmountVerify: true })
+    } else {
+      this.setState({ tokenAmountVerify: false })
+      return false
+    }
+    if (tokenAddress !== '') {
+      this.setState({ tokenAddressVerify: true })
+    } else {
+      this.setState({ tokenAddressVerify: false })
+      return false
+    }
+    if (gasAmount !== 0) {
+      this.setState({ gasAmountVerify: true })
+    } else {
+      this.setState({ gasAmountVerify: false })
+      return false
+    }
+    if (hour !== 0) {
+      this.setState({ hourVerify: true })
+    } else {
+      this.setState({ hourVerify: false })
+      return false
+    }
+    if (minute !== 0) {
+      this.setState({ minuteVerify: true })
+    } else {
+      this.setState({ minuteVerify: false })
+      return false
+    }
+    if (second !== 0) {
+      this.setState({ secondVerify: true })
+    } else {
+      this.setState({ secondVerify: false })
+      return false
+    }
+
 
     fetch('https://showcase.api.linx.twenty57.net/UnixTime/tounixtimestamp?datetime=' +
       `${this.props.utcYear}` + '/' + `${this.props.utcMonth}` + '/' + `${this.props.utcDay}` + '%20' + `${hour}` + ':' + `${minute}` + ':' + `${second}`)
@@ -118,6 +169,8 @@ class PairSwap extends Component {
     const web3 = window.web3
 
     if (this.props.network === 'Bsc') {
+      this.setState({ searchOn: true });
+
       while (this.state.searchRequests > 0) {
         let checkPairWBNB = await this.props.pairBsc.methods.getPair(tokenAddress.toString(), this.state.addressWBNB).call()
         this.setState({ checkPairWBNB: checkPairWBNB.toString() })
@@ -217,6 +270,8 @@ class PairSwap extends Component {
     }
 
     else {
+      this.setState({ searchOn: true });
+
       while (this.state.searchRequests > 0) {
         let checkPairMATIC = await this.props.pairPolygon.methods.getPair(tokenAddress.toString(), this.state.addressMATIC).call()
         this.setState({ checkPairMATIC: checkPairMATIC.toString() })
@@ -488,6 +543,15 @@ class PairSwap extends Component {
             }}>
             {this.state.mode === true ? 'MANUALLY' : 'AUTOMATIC'}
           </button>
+
+          <h4>{this.state.bnbAmountVerify === false ? 'Invalid BNB Amount' : ''}</h4>
+          <h4>{this.state.tokenAmountVerify === false ? 'Invalid USD Amount' : ''}</h4>
+          <h4>{this.state.tokenAddressVerify === false ? 'Invalid Token Address' : ''}</h4>
+          <h4>{this.state.gasAmountVerify === false ? 'Invalid Gas Amount' : ''}</h4>
+          <h4>{this.state.hourVerify === false ? 'Invalid Hour' : ''}</h4>
+          <h4>{this.state.minuteVerify === false ? 'Invalid Minute' : ''}</h4>
+          <h4>{this.state.secondVerify === false ? 'Invalid Second' : ''}</h4>
+
           {this.state.mode === true ?
             <div class="form-group">
               <input
@@ -510,18 +574,18 @@ class PairSwap extends Component {
                 />
                 <span>Pay</span>
               </div>
-              <div class="form-group">
-                <input
-                  class="form-field"
-                  placeholder="0.00"
-                  type="number"
-                  min="1"
-                  onChange={this.tokenAmount}
-                />
-                <span>USD Amount</span>
-              </div>
             </div>
           }
+          <div class="form-group">
+            <input
+              class="form-field"
+              placeholder="0.00"
+              type="number"
+              min="1"
+              onChange={this.tokenAmount}
+            />
+            <span>USD Amount</span>
+          </div>
           <div class="form-group">
             <input
               class="form-field"
@@ -797,7 +861,6 @@ class PairSwap extends Component {
           <div>
           </div>
         }
-        <span>{this.state.unixTime}</span>
         <Footer />
       </div >
 
