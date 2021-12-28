@@ -20,10 +20,7 @@ import './Game.css'
 
 const GameStyled = styled.div`
 margin: 0 auto;
-position: absolute;
-width: 1200px;
-height: 720px;
-border: 2px solid #ffffff;
+width: 1000px;
 left: 0;
 right: 0;
 `
@@ -38,6 +35,13 @@ const Tokens = styled.div`
 display: inline-block;
 padding: 15px;
 color: var(--color-text);
+`
+const GameButtons = styled.div`
+display: flex;
+flex-direction: column;
+float: left;
+position: sticky;
+margin: auto;
 `
 
 function Slide() {
@@ -69,6 +73,26 @@ function Game() {
                     &nbsp;20
                 </Tokens>
             </HeaderStyled>
+            <GameButtons>
+                <NavLink className="off" activeClassName="on" to={`${url}/castle`}>
+                    <button
+                        id="buttonCastle"
+                    >
+                    </button>
+                </NavLink>
+                <NavLink className="off" activeClassName="on" to={`${url}/shop`}>
+                    <button
+                        id="buttonShop"
+                    >
+                    </button>
+                </NavLink>
+                <NavLink className="off" activeClassName="on" to={`${url}/elements`}>
+                    <button
+                        id="buttonBag"
+                    >
+                    </button>
+                </NavLink>
+            </GameButtons>
             <Switch>
                 <Route exact path={path}>
                     <h1>Start playing</h1>
@@ -80,24 +104,6 @@ function Game() {
                 <Route path={`${path}/shop`} component={Shop} />
                 <Route path={`${path}/elements`} component={Elements} />
             </Switch>
-            <NavLink className="off" activeClassName="on" to={`${url}/castle`}>
-                <button
-                    id="buttonCastle"
-                >
-                </button>
-            </NavLink>
-            <NavLink className="off" activeClassName="on" to={`${url}/shop`}>
-                <button
-                    id="buttonShop"
-                >
-                </button>
-            </NavLink>
-            <NavLink className="off" activeClassName="on" to={`${url}/elements`}>
-                <button
-                    id="buttonBag"
-                >
-                </button>
-            </NavLink>
         </GameStyled>
     );
 };

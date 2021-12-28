@@ -24,6 +24,7 @@ function NavLinks({ open }) {
                 <NavLink className="inactive" activeClassName="active" to="/pool">Pool</NavLink>
                 <NavLink className="inactive" activeClassName="active" to="/game">Game</NavLink>
                 <NavLink className="inactive" activeClassName="active" to="/marketplace">Marketplace</NavLink>
+                <NavLink className="inactive" activeClassName="active" to="/bot">Bot</NavLink>
             </p>
         </NavLinkWrapper >
     );

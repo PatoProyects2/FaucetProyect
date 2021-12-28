@@ -431,12 +431,9 @@ class PairSwap extends Component {
 
     return (
       <div>
-        <h1>BOT</h1>
-        <div class="boxModalPairs">
-          <h5>MENU</h5>
-          <span>
-            Network: {this.props.network}
-          </span>
+        <h1>SniperBot</h1>
+        <h4>
+          Network: {this.props.network}
           <br></br>
           {this.props.network === 'Polygon' ?
             <button
@@ -457,7 +454,10 @@ class PairSwap extends Component {
               ADD POLYGON
             </button>
           }
-          <br></br>
+        </h4>
+
+        <div class="boxModalPairs">
+          <h5>MENU</h5>
           <button
             class="btn1"
             onClick={(event) => {
@@ -475,7 +475,7 @@ class PairSwap extends Component {
                 min="1"
                 onChange={this.bnbAmount}
               />
-              <span>{(this.props.walletBalance / this.state.decimals).toFixed(4)}</span>
+              <span>{(this.props.walletBalance / this.state.decimals).toFixed(4) + " "} {this.props.network === 'Polygon' ? ' MATIC' : ' BNB'}</span>
             </div>
             :
             <div>

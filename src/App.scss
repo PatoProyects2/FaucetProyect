@@ -14,14 +14,14 @@
     --color-background: #001935;
     --color-text: #ffffff;
     --color-link: #009625;
-    --color-contrast: #ffffff;
+    --color-contrast: #ececec;
 }
 
 .theme-light {
     --color-background: #ececec;
     --color-text: #000000;
     --color-link: #009625;
-    --color-contrast: #ffffff;
+    --color-contrast: #001935;
 }
 
 @media screen and (max-width:412px) {
@@ -503,17 +503,17 @@ code {
 }
 
 :root {
-    --input-color: #99A3BA;
+    --input-color: #575757;
     --input-border: #CDD9ED;
     --input-background: #fff;
     --input-placeholder: #CBD1DC;
-    --input-border-focus: #275EFE;
+    --input-border-focus: #ffbb00;
     --group-color: var(--input-color);
     --group-border: var(--input-border);
     --group-background: #EEF4FF;
     --group-color-focus: #fff;
     --group-border-focus: var(--input-border-focus);
-    --group-background-focus: #678EFE;
+    --group-background-focus: #ffbb00;
 }
 
 .form-field {
