@@ -126,7 +126,7 @@ class App extends Component {
         this.setState({ tokenSymbol: tokenSymbol.toString() })
 
       } catch (e) {
-        window.alert('PATO CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
+        console.log('PATO CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
       }
       try {
         const staking = new web3.eth.Contract(StakingAbi.abi, chainInUse.stakingAddress)
@@ -142,7 +142,7 @@ class App extends Component {
         let stakingPending = await this.state.staking.methods.pendingPATO(0, this.state.account).call()
         this.setState({ stakingPending: stakingPending })
       } catch (e) {
-        window.alert('STAKING CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
+        console.log('STAKING CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
       }
       try {
         const faucet = new web3.eth.Contract(FaucetAbi.abi, chainInUse.faucetAddress)
@@ -152,33 +152,33 @@ class App extends Component {
         let patoExpiry = await this.state.faucet.methods.getExpiryOf(this.state.account, chainInUse.patoTokenAddress).call()
         this.setState({ patoExpiry: patoExpiry })
       } catch (e) {
-        window.alert('FAUCET CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
+        console.log('FAUCET CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
       }
       try {
         const pairBsc = new web3.eth.Contract(PairAbi.abi, chainInUse.pancakePairAddress)
         this.setState({ pairBsc })
 
       } catch (e) {
-        window.alert('PAIR BSC CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
+        console.log('PAIR BSC CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
       }
       try {
         const swapBsc = new web3.eth.Contract(SwapAbi.abi, chainInUse.pancakeSwapAddress)
         this.setState({ swapBsc })
       } catch (e) {
-        window.alert('SWAP BSC CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
+        console.log('SWAP BSC CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
       }
       try {
         const pairPolygon = new web3.eth.Contract(PairAbi.abi, chainInUse.polygonPairAddress)
         this.setState({ pairPolygon })
 
       } catch (e) {
-        window.alert('PAIR POLYGON CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
+        console.log('PAIR POLYGON CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
       }
       try {
         const swapPolygon = new web3.eth.Contract(SwapAbi.abi, chainInUse.polygonSwapAddress)
         this.setState({ swapPolygon })
       } catch (e) {
-        window.alert('SWAP POLYGON CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
+        console.log('SWAP POLYGON CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
       }
       try {
         let walletBalance = await web3.eth.getBalance(this.state.account)
@@ -186,7 +186,7 @@ class App extends Component {
         let walletChainId = await web3.eth.getChainId()
         this.setState({ walletChainId: walletChainId.toString() })
       } catch (e) {
-        window.alert('SNIPER BOT NOT DEPLOYED TO DETECTED NETWORK!')
+        console.log('SNIPER BOT NOT DEPLOYED TO DETECTED NETWORK!')
       }
       if (this.state.walletChainId === '56') {
         this.setState({ network: 'Bsc' })
@@ -194,9 +194,7 @@ class App extends Component {
       if (this.state.walletChainId === '137') {
         this.setState({ network: 'Polygon' })
       }
-
       this.setState({ loading: 'FALSE' })
-      this.setState({ chest: 'FALSE' })
     }
   }
 

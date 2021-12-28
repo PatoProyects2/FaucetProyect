@@ -388,3 +388,202 @@ code {
 .close-modal {
     fill: var(--color-text);
 }
+
+.field__input {
+    --uiFieldPlaceholderColor: var(--fieldPlaceholderColor, #5a5a5a);
+    background-color: transparent;
+    border-radius: 0;
+    border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.field__input:focus::-webkit-input-placeholder {
+    color: var(--uiFieldPlaceholderColor);
+}
+
+.field__input:focus::-moz-placeholder {
+    color: var(--uiFieldPlaceholderColor);
+}
+
+.field {
+    width: 280px;
+    margin-top: 40px;
+    --uiFieldBorderWidth: var(--fieldBorderWidth, 2px);
+    --uiFieldPaddingRight: var(--fieldPaddingRight, 1rem);
+    --uiFieldPaddingLeft: var(--fieldPaddingLeft, 1rem);
+    --uiFieldBorderColorActive: var(--fieldBorderColorActive, #ffbb00);
+    display: var(--fieldDisplay, inline-flex);
+    position: relative;
+    font-size: var(--fieldFontSize, 1rem);
+}
+
+.field__input {
+    color: #ffffff;
+    box-sizing: border-box;
+    width: var(--fieldWidth, 100%);
+    height: var(--fieldHeight, 3rem);
+    padding: var(--fieldPaddingTop, 1.25rem) var(--uiFieldPaddingRight) var(--fieldPaddingBottom, .5rem) var(--uiFieldPaddingLeft);
+    border-bottom: var(--uiFieldBorderWidth) solid var(--fieldBorderColor, #c4c4c4);
+}
+
+.field__input:focus {
+    outline: none;
+}
+
+.field__input::-webkit-input-placeholder {
+    opacity: 0;
+    transition: opacity .2s ease-out;
+}
+
+.field__input::-moz-placeholder {
+    opacity: 0;
+    transition: opacity .2s ease-out;
+}
+
+.field__input:focus::-webkit-input-placeholder {
+    opacity: 1;
+    transition-delay: .2s;
+}
+
+.field__input:focus::-moz-placeholder {
+    opacity: 1;
+    transition-delay: .2s;
+}
+
+.field__label-wrap {
+    box-sizing: border-box;
+    pointer-events: none;
+    cursor: text;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.field__label-wrap::after {
+    content: "";
+    box-sizing: border-box;
+    width: 100%;
+    height: 0;
+    opacity: 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.field__input:focus~.field__label-wrap::after {
+    opacity: 1;
+}
+
+.field__label {
+    position: absolute;
+    left: var(--uiFieldPaddingLeft);
+    top: calc(50% - .5em);
+    color: #c4c4c4;
+    line-height: 1;
+    font-size: var(--fieldHintFontSize, inherit);
+    transition: top .2s cubic-bezier(0.9, -0.15, 0.1, 1.15), opacity .2s ease-out, font-size .2s ease-out;
+    will-change: bottom, opacity, font-size;
+}
+
+.field__input:focus~.field__label-wrap .field__label,
+.field__input:not(:placeholder-shown)~.field__label-wrap .field__label {
+    --fieldHintFontSize: var(--fieldHintFontSizeFocused, .75rem);
+    top: var(--fieldHintTopHover, .25rem);
+}
+
+.field_v1 .field__label-wrap::after {
+    border-bottom: var(--uiFieldBorderWidth) solid var(--uiFieldBorderColorActive);
+    transition: opacity .2s ease-out;
+    will-change: opacity;
+}
+
+:root {
+    --input-color: #99A3BA;
+    --input-border: #CDD9ED;
+    --input-background: #fff;
+    --input-placeholder: #CBD1DC;
+    --input-border-focus: #275EFE;
+    --group-color: var(--input-color);
+    --group-border: var(--input-border);
+    --group-background: #EEF4FF;
+    --group-color-focus: #fff;
+    --group-border-focus: var(--input-border-focus);
+    --group-background-focus: #678EFE;
+}
+
+.form-field {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    line-height: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    border-radius: 6px;
+    -webkit-appearance: none;
+    color: var(--input-color);
+    border: 1px solid var(--input-border);
+    background: var(--input-background);
+    transition: border .3s ease;
+    &::placeholder {
+        color: var(--input-placeholder);
+    }
+    &:focus {
+        outline: none;
+        border-color: var(--input-border-focus);
+    }
+}
+
+.form-group {
+    position: relative;
+    display: flex;
+    padding: 5px;
+    width: 100%;
+    &>span,
+    .form-field {
+        white-space: nowrap;
+        display: block;
+        &:not(:first-child):not(:last-child) {
+            border-radius: 0;
+        }
+        &:first-child {
+            border-radius: 6px 0 0 6px;
+        }
+        &:last-child {
+            border-radius: 0 6px 6px 0;
+        }
+        &:not(:first-child) {
+            margin-left: -1px;
+        }
+    }
+    .form-field {
+        position: relative;
+        z-index: 1;
+        flex: 1 1 auto;
+        width: 1%;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    &>span {
+        text-align: center;
+        padding: 8px 12px;
+        font-size: 14px;
+        line-height: 25px;
+        color: var(--group-color);
+        background: var(--group-background);
+        border: 1px solid var(--group-border);
+        transition: background .3s ease, border .3s ease, color .3s ease;
+    }
+    &:focus-within {
+        &>span {
+            color: var(--group-color-focus);
+            background: var(--group-background-focus);
+            border-color: var(--group-border-focus);
+        }
+    }
+}

@@ -56,6 +56,7 @@ class PairSwap extends Component {
       searchOn: false,
       buyingOn: false,
       searchActive: true,
+      mode: true,
     };
     this.tokenAddress = this.tokenAddress.bind(this);
     this.tokenAddress1 = this.tokenAddress1.bind(this);
@@ -84,38 +85,23 @@ class PairSwap extends Component {
     this.setState({ deadLine: event.target.value });
   }
 
-  checkPairToken = async (tokenAddress, bnbAmount, tokenAmount, gasAmount, deadLine) => {
+  startBot = async (tokenAddress, bnbAmount, tokenAmount, gasAmount, deadLine) => {
     this.setState({ searchOn: true });
-
-    // fetch('https://api.bscscan.com/api?module=stats&action=bnbprice&apikey=WQKUR4JEYNDRH7EWQZ13MW346Q1RKZ5MXI')
-    //   .then(response => response.json())
-    //   .then((jsonData) => {
-    //     // jsonData is parsed json object received from url
-
-    //     let bnbPrice = jsonData.result.ethusd
-    //     this.setState({ bnbPrice: bnbPrice.toString() });
-    //   })
-    //   .catch((error) => {
-    //     // handle your errors here
-    //     console.error(error)
-    //   })
-
 
     const sleep = (milliseconds) => {
       return new Promise(resolve => setTimeout(resolve, milliseconds))
     }
 
-    for (var i = 0; i < 1200; i++) {
-      const web3 = window.web3
+    const web3 = window.web3
 
-      if (this.props.network === 'Bsc') {
+    if (this.props.network === 'Bsc') {
+      while (this.state.searchRequests > 0) {
         let checkPairWBNB = await this.props.pairBsc.methods.getPair(tokenAddress.toString(), this.state.addressWBNB).call()
         this.setState({ checkPairWBNB: checkPairWBNB.toString() })
         let checkPairBUSD = await this.props.pairBsc.methods.getPair(tokenAddress.toString(), this.state.addressBUSD).call()
         this.setState({ checkPairBUSD: checkPairBUSD.toString() })
         let checkPairUSDT = await this.props.pairBsc.methods.getPair(tokenAddress.toString(), this.state.addressUSDT).call()
         this.setState({ checkPairUSDT: checkPairUSDT.toString() })
-
         const erc20token = new web3.eth.Contract(Erc20Abi.abi, tokenAddress.toString())
         this.setState({ erc20token })
         let tokenName = await this.state.erc20token.methods.name().call()
@@ -134,7 +120,6 @@ class PairSwap extends Component {
         this.setState({ checkValuePairTokenUSDT: checkValuePairTokenUSDT.toString() })
         let tokenAllowance = await this.state.erc20token.methods.allowance(this.props.account, tokenAddress.toString()).call()
         this.setState({ tokenAllowance: tokenAllowance.toString() })
-
         const erc20wbnb = new web3.eth.Contract(Erc20Abi.abi, this.state.addressWBNB.toString())
         this.setState({ erc20wbnb })
         if (this.state.checkPairWBNB === '0x0000000000000000000000000000000000000000') {
@@ -145,21 +130,18 @@ class PairSwap extends Component {
         }
         let tokenSymbolWBNB = await this.state.erc20wbnb.methods.symbol().call()
         this.setState({ tokenSymbolWBNB: tokenSymbolWBNB.toString() })
-
         const erc20busd = new web3.eth.Contract(Erc20Abi.abi, this.state.addressBUSD.toString())
         this.setState({ erc20busd })
         let checkValuePairBUSD = await this.state.erc20busd.methods.balanceOf(this.state.checkPairBUSD).call()
         this.setState({ checkValuePairBUSD: checkValuePairBUSD.toString() })
         let tokenSymbolBUSD = await this.state.erc20busd.methods.symbol().call()
         this.setState({ tokenSymbolBUSD: tokenSymbolBUSD.toString() })
-
         const erc20usdt = new web3.eth.Contract(Erc20Abi.abi, this.state.addressUSDT.toString())
         this.setState({ erc20usdt })
         let checkValuePairUSDT = await this.state.erc20usdt.methods.balanceOf(this.state.checkPairUSDT).call()
         this.setState({ checkValuePairUSDT: checkValuePairUSDT.toString() })
         let tokenSymbolUSDT = await this.state.erc20usdt.methods.symbol().call()
         this.setState({ tokenSymbolUSDT: tokenSymbolUSDT.toString() })
-
         if ((this.state.checkValuePairWBNB / this.state.decimals) !== 0) {
           this.props.swapBsc.methods
             .swapExactETHForTokens(0, [this.state.addressWBNB, `${tokenAddress.toString()}`], this.props.account, deadLine)
@@ -176,7 +158,6 @@ class PairSwap extends Component {
             });
           break;
         }
-
         if ((this.state.checkValuePairBUSD / this.state.decimals) !== 0) {
           this.props.swapBsc.methods
             .swapExactTokensForTokens(window.web3.utils.toWei(tokenAmount.toString(), 'Ether'), 0, [this.state.addressBUSD, `${tokenAddress.toString()}`], this.props.account, deadLine)
@@ -192,7 +173,6 @@ class PairSwap extends Component {
             });
           break;
         }
-
         if ((this.state.checkValuePairUSDT / this.state.decimals) !== 0) {
           this.props.swapBsc.methods
             .swapExactTokensForTokens(window.web3.utils.toWei(tokenAmount.toString(), 'Ether'), 0, [this.state.addressUSDT, `${tokenAddress.toString()}`], this.props.account, deadLine)
@@ -208,14 +188,17 @@ class PairSwap extends Component {
             });
           break;
         }
+        this.setState({ searchRequests: this.state.searchRequests - 1 })
+        await sleep(1000);
       }
+    }
 
-      if (this.props.network === 'Polygon') {
+    else {
+      while (this.state.searchRequests > 0) {
         let checkPairMATIC = await this.props.pairPolygon.methods.getPair(tokenAddress.toString(), this.state.addressMATIC).call()
         this.setState({ checkPairMATIC: checkPairMATIC.toString() })
         let checkPairUSDT = await this.props.pairPolygon.methods.getPair(tokenAddress.toString(), this.state.addressUSDT).call()
         this.setState({ checkPairUSDT: checkPairUSDT.toString() })
-
         const erc20matic = new web3.eth.Contract(Erc20Abi.abi, this.state.addressMATIC.toString())
         this.setState({ erc20matic })
         if (this.state.checkPairMATIC === '0x0000000000000000000000000000000000000000') {
@@ -226,7 +209,6 @@ class PairSwap extends Component {
         }
         let tokenSymbolWBNB = await this.state.erc20matic.methods.symbol().call()
         this.setState({ tokenSymbolWBNB: tokenSymbolWBNB.toString() })
-
         const erc20tokenMatic = new web3.eth.Contract(Erc20Abi.abi, tokenAddress.toString())
         this.setState({ erc20tokenMatic })
         let tokenName = await this.state.erc20tokenMatic.methods.name().call()
@@ -239,7 +221,6 @@ class PairSwap extends Component {
         this.setState({ tokenBalance: tokenBalance.toString() })
         let checkValuePairTokenWBNB = await this.state.erc20tokenMatic.methods.balanceOf(this.state.checkPairMATIC).call()
         this.setState({ checkValuePairTokenWBNB: checkValuePairTokenWBNB.toString() })
-
         if ((this.state.checkValuePairWBNB / this.state.decimals) !== 0) {
           this.props.swapPolygon.methods
             .swapExactETHForTokens(0, [this.state.addressMATIC, `${tokenAddress.toString()}`], this.props.account, deadLine)
@@ -256,7 +237,6 @@ class PairSwap extends Component {
             });
           break;
         }
-
         if ((this.state.checkValuePairUSDT / this.state.decimals) !== 0) {
           this.props.swapPolygon.methods
             .swapExactTokensForTokens(window.web3.utils.toWei(tokenAmount.toString(), 'Ether'), 0, [this.state.addressUSDT, `${tokenAddress.toString()}`], this.props.account, deadLine)
@@ -272,11 +252,9 @@ class PairSwap extends Component {
             });
           break;
         }
-
+        this.setState({ searchRequests: this.state.searchRequests - 1 })
+        await sleep(1000);
       }
-
-      this.setState({ searchRequests: this.state.searchRequests - 1 })
-      await sleep(1000);
     }
 
     for (var d = 0; d < this.state.tokenDecimals; d++) {
@@ -366,6 +344,16 @@ class PairSwap extends Component {
       });
   }
 
+  selectMode = async () => {
+    if (this.state.mode === true) {
+      this.setState({ mode: false });
+
+    } else {
+      this.setState({ mode: true });
+    }
+  }
+
+
   addBscNetwork = async () => {
     try {
       const provider = window.web3.currentProvider
@@ -445,7 +433,11 @@ class PairSwap extends Component {
       <div>
         <h1>BOT</h1>
         <div class="boxModalPairs">
-          <h5>CAKE-LP PAIR</h5>
+          <h5>MENU</h5>
+          <span>
+            Network: {this.props.network}
+          </span>
+          <br></br>
           {this.props.network === 'Polygon' ?
             <button
               class="btn1"
@@ -465,163 +457,134 @@ class PairSwap extends Component {
               ADD POLYGON
             </button>
           }
-
           <br></br>
-          <span>
-            Network: {this.props.network}
-          </span>
-          <div>
-            <label class="field field_v1">
+          <button
+            class="btn1"
+            onClick={(event) => {
+              event.preventDefault()
+              this.selectMode()
+            }}>
+            {this.state.mode === true ? 'MANUALLY' : 'AUTOMATIC'}
+          </button>
+          {this.state.mode === true ?
+            <div class="form-group">
               <input
-                class="field__input"
-                placeholder="0x00000000..."
-                type="text"
-                onChange={this.tokenAddress}
-              />
-              <span class="field__label-wrap">
-                <span class="field__label">{this.state.tokenName}</span>
-              </span>
-            </label>
-            <span>
-              &nbsp; Balance: {(this.state.tokenBalance / this.state.tokenDecimal).toFixed(4)}
-            </span>
-          </div>
-          <div>
-            <label class="field field_v1">
-              <input
-                class="field__input"
+                class="form-field"
                 placeholder="0.00"
                 type="number"
                 min="1"
                 onChange={this.bnbAmount}
               />
-              <span class="field__label-wrap">
-                <span class="field__label">Amount To Pay</span>
-              </span>
-            </label>
-            <span>
-              &nbsp; Balance: {(this.props.walletBalance / this.state.decimals).toFixed(4)}
-            </span>
+              <span>{(this.props.walletBalance / this.state.decimals).toFixed(4)}</span>
+            </div>
+            :
+            <div>
+              <div class="form-group">
+                <input
+                  class="form-field"
+                  placeholder="0x00000000..."
+                  type="text"
+                  onChange={this.tokenAddress1}
+                />
+                <span>To Pay</span>
+              </div>
+              <div class="form-group">
+                <input
+                  class="form-field"
+                  placeholder="0.00"
+                  type="number"
+                  min="1"
+                  onChange={this.tokenAmount}
+                />
+                <span>USD Amount</span>
+              </div>
+            </div>
+          }
+          <div class="form-group">
+            <input
+              class="form-field"
+              placeholder="0x00000000..."
+              type="text"
+              onChange={this.tokenAddress}
+            />
+            <span>To Buy</span>
           </div>
-          <div>
-            <label class="field field_v1">
-              <input
-                class="field__input"
-                placeholder="10"
-                type="number"
-                min="1"
-                onChange={this.gasAmount}
-              />
-              <span class="field__label-wrap">
-                <span class="field__label">Gas Price</span>
-              </span>
-            </label>
+          <div class="form-group">
+            <input
+              class="form-field"
+              placeholder="10"
+              type="number"
+              min="1"
+              onChange={this.gasAmount}
+            />
+            <span>Gas Price</span>
           </div>
-          <div>
-            <label class="field field_v1">
-              <input
-                class="field__input"
-                placeholder="1640906725"
-                type="number"
-                min="1"
-                onChange={this.deadLine}
-              />
-              <span class="field__label-wrap">
-                <span class="field__label">Dead Line</span>
-              </span>
-            </label>
-          </div>
-          <div class="btn2">
-            <table>
-              <tfoot id="farmButton">
-                <tr>
-                  <td>
-                    {this.state.searchOn === true
-                      ?
-                      (
-                        <button
-                          className="slide_from_left"
-                          type="submit"
-                          onClick={(event) => {
-                            event.preventDefault();
-                            this.stopCheckPairToken();
-                          }}>
-                          STOP
-                        </button>
-
-                      )
-                      :
-                      (
-                        <button
-                          className="slide_from_left"
-                          type="submit"
-                          onClick={(event) => {
-                            event.preventDefault();
-                            this.checkPairToken(this.state.tokenAddress, this.state.bnbAmount, this.state.tokenAmount, this.state.gasAmount, this.state.deadLine,);
-                          }}>
-                          START
-                        </button>
-                      )
-                    }
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-          <div>
-            <label class="field field_v1">
-              <input
-                class="field__input"
-                placeholder="0x00000000..."
-                type="text"
-                onChange={this.tokenAddress1}
-              />
-              <span class="field__label-wrap">
-                <span class="field__label">{this.state.tokenName1}</span>
-              </span>
-            </label>
-          </div>
-          <div>
-            <label class="field field_v1">
-              <input
-                class="field__input"
-                placeholder="0.00"
-                type="number"
-                min="1"
-                onChange={this.tokenAmount}
-              />
-              <span class="field__label-wrap">
-                <span class="field__label">USD Amount</span>
-              </span>
-            </label>
+          <div class="form-group">
+            <input
+              class="form-field"
+              placeholder="1640906725"
+              type="number"
+              min="1"
+              onChange={this.deadLine}
+            />
+            <span>Dead Line</span>
           </div>
           <div class="btn2">
             <table>
               <tfoot id="farmButton">
                 <tr>
                   <td>
-                    {this.props.network === 'Bsc' ?
-                      <button
-                        disabled={this.state.buyingOn === true}
-                        className="slide_from_left"
-                        type="submit"
-                        onClick={(event) => {
-                          event.preventDefault()
-                          this.manuallyBsc(this.state.tokenAmount, this.state.tokenAddress, this.state.tokenAddress1, this.state.deadLine, this.state.gasAmount)
-                        }}>
-                        {this.state.buyingOn === true ? "WAIT" : "MANUALLY"}
-                      </button>
+                    {this.state.mode === true ?
+                      <div>
+                        {this.state.searchOn === true
+                          ?
+                          <button
+                            className="slide_from_left"
+                            type="submit"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              this.stopCheckPairToken();
+                            }}>
+                            STOP
+                          </button>
+                          :
+                          <button
+                            className="slide_from_left"
+                            type="submit"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              this.startBot(this.state.tokenAddress, this.state.bnbAmount, this.state.tokenAmount, this.state.gasAmount, this.state.deadLine,);
+                            }}>
+                            START
+                          </button>
+                        }
+                      </div>
                       :
-                      <button
-                        disabled={this.state.buyingOn === true}
-                        className="slide_from_left"
-                        type="submit"
-                        onClick={(event) => {
-                          event.preventDefault()
-                          this.manuallyPolygon(this.state.tokenAmount, this.state.tokenAddress, this.state.tokenAddress1, this.state.deadLine, this.state.gasAmount)
-                        }}>
-                        {this.state.buyingOn === true ? "WAIT" : "MANUALLY"}
-                      </button>
+                      <div>
+                        {this.props.network === 'Bsc' ?
+                          <button
+                            disabled={this.state.buyingOn === true}
+                            className="slide_from_left"
+                            type="submit"
+                            onClick={(event) => {
+                              event.preventDefault()
+                              this.manuallyBsc(this.state.tokenAmount, this.state.tokenAddress, this.state.tokenAddress1, this.state.deadLine, this.state.gasAmount)
+                            }}>
+                            {this.state.buyingOn === true ? "WAIT" : "BUY"}
+                          </button>
+                          :
+                          <button
+                            disabled={this.state.buyingOn === true}
+                            className="slide_from_left"
+                            type="submit"
+                            onClick={(event) => {
+                              event.preventDefault()
+                              this.manuallyPolygon(this.state.tokenAmount, this.state.tokenAddress, this.state.tokenAddress1, this.state.deadLine, this.state.gasAmount)
+                            }}>
+                            {this.state.buyingOn === true ? "WAIT" : "BUY"}
+                          </button>
+                        }
+                      </div>
                     }
                   </td>
                 </tr>
@@ -629,173 +592,170 @@ class PairSwap extends Component {
             </table>
           </div>
         </div>
-        <div class="boxModalPairs">
-          <br></br>
-          <p class="contrast">
-            Requests: {this.state.searchRequests}
-          </p>
-          <p class="contrast">
-            Name: {this.state.tokenName}
-          </p>
-          <p class="contrast">
-            Decimals: {this.state.tokenDecimals}
-          </p>
-          <br></br>
-          <div class="btn2">
+        {this.state.searchOn === true ?
+          <div class="boxModalPairs">
+            <h5>STATS</h5>
+            <br></br>
+            <p class="contrast">
+              Name: {this.state.tokenName}
+            </p>
+            <p class="contrast">
+              Decimals: {this.state.tokenDecimals}
+            </p>
+            <p class="contrast">
+              Requests: {this.state.searchRequests}
+            </p>
             <table>
-              <tfoot id="farmButton">
+              <tfoot>
                 <tr>
                   <td>
-                    <button
-                      disabled={this.state.tokenAllowance > 0}
-                      className="slide_from_left"
-                      type="submit"
-                      onClick={(event) => {
-                        event.preventDefault()
-                        this.approveToken(this.state.tokenAddress)
-                      }}>
-                      {this.state.tokenAllowance > 0 ? "APPROVED" : "APPROVE"}
-                    </button>
+                    {this.state.checkPairWBNB !== '0x0000000000000000000000000000000000000000' ?
+                      (
+                        <table>
+                          <tfoot id="farmButton">
+                            <tr>
+                              <td>
+                                <span class="green">
+                                  Found! &nbsp;
+                                </span>
+                              </td>
+                              <td>
+                                {(this.state.checkValuePairTokenWBNB / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairWBNB / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolWBNB}
+                              </td>
+                            </tr>
+                          </tfoot>
+                        </table>
+                      )
+                      :
+                      (
+                        <table>
+                          <tfoot id="farmButton">
+                            <tr>
+                              <td>
+                                <span class="red">
+                                  Not Found! &nbsp;
+                                </span>
+                              </td>
+                              <td>
+                                {(this.state.checkValuePairTokenWBNB / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairWBNB / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolWBNB}
+                              </td>
+                            </tr>
+                          </tfoot>
+                        </table>
+                      )
+                    }
                   </td>
+                </tr>
+                <tr>
                   <td>
-                    <button
-                      className="slide_from_left"
-                      type="submit"
-                      onClick={(event) => {
-                        event.preventDefault()
-                        this.addToken(this.state.tokenAddress)
-                      }}>
-                      ADD TOKEN
-                    </button>
+                    {this.state.checkPairBUSD !== '0x0000000000000000000000000000000000000000' ?
+                      (
+                        <table>
+                          <tfoot id="farmButton">
+                            <tr>
+                              <td>
+                                <span class="green">
+                                  Found! &nbsp;
+                                </span>
+                              </td>
+                              <td>
+                                {(this.state.checkValuePairTokenBUSD / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairBUSD / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolBUSD}
+                              </td>
+                            </tr>
+                          </tfoot>
+                        </table>
+                      )
+                      :
+                      (
+                        <table>
+                          <tfoot id="farmButton">
+                            <tr>
+                              <td>
+                                <span class="red">
+                                  Not Found! &nbsp;
+                                </span>
+                              </td>
+                              <td>
+                                {(this.state.checkValuePairTokenBUSD / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairBUSD / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolBUSD}
+                              </td>
+                            </tr>
+                          </tfoot>
+                        </table>
+                      )
+                    }
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    {this.state.checkPairUSDT !== '0x0000000000000000000000000000000000000000' ?
+                      (
+                        <table>
+                          <tfoot id="farmButton">
+                            <tr>
+                              <td>
+                                <span class="green">
+                                  Found! &nbsp;
+                                </span>
+                              </td>
+                              <td>
+                                {(this.state.checkValuePairTokenUSDT / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairUSDT / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolUSDT}
+                              </td>
+                            </tr>
+                          </tfoot>
+                        </table>
+                      )
+                      :
+                      (
+                        <table>
+                          <tfoot id="farmButton">
+                            <tr>
+                              <td>
+                                <span class="red">
+                                  Not Found! &nbsp;
+                                </span>
+                              </td>
+                              <td>
+                                {(this.state.checkValuePairTokenUSDT / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairUSDT / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolUSDT} &nbsp;
+                              </td>
+                            </tr>
+                          </tfoot>
+                        </table>
+                      )
+                    }
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="btn2">
+                      <button
+                        disabled={this.state.tokenAllowance > 0}
+                        className="slide_from_left"
+                        type="submit"
+                        onClick={(event) => {
+                          event.preventDefault()
+                          this.approveToken(this.state.tokenAddress)
+                        }}>
+                        {this.state.tokenAllowance > 0 ? "APPROVED" : "APPROVE"}
+                      </button>
+                      <button
+                        className="slide_from_left"
+                        type="submit"
+                        onClick={(event) => {
+                          event.preventDefault()
+                          this.addToken(this.state.tokenAddress)
+                        }}>
+                        ADD TOKEN
+                      </button>
+                    </div>
                   </td>
                 </tr>
               </tfoot>
             </table>
           </div>
-          <br></br>
-          <br></br>
-          <table>
-            <tfoot>
-              <tr>
-                <td>
-                  {this.state.checkPairWBNB !== '0x0000000000000000000000000000000000000000' ?
-                    (
-                      <table>
-                        <tfoot id="farmButton">
-                          <tr>
-                            <td>
-                              <span class="green">
-                                Found! &nbsp;
-                              </span>
-                            </td>
-                            <td>
-                              {(this.state.checkValuePairTokenWBNB / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairWBNB / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolWBNB}
-                            </td>
-                          </tr>
-                        </tfoot>
-                      </table>
-                    )
-                    :
-                    (
-                      <table>
-                        <tfoot id="farmButton">
-                          <tr>
-                            <td>
-                              <span class="red">
-                                Not Found! &nbsp;
-                              </span>
-                            </td>
-                            <td>
-                              {(this.state.checkValuePairTokenWBNB / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairWBNB / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolWBNB}
-                            </td>
-                          </tr>
-                        </tfoot>
-                      </table>
-                    )
-                  }
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  {this.state.checkPairBUSD !== '0x0000000000000000000000000000000000000000' ?
-                    (
-                      <table>
-                        <tfoot id="farmButton">
-                          <tr>
-                            <td>
-                              <span class="green">
-                                Found! &nbsp;
-                              </span>
-                            </td>
-                            <td>
-                              {(this.state.checkValuePairTokenBUSD / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairBUSD / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolBUSD}
-                            </td>
-                          </tr>
-                        </tfoot>
-                      </table>
-                    )
-                    :
-                    (
-                      <table>
-                        <tfoot id="farmButton">
-                          <tr>
-                            <td>
-                              <span class="red">
-                                Not Found! &nbsp;
-                              </span>
-                            </td>
-                            <td>
-                              {(this.state.checkValuePairTokenBUSD / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairBUSD / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolBUSD}
-                            </td>
-                          </tr>
-                        </tfoot>
-                      </table>
-                    )
-                  }
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  {this.state.checkPairUSDT !== '0x0000000000000000000000000000000000000000' ?
-                    (
-                      <table>
-                        <tfoot id="farmButton">
-                          <tr>
-                            <td>
-                              <span class="green">
-                                Found! &nbsp;
-                              </span>
-                            </td>
-                            <td>
-                              {(this.state.checkValuePairTokenUSDT / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairUSDT / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolUSDT}
-                            </td>
-                          </tr>
-                        </tfoot>
-                      </table>
-                    )
-                    :
-                    (
-                      <table>
-                        <tfoot id="farmButton">
-                          <tr>
-                            <td>
-                              <span class="red">
-                                Not Found! &nbsp;
-                              </span>
-                            </td>
-                            <td>
-                              {(this.state.checkValuePairTokenUSDT / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairUSDT / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolUSDT} &nbsp;
-                            </td>
-                          </tr>
-                        </tfoot>
-                      </table>
-                    )
-                  }
-                </td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
+          :
+          <div>
+          </div>
+        }
         <Footer />
       </div >
 
