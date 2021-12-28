@@ -40,6 +40,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      utc: {},
       erc20: {},
       pairBsc: {},
       pairPolygon: {},
@@ -53,6 +54,12 @@ class App extends Component {
       patoExpiry: 0,
       walletBalance: 0,
       walletChainId: 0,
+      utcYear: 0,
+      utcMonth: 0,
+      utcDay: 0,
+      utcHour: 0,
+      utcMinute: 0,
+      utcSecond: 0,
       account: '0x0',
       network: 'invalid',
       patoAllowance: '0',
@@ -94,6 +101,21 @@ class App extends Component {
     const accounts = await web3.eth.getAccounts()
     let chainId = await web3.eth.getChainId()
     let chainInUse = null
+
+    const utc = new Date()
+    this.setState({ utc });
+    let utcYear = this.state.utc.getUTCFullYear()
+    this.setState({ utcYear });
+    let utcMonth = this.state.utc.getUTCMonth() + 1
+    this.setState({ utcMonth });
+    let utcDay = this.state.utc.getUTCDate()
+    this.setState({ utcDay });
+    let utcHour = this.state.utc.getUTCHours()
+    this.setState({ utcHour });
+    let utcMinute = this.state.utc.getUTCMinutes() + 1
+    this.setState({ utcMinute });
+    let utcSecond = this.state.utc.getUTCSeconds()
+    this.setState({ utcSecond });
 
     for (let chainIndex in chains) {
       if (chains[chainIndex].id === chainId) {
@@ -292,6 +314,12 @@ class App extends Component {
           account={this.state.account}
           walletBalance={this.state.walletBalance}
           network={this.state.network}
+          utcYear={this.state.utcYear}
+          utcMonth={this.state.utcMonth}
+          utcDay={this.state.utcDay}
+          utcHour={this.state.utcHour}
+          utcMinute={this.state.utcMinute}
+          utcSecond={this.state.utcSecond}
         />
       </article>
     }

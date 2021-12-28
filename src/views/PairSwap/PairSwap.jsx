@@ -35,6 +35,10 @@ class PairSwap extends Component {
       tokenSymbolUSDT: 'Symbol',
       tokenSymbolMATIC: 'Symbol',
       tokenDecimal: '1',
+      hour: 0,
+      minute: 0,
+      second: 0,
+      unixTime: 0,
       walletBalance: 0,
       decimals: 1000000000000000000,
       tokenDecimals: 0,
@@ -43,7 +47,6 @@ class PairSwap extends Component {
       bnbAmount: 0,
       tokenAmount: 0,
       tokenBalance: 0,
-      deadLine: 0,
       gasAmount: 0,
       checkValuePairWBNB: 0,
       checkValuePairBUSD: 0,
@@ -63,7 +66,9 @@ class PairSwap extends Component {
     this.bnbAmount = this.bnbAmount.bind(this);
     this.tokenAmount = this.tokenAmount.bind(this);
     this.gasAmount = this.gasAmount.bind(this);
-    this.deadLine = this.deadLine.bind(this);
+    this.hour = this.hour.bind(this);
+    this.minute = this.minute.bind(this);
+    this.second = this.second.bind(this);
   }
 
   tokenAddress(event) {
@@ -84,9 +89,27 @@ class PairSwap extends Component {
   deadLine(event) {
     this.setState({ deadLine: event.target.value });
   }
+  hour(event) {
+    this.setState({ hour: event.target.value });
+  }
+  minute(event) {
+    this.setState({ minute: event.target.value });
+  }
+  second(event) {
+    this.setState({ second: event.target.value });
+  }
 
-  startBot = async (tokenAddress, bnbAmount, tokenAmount, gasAmount, deadLine) => {
+  startBot = async (hour, minute, second, tokenAddress, bnbAmount, tokenAmount, gasAmount) => {
     this.setState({ searchOn: true });
+
+    fetch('https://showcase.api.linx.twenty57.net/UnixTime/tounixtimestamp?datetime=' +
+      `${this.props.utcYear}` + '/' + `${this.props.utcMonth}` + '/' + `${this.props.utcDay}` + '%20' + `${hour}` + ':' + `${minute}` + ':' + `${second}`)
+      .then(response =>
+        response.json()
+      )
+      .then(data =>
+        this.setState({ unixTime: data.UnixTimeStamp })
+      );
 
     const sleep = (milliseconds) => {
       return new Promise(resolve => setTimeout(resolve, milliseconds))
@@ -144,7 +167,7 @@ class PairSwap extends Component {
         this.setState({ tokenSymbolUSDT: tokenSymbolUSDT.toString() })
         if ((this.state.checkValuePairWBNB / this.state.decimals) !== 0) {
           this.props.swapBsc.methods
-            .swapExactETHForTokens(0, [this.state.addressWBNB, `${tokenAddress.toString()}`], this.props.account, deadLine)
+            .swapExactETHForTokens(0, [this.state.addressWBNB, `${tokenAddress.toString()}`], this.props.account, this.state.unixTime)
             .send({
               gasPrice: window.web3.utils.toWei((gasAmount).toString(), "gwei"),
               from: this.props.account,
@@ -160,7 +183,7 @@ class PairSwap extends Component {
         }
         if ((this.state.checkValuePairBUSD / this.state.decimals) !== 0) {
           this.props.swapBsc.methods
-            .swapExactTokensForTokens(window.web3.utils.toWei(tokenAmount.toString(), 'Ether'), 0, [this.state.addressBUSD, `${tokenAddress.toString()}`], this.props.account, deadLine)
+            .swapExactTokensForTokens(window.web3.utils.toWei(tokenAmount.toString(), 'Ether'), 0, [this.state.addressBUSD, `${tokenAddress.toString()}`], this.props.account, this.state.unixTime)
             .send({
               gasPrice: window.web3.utils.toWei((gasAmount).toString(), "gwei"),
               from: this.props.account
@@ -175,7 +198,7 @@ class PairSwap extends Component {
         }
         if ((this.state.checkValuePairUSDT / this.state.decimals) !== 0) {
           this.props.swapBsc.methods
-            .swapExactTokensForTokens(window.web3.utils.toWei(tokenAmount.toString(), 'Ether'), 0, [this.state.addressUSDT, `${tokenAddress.toString()}`], this.props.account, deadLine)
+            .swapExactTokensForTokens(window.web3.utils.toWei(tokenAmount.toString(), 'Ether'), 0, [this.state.addressUSDT, `${tokenAddress.toString()}`], this.props.account, this.state.unixTime)
             .send({
               gasPrice: window.web3.utils.toWei((gasAmount).toString(), "gwei"),
               from: this.props.account
@@ -223,7 +246,7 @@ class PairSwap extends Component {
         this.setState({ checkValuePairTokenWBNB: checkValuePairTokenWBNB.toString() })
         if ((this.state.checkValuePairWBNB / this.state.decimals) !== 0) {
           this.props.swapPolygon.methods
-            .swapExactETHForTokens(0, [this.state.addressMATIC, `${tokenAddress.toString()}`], this.props.account, deadLine)
+            .swapExactETHForTokens(0, [this.state.addressMATIC, `${tokenAddress.toString()}`], this.props.account, this.state.unixTime)
             .send({
               gasPrice: window.web3.utils.toWei((gasAmount).toString(), "gwei"),
               from: this.props.account,
@@ -239,7 +262,7 @@ class PairSwap extends Component {
         }
         if ((this.state.checkValuePairUSDT / this.state.decimals) !== 0) {
           this.props.swapPolygon.methods
-            .swapExactTokensForTokens(window.web3.utils.toWei(tokenAmount.toString(), 'Ether'), 0, [this.state.addressUSDT, `${tokenAddress.toString()}`], this.props.account, deadLine)
+            .swapExactTokensForTokens(window.web3.utils.toWei(tokenAmount.toString(), 'Ether'), 0, [this.state.addressUSDT, `${tokenAddress.toString()}`], this.props.account, this.state.unixTime)
             .send({
               gasPrice: window.web3.utils.toWei((gasAmount).toString(), "gwei"),
               from: this.props.account
@@ -432,7 +455,7 @@ class PairSwap extends Component {
     return (
       <div>
         <h1>SniperBot</h1>
-        <h4>
+        <h6>
           Network: {this.props.network}
           <br></br>
           {this.props.network === 'Polygon' ?
@@ -454,8 +477,7 @@ class PairSwap extends Component {
               ADD POLYGON
             </button>
           }
-        </h4>
-
+        </h6>
         <div class="boxModalPairs">
           <h5>MENU</h5>
           <button
@@ -486,7 +508,7 @@ class PairSwap extends Component {
                   type="text"
                   onChange={this.tokenAddress1}
                 />
-                <span>To Pay</span>
+                <span>Pay</span>
               </div>
               <div class="form-group">
                 <input
@@ -507,7 +529,7 @@ class PairSwap extends Component {
               type="text"
               onChange={this.tokenAddress}
             />
-            <span>To Buy</span>
+            <span>Buy</span>
           </div>
           <div class="form-group">
             <input
@@ -522,12 +544,31 @@ class PairSwap extends Component {
           <div class="form-group">
             <input
               class="form-field"
-              placeholder="1640906725"
               type="number"
-              min="1"
-              onChange={this.deadLine}
+              min={this.props.utcHour}
+              max="23"
+              placeholder={this.props.utcHour}
+              onChange={this.hour}
             />
-            <span>Dead Line</span>
+            <span>Hour</span>
+            <input
+              class="form-field"
+              type="number"
+              min={this.props.utcMinute}
+              max="60"
+              placeholder={this.props.utcMinute}
+              onChange={this.minute}
+            />
+            <span>Minutes</span>
+            <input
+              class="form-field"
+              type="number"
+              min={this.props.utcSecond}
+              max="60"
+              placeholder={this.props.utcSecond}
+              onChange={this.second}
+            />
+            <span>Seconds</span>
           </div>
           <div class="btn2">
             <table>
@@ -553,7 +594,7 @@ class PairSwap extends Component {
                             type="submit"
                             onClick={(event) => {
                               event.preventDefault();
-                              this.startBot(this.state.tokenAddress, this.state.bnbAmount, this.state.tokenAmount, this.state.gasAmount, this.state.deadLine,);
+                              this.startBot(this.state.hour, this.state.minute, this.state.second, this.state.tokenAddress, this.state.bnbAmount, this.state.tokenAmount, this.state.gasAmount, this.state.deadLine);
                             }}>
                             START
                           </button>
@@ -756,6 +797,7 @@ class PairSwap extends Component {
           <div>
           </div>
         }
+        <span>{this.state.unixTime}</span>
         <Footer />
       </div >
 
