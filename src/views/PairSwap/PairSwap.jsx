@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { BigNumber } from 'bignumber.js'
 
 import Erc20Abi from '../../abis/ERC20.json'
+import UsdcProxyAbi from '../../abis/Usdc/UChildAdministrableERC20.json'
 
 import Footer from '../../components/Footer/Footer'
 
@@ -14,15 +15,18 @@ class PairSwap extends Component {
       erc20token: {},
       erc20eth: {},
       erc20wbnb: {},
-      erc20matic: {},
       erc20busd: {},
       erc20usdt: {},
+      erc20matic: {},
+      erc20usdtp: {},
+      erc20usdc: {},
       tokenAddress: '',
       tokenAddress1: '',
       checkPairWBNB: '',
       checkPairBUSD: '',
       checkPairUSDT: '',
       checkPairMATIC: '',
+      checkPairUSDC: '',
       tokenName: '',
       tokenName1: '',
       tokenSymbol: '',
@@ -30,10 +34,14 @@ class PairSwap extends Component {
       tokenSymbolBUSD: '',
       tokenSymbolUSDT: '',
       tokenSymbolMATIC: '',
+      tokenSymbolUSDC: '',
       addressWBNB: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
       addressBUSD: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
       addressUSDT: '0x55d398326f99059ff775485246999027b3197955',
       addressMATIC: '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
+      addressUSDTP: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
+      addressProxyUSDC: '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
+      addressUSDC: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
       tokenDecimal: '1',
       hour: 0,
       minute: 0,
@@ -41,6 +49,7 @@ class PairSwap extends Component {
       unixTime: 0,
       walletBalance: 0,
       decimals: 1000000000000000000,
+      decimalUSDC: 1000000,
       tokenDecimals: 0,
       tokenAllowance: 0,
       searchRequests: 1200,
@@ -52,10 +61,12 @@ class PairSwap extends Component {
       checkValuePairBUSD: 0,
       checkValuePairUSDT: 0,
       checkValuePairMATIC: 0,
+      checkValuePairUSDC: 0,
       checkValuePairTokenWBNB: 0,
       checkValuePairTokenBUSD: 0,
       checkValuePairTokenUSDT: 0,
       checkValuePairTokenMATIC: 0,
+      checkValuePairTokenUSDC: 0,
       searchOn: false,
       buyingOn: false,
       searchActive: true,
@@ -108,7 +119,7 @@ class PairSwap extends Component {
   }
 
   startBot = async (hour, minute, second, tokenAddress, bnbAmount, tokenAmount, gasAmount) => {
-    
+
     if (bnbAmount !== 0) {
       this.setState({ bnbAmountVerify: true })
     } else {
@@ -167,6 +178,22 @@ class PairSwap extends Component {
     }
 
     const web3 = window.web3
+    const erc20token = new web3.eth.Contract(Erc20Abi.abi, tokenAddress.toString())
+    this.setState({ erc20token })
+    const erc20wbnb = new web3.eth.Contract(Erc20Abi.abi, this.state.addressWBNB.toString())
+    this.setState({ erc20wbnb })
+    const erc20busd = new web3.eth.Contract(Erc20Abi.abi, this.state.addressBUSD.toString())
+    this.setState({ erc20busd })
+    const erc20usdt = new web3.eth.Contract(Erc20Abi.abi, this.state.addressUSDT.toString())
+    this.setState({ erc20usdt })
+
+    const erc20matic = new web3.eth.Contract(Erc20Abi.abi, this.state.addressMATIC.toString())
+    this.setState({ erc20matic })
+    const erc20usdtp = new web3.eth.Contract(Erc20Abi.abi, this.state.addressUSDTP.toString())
+    this.setState({ erc20usdtp })
+    const erc20usdc = new web3.eth.Contract(UsdcProxyAbi.abi, this.state.addressUSDC.toString())
+    this.setState({ erc20usdc })
+
 
     if (this.props.network === 'Bsc') {
       this.setState({ searchOn: true });
@@ -178,8 +205,6 @@ class PairSwap extends Component {
         this.setState({ checkPairBUSD: checkPairBUSD.toString() })
         let checkPairUSDT = await this.props.pairBsc.methods.getPair(tokenAddress.toString(), this.state.addressUSDT).call()
         this.setState({ checkPairUSDT: checkPairUSDT.toString() })
-        const erc20token = new web3.eth.Contract(Erc20Abi.abi, tokenAddress.toString())
-        this.setState({ erc20token })
         let tokenName = await this.state.erc20token.methods.name().call()
         this.setState({ tokenName: tokenName.toString() })
         let tokenDecimals = await this.state.erc20token.methods.decimals().call()
@@ -196,8 +221,6 @@ class PairSwap extends Component {
         this.setState({ checkValuePairTokenUSDT: checkValuePairTokenUSDT.toString() })
         let tokenAllowance = await this.state.erc20token.methods.allowance(this.props.account, tokenAddress.toString()).call()
         this.setState({ tokenAllowance: tokenAllowance.toString() })
-        const erc20wbnb = new web3.eth.Contract(Erc20Abi.abi, this.state.addressWBNB.toString())
-        this.setState({ erc20wbnb })
         if (this.state.checkPairWBNB === '0x0000000000000000000000000000000000000000') {
           this.setState({ checkValuePairWBNB: 0 })
         } else {
@@ -206,14 +229,10 @@ class PairSwap extends Component {
         }
         let tokenSymbolWBNB = await this.state.erc20wbnb.methods.symbol().call()
         this.setState({ tokenSymbolWBNB: tokenSymbolWBNB.toString() })
-        const erc20busd = new web3.eth.Contract(Erc20Abi.abi, this.state.addressBUSD.toString())
-        this.setState({ erc20busd })
         let checkValuePairBUSD = await this.state.erc20busd.methods.balanceOf(this.state.checkPairBUSD).call()
         this.setState({ checkValuePairBUSD: checkValuePairBUSD.toString() })
         let tokenSymbolBUSD = await this.state.erc20busd.methods.symbol().call()
         this.setState({ tokenSymbolBUSD: tokenSymbolBUSD.toString() })
-        const erc20usdt = new web3.eth.Contract(Erc20Abi.abi, this.state.addressUSDT.toString())
-        this.setState({ erc20usdt })
         let checkValuePairUSDT = await this.state.erc20usdt.methods.balanceOf(this.state.checkPairUSDT).call()
         this.setState({ checkValuePairUSDT: checkValuePairUSDT.toString() })
         let tokenSymbolUSDT = await this.state.erc20usdt.methods.symbol().call()
@@ -277,28 +296,34 @@ class PairSwap extends Component {
         this.setState({ checkPairMATIC: checkPairMATIC.toString() })
         let checkPairUSDT = await this.props.pairPolygon.methods.getPair(tokenAddress.toString(), this.state.addressUSDT).call()
         this.setState({ checkPairUSDT: checkPairUSDT.toString() })
-        const erc20matic = new web3.eth.Contract(Erc20Abi.abi, this.state.addressMATIC.toString())
-        this.setState({ erc20matic })
-        if (this.state.checkPairMATIC === '0x0000000000000000000000000000000000000000') {
-          this.setState({ checkValuePairWBNB: 0 })
-        } else {
-          let checkValuePairWBNB = await this.state.erc20matic.methods.balanceOf(this.state.checkPairMATIC).call()
-          this.setState({ checkValuePairWBNB: checkValuePairWBNB.toString() })
-        }
+        let checkPairUSDC = await this.props.pairPolygon.methods.getPair(tokenAddress.toString(), this.state.addressUSDC).call()
+        this.setState({ checkPairUSDC: checkPairUSDC.toString() })
         let tokenSymbolWBNB = await this.state.erc20matic.methods.symbol().call()
         this.setState({ tokenSymbolWBNB: tokenSymbolWBNB.toString() })
-        const erc20tokenMatic = new web3.eth.Contract(Erc20Abi.abi, tokenAddress.toString())
-        this.setState({ erc20tokenMatic })
-        let tokenName = await this.state.erc20tokenMatic.methods.name().call()
+        let tokenSymbolUSDT = await this.state.erc20usdtp.methods.symbol().call()
+        this.setState({ tokenSymbolUSDT: tokenSymbolUSDT.toString() })
+        let tokenSymbolUSDC = await this.state.erc20usdc.methods.symbol().call()
+        this.setState({ tokenSymbolUSDC: tokenSymbolUSDC.toString() })
+        let tokenName = await this.state.erc20token.methods.name().call()
         this.setState({ tokenName: tokenName.toString() })
-        let tokenDecimals = await this.state.erc20tokenMatic.methods.decimals().call()
+        let tokenDecimals = await this.state.erc20token.methods.decimals().call()
         this.setState({ tokenDecimals: tokenDecimals.toString() })
-        let tokenSymbol = await this.state.erc20tokenMatic.methods.symbol().call()
+        let tokenSymbol = await this.state.erc20token.methods.symbol().call()
         this.setState({ tokenSymbol: tokenSymbol.toString() })
-        let tokenBalance = await this.state.erc20tokenMatic.methods.balanceOf(this.props.account).call()
+        let tokenBalance = await this.state.erc20token.methods.balanceOf(this.props.account).call()
         this.setState({ tokenBalance: tokenBalance.toString() })
-        let checkValuePairTokenWBNB = await this.state.erc20tokenMatic.methods.balanceOf(this.state.checkPairMATIC).call()
+        let checkValuePairTokenWBNB = await this.state.erc20token.methods.balanceOf(this.state.checkPairMATIC).call()
         this.setState({ checkValuePairTokenWBNB: checkValuePairTokenWBNB.toString() })
+        let checkValuePairTokenUSDT = await this.state.erc20token.methods.balanceOf(this.state.checkPairUSDT).call()
+        this.setState({ checkValuePairTokenUSDT: checkValuePairTokenUSDT.toString() })
+        let checkValuePairTokenUSDC = await this.state.erc20token.methods.balanceOf(this.state.checkPairUSDC).call()
+        this.setState({ checkValuePairTokenUSDC: checkValuePairTokenUSDC.toString() })
+        let checkValuePairWBNB = await this.state.erc20matic.methods.balanceOf(this.state.checkPairMATIC).call()
+        this.setState({ checkValuePairWBNB: checkValuePairWBNB.toString() })
+        let checkValuePairUSDT = await this.state.erc20usdtp.methods.balanceOf(this.state.checkPairUSDT).call()
+        this.setState({ checkValuePairUSDT: checkValuePairUSDT.toString() })
+        let checkValuePairUSDC = await this.state.erc20usdc.methods.balanceOf(this.state.checkPairUSDC).call()
+        this.setState({ checkValuePairUSDC: checkValuePairUSDC.toString() })
         if ((this.state.checkValuePairWBNB / this.state.decimals) !== 0) {
           this.props.swapPolygon.methods
             .swapExactETHForTokens(0, [this.state.addressMATIC, `${tokenAddress.toString()}`], this.props.account, this.state.unixTime)
@@ -330,6 +355,21 @@ class PairSwap extends Component {
             });
           break;
         }
+        if ((this.state.checkValuePairUSDC / this.state.decimals) !== 0) {
+          this.props.swapPolygon.methods
+            .swapExactTokensForTokens(window.web3.utils.toWei(tokenAmount.toString(), 'Ether'), 0, [this.state.addressUSDC, `${tokenAddress.toString()}`], this.props.account, this.state.unixTime)
+            .send({
+              gasPrice: window.web3.utils.toWei((gasAmount).toString(), "gwei"),
+              from: this.props.account
+            })
+            .on('receipt', async (hash) => {
+              window.location.reload()
+            })
+            .on('error', function (error) {
+              window.location.reload()
+            });
+          break;
+        }
         this.setState({ searchRequests: this.state.searchRequests - 1 })
         await sleep(1000);
       }
@@ -338,7 +378,7 @@ class PairSwap extends Component {
     for (var d = 0; d < this.state.tokenDecimals; d++) {
       this.setState({ tokenDecimal: this.state.tokenDecimal.toString() + '0' })
     }
-    this.setState({ searchOn: false });
+
   }
 
   stopCheckPairToken = async () => {
@@ -365,24 +405,9 @@ class PairSwap extends Component {
     }
   }
 
-  sellAllWbnb = async (tokenAddress, deadLine, gasAmount) => {
-    this.props.swap.methods
-      .swapExactTokensForTokens((this.state.tokenBalance / this.state.tokenDecimal).toFixed(2), 0, [`${tokenAddress.toString()}`, this.state.addressWBNB], this.props.account, deadLine)
-      .send({
-        gasPrice: window.web3.utils.toWei((gasAmount).toString(), "gwei"),
-        from: this.props.account
-      })
-      .on('receipt', async (hash) => {
-        window.location.reload()
-      })
-      .on('error', function (error) {
-        window.location.reload()
-      });
-  }
-
-  manuallyBsc = async (tokenAmount, tokenAddress, tokenAddress1, deadLine, gasAmount) => {
+  manuallyBsc = async (tokenAddress1, tokenAmount, tokenAddress, gasAmount) => {
     this.props.swapBsc.methods
-      .swapExactTokensForTokens(window.web3.utils.toWei(tokenAmount.toString(), 'Ether'), 0, [`${tokenAddress1.toString()}`, `${tokenAddress.toString()}`], this.props.account, deadLine)
+      .swapExactTokensForTokens(window.web3.utils.toWei(tokenAmount.toString(), 'Ether'), 0, [`${tokenAddress1.toString()}`, `${tokenAddress.toString()}`], this.props.account, this.state.unixTime)
       .send({
         gasPrice: window.web3.utils.toWei((gasAmount).toString(), "gwei"),
         from: this.props.account
@@ -673,7 +698,7 @@ class PairSwap extends Component {
                             type="submit"
                             onClick={(event) => {
                               event.preventDefault()
-                              this.manuallyBsc(this.state.tokenAmount, this.state.tokenAddress, this.state.tokenAddress1, this.state.deadLine, this.state.gasAmount)
+                              this.manuallyBsc(this.state.tokenAddress1, this.state.tokenAmount, this.state.tokenAddress, this.state.gasAmount)
                             }}>
                             {this.state.buyingOn === true ? "WAIT" : "BUY"}
                           </button>
@@ -821,6 +846,45 @@ class PairSwap extends Component {
                               </td>
                               <td>
                                 {(this.state.checkValuePairTokenUSDT / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairUSDT / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolUSDT} &nbsp;
+                              </td>
+                            </tr>
+                          </tfoot>
+                        </table>
+                      )
+                    }
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    {this.state.checkPairUSDC !== '0x0000000000000000000000000000000000000000' ?
+                      (
+                        <table>
+                          <tfoot id="farmButton">
+                            <tr>
+                              <td>
+                                <span class="green">
+                                  Found! &nbsp;
+                                </span>
+                              </td>
+                              <td>
+                                {(this.state.checkValuePairTokenUSDC / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairUSDC / this.state.decimalUSDC).toFixed(2) + " " + this.state.tokenSymbolUSDC}
+                              </td>
+                            </tr>
+                          </tfoot>
+                        </table>
+                      )
+                      :
+                      (
+                        <table>
+                          <tfoot id="farmButton">
+                            <tr>
+                              <td>
+                                <span class="red">
+                                  Not Found! &nbsp;
+                                </span>
+                              </td>
+                              <td>
+                                {(this.state.checkValuePairTokenUSDC / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairUSDC / this.state.decimalUSDC).toFixed(2) + " " + this.state.tokenSymbolUSDC} &nbsp;
                               </td>
                             </tr>
                           </tfoot>
