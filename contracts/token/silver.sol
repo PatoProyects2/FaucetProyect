@@ -40,6 +40,11 @@ contract Silver is ERC20 {
     supply = supply + amount;
     _mint(to, amount);
   }
+
+  function setMinter(address _newMinter) public {
+    require(msg.sender == owner, "No tienes permisos para cambiar al minter");
+    minter = _newMinter;
+  }
   
 
 }

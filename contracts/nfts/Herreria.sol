@@ -12,7 +12,7 @@ import "./Random.sol";
 
 //import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract SMITHY is  ERC721, ERC721Enumerable, Ownable, Random{
+contract Herreria is  ERC721, ERC721Enumerable, Ownable, Random{
 
     //using SafeERC20 for IERC20;
     uint256 COUNTER = 1;
@@ -127,6 +127,11 @@ contract SMITHY is  ERC721, ERC721Enumerable, Ownable, Random{
     function getSmithy() public  view returns(smithy[] memory){
         return smithys;
     }
+    function getActEnergyByID(uint _id) public  view returns(uint256){
+        require(smithys[_id-1].id == _id);
+        return smithys[_id-1].actEnergy;
+    }
+
     /* Creaar funciones getter para obtener la energia y obtener el "poder de minado" .*/
 
     
@@ -200,7 +205,11 @@ contract SMITHY is  ERC721, ERC721Enumerable, Ownable, Random{
     //-----------------------------------Modificar onlyOwner a onlyStake.
     function redEnergy(uint _id, uint _value) external onlyOwner{
         require(smithys[_id-1].actEnergy - _value >= 0, "error en disminuir energia");
-        smithys[_id-1].actEnergy = smithys[_id-1].actEnergy - _value;
+        if(_value == 0){
+            smithys[_id-1].actEnergy = 0;
+        }else{
+            smithys[_id-1].actEnergy = smithys[_id-1].actEnergy - _value;
+        }
     }
     
     //Cantidad de tokens que se requiere para RECARGAR energia
@@ -252,7 +261,9 @@ contract SMITHY is  ERC721, ERC721Enumerable, Ownable, Random{
     function getEfficiencyPerLvl(uint _level) internal pure returns(uint) {
         return _level*10;
     }    
-
+    /*/todo :
+    * getters para todos los campos del struc smithy.
+    */
     // funciones para evitar conflictos erc721 standar con erc721enumerable standar.
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
         internal
