@@ -9,8 +9,8 @@ module.exports = async function (deployer, network, accounts) {
     Energy = await EnergySistem.deployed();
 
   }else{
-    await deployer.deploy(/*EnergySistem, accounts[0]*/);
-    Energy = await EnergySistem.deployed();// MODIFICAR ESTO ANTES DE HACER DEPLOY.
+    await deployer.deploy(EnergySistem, price, accounts[1]);
+    Energy = await EnergySistem.deployed();// .
 
   }
 

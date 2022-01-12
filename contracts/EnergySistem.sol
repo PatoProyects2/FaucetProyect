@@ -11,6 +11,7 @@ contract EnergySistem {
 
     // Addres del (user => fecha en segudos donde se le termina la energia al user)
     mapping (address=> uint256) public userEnergy;
+    //TODO> mapping add=>bool) ownersEnergyFuLL;
 
     constructor (uint _price, address _feeWallet){
         owner = msg.sender; 
@@ -47,6 +48,10 @@ contract EnergySistem {
     }
  
         /* TODO:
+        * Fction: SetToken, SetPricem, checker (done)-----
+        * Fuctions: Para que generar una lista de vips free uso.
+        * Function: Regresar tiempo en segundos restantes de energia. 
+        * Replantear: Comprar 2 veces seguidas y sumar el tiempo.
         *
         */
 }
