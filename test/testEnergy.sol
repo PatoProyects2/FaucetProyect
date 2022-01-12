@@ -10,12 +10,13 @@ contract TestEnergy {
   EnergySistem energy = EnergySistem(DeployedAddresses.EnergySistem());
 
   // The id of the pet that will be used for testing
-  bool expectedUserBool = true;
+  bool expectedUserBool = false;
 
   function testCheckUser() public {
     bool expectedBOOL = energy.checkUser(address(this));
     //energy.buyToken()
     Assert.equal(expectedBOOL,expectedUserBool, "energy.feeWallet" );
   }
+  function testVars
 
 }
