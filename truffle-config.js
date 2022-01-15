@@ -35,7 +35,7 @@ module.exports = {
         ),
 
       network_id: 97, // Ropsten's id
-      confirmations: 5, // # of confs to wait between deployments. (default: 0)
+      confirmations: 1, // # of confs to wait between deployments. (default: 0)
       timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
     },
     

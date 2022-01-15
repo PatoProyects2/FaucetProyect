@@ -32,7 +32,7 @@ contract EnergySistem {
     }
 
     function checkUser(address _user) public view returns(bool){
-        if((userEnergy[_user]> block.timestamp)|| vipList[_user]){
+        if((userEnergy[_user]> block.timestamp) || vipList[_user]){
             return true;
         }else {
             return false;
@@ -52,8 +52,8 @@ contract EnergySistem {
 
     //Function: Regresar tiempo en segundos restantes de energia.
     function howTimeLeft(address _user) public view returns(uint){
-        if(block.timestamp>userEnergy[_user]  ){
-            return block.timestamp;
+        if(block.timestamp>=userEnergy[_user] ){
+            return 0;
         }else {
             return userEnergy[_user] - block.timestamp;
         }
@@ -63,18 +63,27 @@ contract EnergySistem {
         require (msg.sender == owner , "NO eres el owner");
         vipList[_vipAddress] = true;
     }
+
+    function setWalletFee(address _wallet) public {
+        require (msg.sender == owner , "NO eres el owner");
+        feeWallet = _wallet;
+    }
  
         /* TODO:
         * Fction: SetToken, SetPricem, checker (done)(tested)
         * Fuctions: Para que generar una lista de vips free uso. (done)
         * Function: Regresar tiempo en segundos restantes de energia. (done)
         * Replantear: Comprar 2 veces seguidas y sumar el tiempo.(done)
-        * Generar que los de la lista siempre de true.
+        * Generar que los de la lista siempre de true. (done)
+        * Function : SetWalletFee (done)
         */
 
     // ---- GETTERS
     function getVipChek(address _user) public view returns(bool){
         return  vipList[_user];
+    }
+    function timeBLockChain() external view returns(uint){
+        return block.timestamp;
     }
 
 }
