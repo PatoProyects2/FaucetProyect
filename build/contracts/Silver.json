@@ -5436,15 +5436,15 @@
         648
       ],
       "Silver": [
-        1604
+        1680
       ]
     },
-    "id": 1605,
+    "id": 1681,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1528,
+        "id": 1604,
         "literals": [
           "solidity",
           ">=",
@@ -5460,9 +5460,9 @@
       {
         "absolutePath": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
         "file": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
-        "id": 1529,
+        "id": 1605,
         "nodeType": "ImportDirective",
-        "scope": 1605,
+        "scope": 1681,
         "sourceUnit": 546,
         "src": "69:55:10",
         "symbolAliases": [],
@@ -5473,13 +5473,13 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 1530,
+              "id": 1606,
               "name": "ERC20",
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 545,
               "src": "194:5:10"
             },
-            "id": 1531,
+            "id": 1607,
             "nodeType": "InheritanceSpecifier",
             "src": "194:5:10"
           }
@@ -5492,9 +5492,9 @@
         ],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 1604,
+        "id": 1680,
         "linearizedBaseContracts": [
-          1604,
+          1680,
           545,
           648,
           623,
@@ -5506,11 +5506,11 @@
           {
             "constant": false,
             "functionSelector": "8da5cb5b",
-            "id": 1533,
+            "id": 1609,
             "mutability": "mutable",
             "name": "owner",
             "nodeType": "VariableDeclaration",
-            "scope": 1604,
+            "scope": 1680,
             "src": "211:20:10",
             "stateVariable": true,
             "storageLocation": "default",
@@ -5519,7 +5519,7 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 1532,
+              "id": 1608,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "211:7:10",
@@ -5534,11 +5534,11 @@
           {
             "constant": false,
             "functionSelector": "07546172",
-            "id": 1535,
+            "id": 1611,
             "mutability": "mutable",
             "name": "minter",
             "nodeType": "VariableDeclaration",
-            "scope": 1604,
+            "scope": 1680,
             "src": "236:21:10",
             "stateVariable": true,
             "storageLocation": "default",
@@ -5547,7 +5547,7 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 1534,
+              "id": 1610,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "236:7:10",
@@ -5562,11 +5562,11 @@
           {
             "constant": false,
             "functionSelector": "047fc9aa",
-            "id": 1538,
+            "id": 1614,
             "mutability": "mutable",
             "name": "supply",
             "nodeType": "VariableDeclaration",
-            "scope": 1604,
+            "scope": 1680,
             "src": "307:22:10",
             "stateVariable": true,
             "storageLocation": "default",
@@ -5575,7 +5575,7 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 1536,
+              "id": 1612,
               "name": "uint",
               "nodeType": "ElementaryTypeName",
               "src": "307:4:10",
@@ -5586,7 +5586,7 @@
             },
             "value": {
               "hexValue": "30",
-              "id": 1537,
+              "id": 1613,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -5604,23 +5604,23 @@
           },
           {
             "body": {
-              "id": 1556,
+              "id": 1632,
               "nodeType": "Block",
               "src": "615:61:10",
               "statements": [
                 {
                   "expression": {
-                    "id": 1550,
+                    "id": 1626,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
-                      "id": 1548,
+                      "id": 1624,
                       "name": "owner",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1533,
+                      "referencedDeclaration": 1609,
                       "src": "624:5:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -5630,11 +5630,11 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 1549,
+                      "id": 1625,
                       "name": "masterChef",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1541,
+                      "referencedDeclaration": 1617,
                       "src": "632:10:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -5647,23 +5647,23 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 1551,
+                  "id": 1627,
                   "nodeType": "ExpressionStatement",
                   "src": "624:18:10"
                 },
                 {
                   "expression": {
-                    "id": 1554,
+                    "id": 1630,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
-                      "id": 1552,
+                      "id": 1628,
                       "name": "minter",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1535,
+                      "referencedDeclaration": 1611,
                       "src": "651:6:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -5673,11 +5673,11 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 1553,
+                      "id": 1629,
                       "name": "masterChef",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1541,
+                      "referencedDeclaration": 1617,
                       "src": "660:10:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -5690,19 +5690,19 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 1555,
+                  "id": 1631,
                   "nodeType": "ExpressionStatement",
                   "src": "651:19:10"
                 }
               ]
             },
             "documentation": {
-              "id": 1539,
+              "id": 1615,
               "nodeType": "StructuredDocumentation",
               "src": "340:214:10",
               "text": " @dev Grants `DEFAULT_ADMIN_ROLE`, `MINTER_ROLE` and `PAUSER_ROLE` to the\n account that deploys the contract and mint 1million tokens to master chef address\n See {ERC20-constructor}."
             },
-            "id": 1557,
+            "id": 1633,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [
@@ -5710,7 +5710,7 @@
                 "arguments": [
                   {
                     "hexValue": "53696c766572",
-                    "id": 1544,
+                    "id": 1620,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -5726,7 +5726,7 @@
                   },
                   {
                     "hexValue": "505650",
-                    "id": 1545,
+                    "id": 1621,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -5741,9 +5741,9 @@
                     "value": "PVP"
                   }
                 ],
-                "id": 1546,
+                "id": 1622,
                 "modifierName": {
-                  "id": 1543,
+                  "id": 1619,
                   "name": "ERC20",
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 545,
@@ -5756,16 +5756,16 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1542,
+              "id": 1618,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1541,
+                  "id": 1617,
                   "mutability": "mutable",
                   "name": "masterChef",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1557,
+                  "scope": 1633,
                   "src": "572:18:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -5774,7 +5774,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1540,
+                    "id": 1616,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "572:7:10",
@@ -5790,12 +5790,12 @@
               "src": "571:20:10"
             },
             "returnParameters": {
-              "id": 1547,
+              "id": 1623,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "615:0:10"
             },
-            "scope": 1604,
+            "scope": 1680,
             "src": "560:116:10",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -5803,7 +5803,7 @@
           },
           {
             "body": {
-              "id": 1584,
+              "id": 1660,
               "nodeType": "Block",
               "src": "913:192:10",
               "statements": [
@@ -5815,14 +5815,14 @@
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 1569,
+                        "id": 1645,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "expression": {
-                            "id": 1566,
+                            "id": 1642,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -5833,7 +5833,7 @@
                               "typeString": "msg"
                             }
                           },
-                          "id": 1567,
+                          "id": 1643,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -5849,11 +5849,11 @@
                         "nodeType": "BinaryOperation",
                         "operator": "==",
                         "rightExpression": {
-                          "id": 1568,
+                          "id": 1644,
                           "name": "minter",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1535,
+                          "referencedDeclaration": 1611,
                           "src": "946:6:10",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -5868,7 +5868,7 @@
                       },
                       {
                         "hexValue": "4d696e743a206f6e6c794f576e6572",
-                        "id": 1570,
+                        "id": 1646,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -5894,7 +5894,7 @@
                           "typeString": "literal_string \"Mint: onlyOWner\""
                         }
                       ],
-                      "id": 1565,
+                      "id": 1641,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -5908,7 +5908,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 1571,
+                    "id": 1647,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -5923,23 +5923,23 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1572,
+                  "id": 1648,
                   "nodeType": "ExpressionStatement",
                   "src": "924:48:10"
                 },
                 {
                   "expression": {
-                    "id": 1577,
+                    "id": 1653,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
-                      "id": 1573,
+                      "id": 1649,
                       "name": "supply",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1538,
+                      "referencedDeclaration": 1614,
                       "src": "1051:6:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -5953,17 +5953,17 @@
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       },
-                      "id": 1576,
+                      "id": 1652,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "leftExpression": {
-                        "id": 1574,
+                        "id": 1650,
                         "name": "supply",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1538,
+                        "referencedDeclaration": 1614,
                         "src": "1060:6:10",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -5973,11 +5973,11 @@
                       "nodeType": "BinaryOperation",
                       "operator": "+",
                       "rightExpression": {
-                        "id": 1575,
+                        "id": 1651,
                         "name": "amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1562,
+                        "referencedDeclaration": 1638,
                         "src": "1069:6:10",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -5996,7 +5996,7 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 1578,
+                  "id": 1654,
                   "nodeType": "ExpressionStatement",
                   "src": "1051:24:10"
                 },
@@ -6004,11 +6004,11 @@
                   "expression": {
                     "arguments": [
                       {
-                        "id": 1580,
+                        "id": 1656,
                         "name": "to",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1560,
+                        "referencedDeclaration": 1636,
                         "src": "1088:2:10",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -6016,11 +6016,11 @@
                         }
                       },
                       {
-                        "id": 1581,
+                        "id": 1657,
                         "name": "amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1562,
+                        "referencedDeclaration": 1638,
                         "src": "1092:6:10",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -6039,7 +6039,7 @@
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 1579,
+                      "id": 1655,
                       "name": "_mint",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
@@ -6050,7 +6050,7 @@
                         "typeString": "function (address,uint256)"
                       }
                     },
-                    "id": 1582,
+                    "id": 1658,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -6065,36 +6065,36 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1583,
+                  "id": 1659,
                   "nodeType": "ExpressionStatement",
                   "src": "1082:17:10"
                 }
               ]
             },
             "documentation": {
-              "id": 1558,
+              "id": 1634,
               "nodeType": "StructuredDocumentation",
               "src": "682:170:10",
               "text": " @dev Creates `amount` new tokens for `to`.\n See {ERC20-_mint}.\n Requirements:\n - the caller must have the `MINTER_ROLE`."
             },
             "functionSelector": "40c10f19",
-            "id": 1585,
+            "id": 1661,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "mint",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1563,
+              "id": 1639,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1560,
+                  "id": 1636,
                   "mutability": "mutable",
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1585,
+                  "scope": 1661,
                   "src": "870:10:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -6103,7 +6103,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1559,
+                    "id": 1635,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "870:7:10",
@@ -6117,11 +6117,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1562,
+                  "id": 1638,
                   "mutability": "mutable",
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1585,
+                  "scope": 1661,
                   "src": "882:14:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -6130,7 +6130,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1561,
+                    "id": 1637,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "882:7:10",
@@ -6145,12 +6145,12 @@
               "src": "869:28:10"
             },
             "returnParameters": {
-              "id": 1564,
+              "id": 1640,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "913:0:10"
             },
-            "scope": 1604,
+            "scope": 1680,
             "src": "856:249:10",
             "stateMutability": "nonpayable",
             "virtual": true,
@@ -6158,7 +6158,7 @@
           },
           {
             "body": {
-              "id": 1602,
+              "id": 1678,
               "nodeType": "Block",
               "src": "1157:112:10",
               "statements": [
@@ -6170,14 +6170,14 @@
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 1594,
+                        "id": 1670,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "expression": {
-                            "id": 1591,
+                            "id": 1667,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -6188,7 +6188,7 @@
                               "typeString": "msg"
                             }
                           },
-                          "id": 1592,
+                          "id": 1668,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -6204,11 +6204,11 @@
                         "nodeType": "BinaryOperation",
                         "operator": "==",
                         "rightExpression": {
-                          "id": 1593,
+                          "id": 1669,
                           "name": "owner",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1533,
+                          "referencedDeclaration": 1609,
                           "src": "1186:5:10",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -6223,7 +6223,7 @@
                       },
                       {
                         "hexValue": "4e6f207469656e6573207065726d69736f7320706172612063616d6269617220616c206d696e746572",
-                        "id": 1595,
+                        "id": 1671,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -6249,7 +6249,7 @@
                           "typeString": "literal_string \"No tienes permisos para cambiar al minter\""
                         }
                       ],
-                      "id": 1590,
+                      "id": 1666,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -6263,7 +6263,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 1596,
+                    "id": 1672,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -6278,23 +6278,23 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1597,
+                  "id": 1673,
                   "nodeType": "ExpressionStatement",
                   "src": "1164:73:10"
                 },
                 {
                   "expression": {
-                    "id": 1600,
+                    "id": 1676,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
-                      "id": 1598,
+                      "id": 1674,
                       "name": "minter",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1535,
+                      "referencedDeclaration": 1611,
                       "src": "1244:6:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -6304,11 +6304,11 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 1599,
+                      "id": 1675,
                       "name": "_newMinter",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1587,
+                      "referencedDeclaration": 1663,
                       "src": "1253:10:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -6321,30 +6321,30 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 1601,
+                  "id": 1677,
                   "nodeType": "ExpressionStatement",
                   "src": "1244:19:10"
                 }
               ]
             },
             "functionSelector": "fca3b5aa",
-            "id": 1603,
+            "id": 1679,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "setMinter",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1588,
+              "id": 1664,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1587,
+                  "id": 1663,
                   "mutability": "mutable",
                   "name": "_newMinter",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1603,
+                  "scope": 1679,
                   "src": "1130:18:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -6353,7 +6353,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1586,
+                    "id": 1662,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1130:7:10",
@@ -6369,19 +6369,19 @@
               "src": "1129:20:10"
             },
             "returnParameters": {
-              "id": 1589,
+              "id": 1665,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1157:0:10"
             },
-            "scope": 1604,
+            "scope": 1680,
             "src": "1111:158:10",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
           }
         ],
-        "scope": 1605,
+        "scope": 1681,
         "src": "175:1103:10"
       }
     ],
@@ -6403,15 +6403,15 @@
         648
       ],
       "Silver": [
-        1604
+        1680
       ]
     },
-    "id": 1605,
+    "id": 1681,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1528,
+        "id": 1604,
         "literals": [
           "solidity",
           ">=",
@@ -6427,9 +6427,9 @@
       {
         "absolutePath": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
         "file": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
-        "id": 1529,
+        "id": 1605,
         "nodeType": "ImportDirective",
-        "scope": 1605,
+        "scope": 1681,
         "sourceUnit": 546,
         "src": "69:55:10",
         "symbolAliases": [],
@@ -6440,13 +6440,13 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 1530,
+              "id": 1606,
               "name": "ERC20",
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 545,
               "src": "194:5:10"
             },
-            "id": 1531,
+            "id": 1607,
             "nodeType": "InheritanceSpecifier",
             "src": "194:5:10"
           }
@@ -6459,9 +6459,9 @@
         ],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 1604,
+        "id": 1680,
         "linearizedBaseContracts": [
-          1604,
+          1680,
           545,
           648,
           623,
@@ -6473,11 +6473,11 @@
           {
             "constant": false,
             "functionSelector": "8da5cb5b",
-            "id": 1533,
+            "id": 1609,
             "mutability": "mutable",
             "name": "owner",
             "nodeType": "VariableDeclaration",
-            "scope": 1604,
+            "scope": 1680,
             "src": "211:20:10",
             "stateVariable": true,
             "storageLocation": "default",
@@ -6486,7 +6486,7 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 1532,
+              "id": 1608,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "211:7:10",
@@ -6501,11 +6501,11 @@
           {
             "constant": false,
             "functionSelector": "07546172",
-            "id": 1535,
+            "id": 1611,
             "mutability": "mutable",
             "name": "minter",
             "nodeType": "VariableDeclaration",
-            "scope": 1604,
+            "scope": 1680,
             "src": "236:21:10",
             "stateVariable": true,
             "storageLocation": "default",
@@ -6514,7 +6514,7 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 1534,
+              "id": 1610,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "236:7:10",
@@ -6529,11 +6529,11 @@
           {
             "constant": false,
             "functionSelector": "047fc9aa",
-            "id": 1538,
+            "id": 1614,
             "mutability": "mutable",
             "name": "supply",
             "nodeType": "VariableDeclaration",
-            "scope": 1604,
+            "scope": 1680,
             "src": "307:22:10",
             "stateVariable": true,
             "storageLocation": "default",
@@ -6542,7 +6542,7 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 1536,
+              "id": 1612,
               "name": "uint",
               "nodeType": "ElementaryTypeName",
               "src": "307:4:10",
@@ -6553,7 +6553,7 @@
             },
             "value": {
               "hexValue": "30",
-              "id": 1537,
+              "id": 1613,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -6571,23 +6571,23 @@
           },
           {
             "body": {
-              "id": 1556,
+              "id": 1632,
               "nodeType": "Block",
               "src": "615:61:10",
               "statements": [
                 {
                   "expression": {
-                    "id": 1550,
+                    "id": 1626,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
-                      "id": 1548,
+                      "id": 1624,
                       "name": "owner",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1533,
+                      "referencedDeclaration": 1609,
                       "src": "624:5:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -6597,11 +6597,11 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 1549,
+                      "id": 1625,
                       "name": "masterChef",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1541,
+                      "referencedDeclaration": 1617,
                       "src": "632:10:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -6614,23 +6614,23 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 1551,
+                  "id": 1627,
                   "nodeType": "ExpressionStatement",
                   "src": "624:18:10"
                 },
                 {
                   "expression": {
-                    "id": 1554,
+                    "id": 1630,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
-                      "id": 1552,
+                      "id": 1628,
                       "name": "minter",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1535,
+                      "referencedDeclaration": 1611,
                       "src": "651:6:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -6640,11 +6640,11 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 1553,
+                      "id": 1629,
                       "name": "masterChef",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1541,
+                      "referencedDeclaration": 1617,
                       "src": "660:10:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -6657,19 +6657,19 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 1555,
+                  "id": 1631,
                   "nodeType": "ExpressionStatement",
                   "src": "651:19:10"
                 }
               ]
             },
             "documentation": {
-              "id": 1539,
+              "id": 1615,
               "nodeType": "StructuredDocumentation",
               "src": "340:214:10",
               "text": " @dev Grants `DEFAULT_ADMIN_ROLE`, `MINTER_ROLE` and `PAUSER_ROLE` to the\n account that deploys the contract and mint 1million tokens to master chef address\n See {ERC20-constructor}."
             },
-            "id": 1557,
+            "id": 1633,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [
@@ -6677,7 +6677,7 @@
                 "arguments": [
                   {
                     "hexValue": "53696c766572",
-                    "id": 1544,
+                    "id": 1620,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -6693,7 +6693,7 @@
                   },
                   {
                     "hexValue": "505650",
-                    "id": 1545,
+                    "id": 1621,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -6708,9 +6708,9 @@
                     "value": "PVP"
                   }
                 ],
-                "id": 1546,
+                "id": 1622,
                 "modifierName": {
-                  "id": 1543,
+                  "id": 1619,
                   "name": "ERC20",
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 545,
@@ -6723,16 +6723,16 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1542,
+              "id": 1618,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1541,
+                  "id": 1617,
                   "mutability": "mutable",
                   "name": "masterChef",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1557,
+                  "scope": 1633,
                   "src": "572:18:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -6741,7 +6741,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1540,
+                    "id": 1616,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "572:7:10",
@@ -6757,12 +6757,12 @@
               "src": "571:20:10"
             },
             "returnParameters": {
-              "id": 1547,
+              "id": 1623,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "615:0:10"
             },
-            "scope": 1604,
+            "scope": 1680,
             "src": "560:116:10",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -6770,7 +6770,7 @@
           },
           {
             "body": {
-              "id": 1584,
+              "id": 1660,
               "nodeType": "Block",
               "src": "913:192:10",
               "statements": [
@@ -6782,14 +6782,14 @@
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 1569,
+                        "id": 1645,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "expression": {
-                            "id": 1566,
+                            "id": 1642,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -6800,7 +6800,7 @@
                               "typeString": "msg"
                             }
                           },
-                          "id": 1567,
+                          "id": 1643,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -6816,11 +6816,11 @@
                         "nodeType": "BinaryOperation",
                         "operator": "==",
                         "rightExpression": {
-                          "id": 1568,
+                          "id": 1644,
                           "name": "minter",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1535,
+                          "referencedDeclaration": 1611,
                           "src": "946:6:10",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -6835,7 +6835,7 @@
                       },
                       {
                         "hexValue": "4d696e743a206f6e6c794f576e6572",
-                        "id": 1570,
+                        "id": 1646,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -6861,7 +6861,7 @@
                           "typeString": "literal_string \"Mint: onlyOWner\""
                         }
                       ],
-                      "id": 1565,
+                      "id": 1641,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -6875,7 +6875,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 1571,
+                    "id": 1647,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -6890,23 +6890,23 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1572,
+                  "id": 1648,
                   "nodeType": "ExpressionStatement",
                   "src": "924:48:10"
                 },
                 {
                   "expression": {
-                    "id": 1577,
+                    "id": 1653,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
-                      "id": 1573,
+                      "id": 1649,
                       "name": "supply",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1538,
+                      "referencedDeclaration": 1614,
                       "src": "1051:6:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -6920,17 +6920,17 @@
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       },
-                      "id": 1576,
+                      "id": 1652,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "leftExpression": {
-                        "id": 1574,
+                        "id": 1650,
                         "name": "supply",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1538,
+                        "referencedDeclaration": 1614,
                         "src": "1060:6:10",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -6940,11 +6940,11 @@
                       "nodeType": "BinaryOperation",
                       "operator": "+",
                       "rightExpression": {
-                        "id": 1575,
+                        "id": 1651,
                         "name": "amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1562,
+                        "referencedDeclaration": 1638,
                         "src": "1069:6:10",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -6963,7 +6963,7 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 1578,
+                  "id": 1654,
                   "nodeType": "ExpressionStatement",
                   "src": "1051:24:10"
                 },
@@ -6971,11 +6971,11 @@
                   "expression": {
                     "arguments": [
                       {
-                        "id": 1580,
+                        "id": 1656,
                         "name": "to",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1560,
+                        "referencedDeclaration": 1636,
                         "src": "1088:2:10",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -6983,11 +6983,11 @@
                         }
                       },
                       {
-                        "id": 1581,
+                        "id": 1657,
                         "name": "amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1562,
+                        "referencedDeclaration": 1638,
                         "src": "1092:6:10",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -7006,7 +7006,7 @@
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 1579,
+                      "id": 1655,
                       "name": "_mint",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
@@ -7017,7 +7017,7 @@
                         "typeString": "function (address,uint256)"
                       }
                     },
-                    "id": 1582,
+                    "id": 1658,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -7032,36 +7032,36 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1583,
+                  "id": 1659,
                   "nodeType": "ExpressionStatement",
                   "src": "1082:17:10"
                 }
               ]
             },
             "documentation": {
-              "id": 1558,
+              "id": 1634,
               "nodeType": "StructuredDocumentation",
               "src": "682:170:10",
               "text": " @dev Creates `amount` new tokens for `to`.\n See {ERC20-_mint}.\n Requirements:\n - the caller must have the `MINTER_ROLE`."
             },
             "functionSelector": "40c10f19",
-            "id": 1585,
+            "id": 1661,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "mint",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1563,
+              "id": 1639,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1560,
+                  "id": 1636,
                   "mutability": "mutable",
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1585,
+                  "scope": 1661,
                   "src": "870:10:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -7070,7 +7070,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1559,
+                    "id": 1635,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "870:7:10",
@@ -7084,11 +7084,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1562,
+                  "id": 1638,
                   "mutability": "mutable",
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1585,
+                  "scope": 1661,
                   "src": "882:14:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -7097,7 +7097,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1561,
+                    "id": 1637,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "882:7:10",
@@ -7112,12 +7112,12 @@
               "src": "869:28:10"
             },
             "returnParameters": {
-              "id": 1564,
+              "id": 1640,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "913:0:10"
             },
-            "scope": 1604,
+            "scope": 1680,
             "src": "856:249:10",
             "stateMutability": "nonpayable",
             "virtual": true,
@@ -7125,7 +7125,7 @@
           },
           {
             "body": {
-              "id": 1602,
+              "id": 1678,
               "nodeType": "Block",
               "src": "1157:112:10",
               "statements": [
@@ -7137,14 +7137,14 @@
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 1594,
+                        "id": 1670,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "expression": {
-                            "id": 1591,
+                            "id": 1667,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -7155,7 +7155,7 @@
                               "typeString": "msg"
                             }
                           },
-                          "id": 1592,
+                          "id": 1668,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -7171,11 +7171,11 @@
                         "nodeType": "BinaryOperation",
                         "operator": "==",
                         "rightExpression": {
-                          "id": 1593,
+                          "id": 1669,
                           "name": "owner",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1533,
+                          "referencedDeclaration": 1609,
                           "src": "1186:5:10",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -7190,7 +7190,7 @@
                       },
                       {
                         "hexValue": "4e6f207469656e6573207065726d69736f7320706172612063616d6269617220616c206d696e746572",
-                        "id": 1595,
+                        "id": 1671,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -7216,7 +7216,7 @@
                           "typeString": "literal_string \"No tienes permisos para cambiar al minter\""
                         }
                       ],
-                      "id": 1590,
+                      "id": 1666,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -7230,7 +7230,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 1596,
+                    "id": 1672,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -7245,23 +7245,23 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1597,
+                  "id": 1673,
                   "nodeType": "ExpressionStatement",
                   "src": "1164:73:10"
                 },
                 {
                   "expression": {
-                    "id": 1600,
+                    "id": 1676,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
-                      "id": 1598,
+                      "id": 1674,
                       "name": "minter",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1535,
+                      "referencedDeclaration": 1611,
                       "src": "1244:6:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -7271,11 +7271,11 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 1599,
+                      "id": 1675,
                       "name": "_newMinter",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1587,
+                      "referencedDeclaration": 1663,
                       "src": "1253:10:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -7288,30 +7288,30 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 1601,
+                  "id": 1677,
                   "nodeType": "ExpressionStatement",
                   "src": "1244:19:10"
                 }
               ]
             },
             "functionSelector": "fca3b5aa",
-            "id": 1603,
+            "id": 1679,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "setMinter",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1588,
+              "id": 1664,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1587,
+                  "id": 1663,
                   "mutability": "mutable",
                   "name": "_newMinter",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1603,
+                  "scope": 1679,
                   "src": "1130:18:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -7320,7 +7320,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1586,
+                    "id": 1662,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1130:7:10",
@@ -7336,19 +7336,19 @@
               "src": "1129:20:10"
             },
             "returnParameters": {
-              "id": 1589,
+              "id": 1665,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1157:0:10"
             },
-            "scope": 1604,
+            "scope": 1680,
             "src": "1111:158:10",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
           }
         ],
-        "scope": 1605,
+        "scope": 1681,
         "src": "175:1103:10"
       }
     ],
@@ -7360,7 +7360,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2022-01-15T21:14:22.217Z",
+  "updatedAt": "2022-01-16T17:30:26.170Z",
   "devdoc": {
     "kind": "dev",
     "methods": {

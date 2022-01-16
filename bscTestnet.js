@@ -1,1 +1,0 @@
-export const bscTestnetEnergyAddress = "0x87aDF0722b69B9F5aa16b99272617fC1DaFa55E6"
