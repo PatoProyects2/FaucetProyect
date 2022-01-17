@@ -3,7 +3,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract EnergySistem {
+contract energySistem {
     IERC20 public buyToken;
     address public owner;
     address public feeWallet;
@@ -33,7 +33,8 @@ contract EnergySistem {
     
     function buyDay(uint _days) public {
         require (funActive == true, "La funcion esta desactivada");
-        require (howTimeLeft(msg.sender) < maxDayToBuy, "Superaste el maximo de dias");        
+        require (howTimeLeft(msg.sender) < maxDayToBuy, "Superaste el maximo de dias");
+        require ((_days * 1 days ) < maxDayToBuy);       
         uint _price = pricePerDay * _days;    
         require(buyToken.allowance(msg.sender, address(this)) > _price, "Aprovar mas uso de tokens");
         require(buyToken.balanceOf(msg.sender) >= _price, "Fondos insuficientes.");

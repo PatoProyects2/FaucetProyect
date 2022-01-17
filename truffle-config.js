@@ -26,6 +26,19 @@ module.exports = {
       timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
       skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
     },
+    rinkeby: {
+      provider: () =>
+        new HDWalletProvider(
+          process.env.MNENOMIC,
+          "https://rinkeby.infura.io/v3/" + process.env.INFURA_API_KEY
+        ),
+
+      network_id: 4, // Ropsten's id
+      gas: 5500000, // Ropsten has a lower block limit than mainnet
+      confirmations: 2, // # of confs to wait between deployments. (default: 0)
+      timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
+       // Skip dry run before migrations? (default: false for public nets )
+    },
 
     bscTestnet: {
       provider: () =>
@@ -35,9 +48,11 @@ module.exports = {
         ),
 
       network_id: 97, // Ropsten's id
-      confirmations: 1, // # of confs to wait between deployments. (default: 0)
-      timeoutBlocks: 2000, // # of blocks before a deployment times out  (minimum/default: 50)
-      networkCheckTimeout: 20000,
+      gas: 5500000,
+      confirmations: 2, // # of confs to wait between deployments. (default: 0)
+      timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
+      networkCheckTimeout: 999000,
+      skipDryRun: true,
     },
     
   },
@@ -46,8 +61,8 @@ module.exports = {
     'truffle-plugin-verify'
  ],
  api_keys: {
-    // etherscan: process.env.ETH_SCAN_API_KEY
-    bscscan: process.env.BSC_SCAN_API_KEY
+    etherscan: process.env.ETH_SCAN_API_KEY
+    //bscscan: process.env.BSC_SCAN_API_KEY
  },
 
   // Set default mocha options here, use special reporters etc.

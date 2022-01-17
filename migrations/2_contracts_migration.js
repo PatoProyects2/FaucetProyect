@@ -1,4 +1,4 @@
-const EnergySistem = artifacts.require('EnergySistem');
+const EnergySistem = artifacts.require('energySistem');
 
 module.exports = async function (deployer, network, accounts) {
   var Energy;
