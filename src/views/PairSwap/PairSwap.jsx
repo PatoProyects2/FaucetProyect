@@ -66,6 +66,7 @@ class PairSwap extends Component {
       checkValuePairTokenUSDT: 0,
       checkValuePairTokenMATIC: 0,
       checkValuePairTokenUSDC: 0,
+      dayAmount: 0,
       searchOn: false,
       buyingOn: false,
       searchActive: true,
@@ -87,6 +88,7 @@ class PairSwap extends Component {
     this.hour = this.hour.bind(this);
     this.minute = this.minute.bind(this);
     this.second = this.second.bind(this);
+    this.dayAmount = this.dayAmount.bind(this);
   }
 
   tokenAddress(event) {
@@ -115,6 +117,9 @@ class PairSwap extends Component {
   }
   second(event) {
     this.setState({ second: event.target.value });
+  }
+  dayAmount(event) {
+    this.setState({ dayAmount: event.target.value });
   }
 
   startBot = async (hour, minute, second, tokenAddress, bnbAmount, tokenAmount, gasAmount) => {
@@ -162,7 +167,6 @@ class PairSwap extends Component {
       return false
     }
 
-
     fetch('https://showcase.api.linx.twenty57.net/UnixTime/tounixtimestamp?datetime=' +
       `${this.props.utcYear}` + '/' + `${this.props.utcMonth}` + '/' + `${this.props.utcDay}` + '%20' + `${hour}` + ':' + `${minute}` + ':' + `${second}`)
       .then(response =>
@@ -192,10 +196,8 @@ class PairSwap extends Component {
     const erc20usdc = new web3.eth.Contract(UsdcProxyAbi.abi, this.state.addressUSDC.toString())
     this.setState({ erc20usdc })
 
-
     if (this.props.network === 'Bsc') {
       this.setState({ searchOn: true });
-
       while (this.state.searchRequests > 0) {
         let checkPairWBNB = await this.props.pairBsc.methods.getPair(tokenAddress.toString(), this.state.addressWBNB).call()
         this.setState({ checkPairWBNB: checkPairWBNB.toString() })
@@ -209,8 +211,12 @@ class PairSwap extends Component {
         this.setState({ tokenDecimals: tokenDecimals.toString() })
         let tokenSymbol = await this.state.erc20token.methods.symbol().call()
         this.setState({ tokenSymbol: tokenSymbol.toString() })
-        let tokenBalance = await this.state.erc20token.methods.balanceOf(this.props.account).call()
-        this.setState({ tokenBalance: tokenBalance.toString() })
+        let tokenSymbolWBNB = await this.state.erc20wbnb.methods.symbol().call()
+        this.setState({ tokenSymbolWBNB: tokenSymbolWBNB.toString() })
+        let tokenSymbolBUSD = await this.state.erc20busd.methods.symbol().call()
+        this.setState({ tokenSymbolBUSD: tokenSymbolBUSD.toString() })
+        let tokenSymbolUSDT = await this.state.erc20usdt.methods.symbol().call()
+        this.setState({ tokenSymbolUSDT: tokenSymbolUSDT.toString() })
         let checkValuePairTokenWBNB = await this.state.erc20token.methods.balanceOf(this.state.checkPairWBNB).call()
         this.setState({ checkValuePairTokenWBNB: checkValuePairTokenWBNB.toString() })
         let checkValuePairTokenBUSD = await this.state.erc20token.methods.balanceOf(this.state.checkPairBUSD).call()
@@ -225,16 +231,10 @@ class PairSwap extends Component {
           let checkValuePairWBNB = await this.state.erc20wbnb.methods.balanceOf(this.state.checkPairWBNB).call()
           this.setState({ checkValuePairWBNB: checkValuePairWBNB.toString() })
         }
-        let tokenSymbolWBNB = await this.state.erc20wbnb.methods.symbol().call()
-        this.setState({ tokenSymbolWBNB: tokenSymbolWBNB.toString() })
         let checkValuePairBUSD = await this.state.erc20busd.methods.balanceOf(this.state.checkPairBUSD).call()
         this.setState({ checkValuePairBUSD: checkValuePairBUSD.toString() })
-        let tokenSymbolBUSD = await this.state.erc20busd.methods.symbol().call()
-        this.setState({ tokenSymbolBUSD: tokenSymbolBUSD.toString() })
         let checkValuePairUSDT = await this.state.erc20usdt.methods.balanceOf(this.state.checkPairUSDT).call()
         this.setState({ checkValuePairUSDT: checkValuePairUSDT.toString() })
-        let tokenSymbolUSDT = await this.state.erc20usdt.methods.symbol().call()
-        this.setState({ tokenSymbolUSDT: tokenSymbolUSDT.toString() })
         if ((this.state.checkValuePairWBNB / this.state.decimals) !== 0) {
           this.props.swapBsc.methods
             .swapExactETHForTokens(0, [this.state.addressWBNB, `${tokenAddress.toString()}`], this.props.account, this.state.unixTime)
@@ -284,11 +284,8 @@ class PairSwap extends Component {
         this.setState({ searchRequests: this.state.searchRequests - 1 })
         await sleep(1000);
       }
-    }
-
-    else {
+    } else {
       this.setState({ searchOn: true });
-
       while (this.state.searchRequests > 0) {
         let checkPairWBNB = await this.props.pairPolygon.methods.getPair(tokenAddress.toString(), this.state.addressMATIC).call()
         this.setState({ checkPairWBNB: checkPairWBNB.toString() })
@@ -349,11 +346,9 @@ class PairSwap extends Component {
         await sleep(1000);
       }
     }
-
     for (var d = 0; d < this.state.tokenDecimals; d++) {
       this.setState({ tokenDecimal: this.state.tokenDecimal.toString() + '0' })
     }
-
   }
 
   stopCheckPairToken = async () => {
@@ -413,6 +408,30 @@ class PairSwap extends Component {
   approveToken = async (tokenAddress) => {
     this.state.erc20token.methods
       .approve(`${tokenAddress.toString()}`, window.web3.utils.toWei(window.web3.utils.toBN(new BigNumber(100000000000000000000000000000000000000000000000000)).toString(), 'Ether'))
+      .send({ from: this.props.account })
+      .on('receipt', (hash) => {
+
+      })
+      .on('error', function (error) {
+
+      });
+  }
+
+  approveEnergy = async () => {
+    this.props.patoToken.methods
+      .approve('0x263a267C14b837BDb0c52d16D99df2270A2fc25F', window.web3.utils.toWei(window.web3.utils.toBN(new BigNumber(100000000000000000000000000000000000000000000000000)).toString(), 'Ether'))
+      .send({ from: this.props.account })
+      .on('receipt', (hash) => {
+        window.location.reload()
+      })
+      .on('error', function (error) {
+
+      });
+  }
+
+  buyEnergy = async (dayAmount) => {
+    this.props.energySystem.methods
+      .buyDay(dayAmount.toString())
       .send({ from: this.props.account })
       .on('receipt', (hash) => {
 
@@ -506,7 +525,11 @@ class PairSwap extends Component {
     }
   }
   render() {
-
+    var seg = this.props.checkTime
+    var day = Math.floor(seg / (24 * 3600));
+    var hour = Math.floor((seg - day * 24 * 3600) / 3600);
+    var minute = Math.floor((seg - day * 24 * 3600 - hour * 3600) / 60);
+ 
     return (
       <div>
         <h1>SniperBot</h1>
@@ -533,324 +556,384 @@ class PairSwap extends Component {
             </button>
           }
         </h6>
-        <div class="boxModalPairs">
-          <h5>MENU</h5>
-          <button
-            class="btn1"
-            onClick={(event) => {
-              event.preventDefault()
-              this.selectMode()
-            }}>
-            {this.state.mode === true ? 'MANUALLY' : 'AUTOMATIC'}
-          </button>
-
-          <h4>{this.state.bnbAmountVerify === false ? 'Invalid BNB Amount' : ''}</h4>
-          <h4>{this.state.tokenAmountVerify === false ? 'Invalid USD Amount' : ''}</h4>
-          <h4>{this.state.tokenAddressVerify === false ? 'Invalid Token Address' : ''}</h4>
-          <h4>{this.state.gasAmountVerify === false ? 'Invalid Gas Amount' : ''}</h4>
-          <h4>{this.state.hourVerify === false ? 'Invalid Hour' : ''}</h4>
-          <h4>{this.state.minuteVerify === false ? 'Invalid Minute' : ''}</h4>
-          <h4>{this.state.secondVerify === false ? 'Invalid Second' : ''}</h4>
-
-          {this.state.mode === true ?
+        <h6>Time Left: {this.props.checkTime > 0 ? day + "d " + hour + "h " + minute + "m" : this.props.checkTime}</h6>
+        <h6>Energy: {Math.round(window.web3.utils.fromWei(this.props.checkEnergy.toString(), 'Mwei'))}</h6>
+        {this.props.checkStatus === true || this.props.checkVip === true ?
+          <div class="boxModalPairs">
+            <h5>MENU</h5>
+            <button
+              class="btn1"
+              onClick={(event) => {
+                event.preventDefault()
+                this.selectMode()
+              }}>
+              {this.state.mode === true ? 'MANUALLY' : 'AUTOMATIC'}
+            </button>
+            <h4>{this.state.bnbAmountVerify === false ? 'Invalid BNB Amount' : ''}</h4>
+            <h4>{this.state.tokenAmountVerify === false ? 'Invalid USD Amount' : ''}</h4>
+            <h4>{this.state.tokenAddressVerify === false ? 'Invalid Token Address' : ''}</h4>
+            <h4>{this.state.gasAmountVerify === false ? 'Invalid Gas Amount' : ''}</h4>
+            <h4>{this.state.hourVerify === false ? 'Invalid Hour' : ''}</h4>
+            <h4>{this.state.minuteVerify === false ? 'Invalid Minute' : ''}</h4>
+            <h4>{this.state.secondVerify === false ? 'Invalid Second' : ''}</h4>
+            {this.state.mode === true ?
+              <div class="form-group">
+                <input
+                  class="form-field"
+                  placeholder="0.00"
+                  type="number"
+                  min="1"
+                  onChange={this.bnbAmount}
+                />
+                <span>{(this.props.walletBalance / this.state.decimals).toFixed(4) + " "} {this.props.network === 'Polygon' ? ' MATIC' : ' BNB'}</span>
+              </div>
+              :
+              <div>
+                <div class="form-group">
+                  <input
+                    class="form-field"
+                    placeholder="0x00000000..."
+                    type="text"
+                    onChange={this.tokenAddress1}
+                  />
+                  <span>Pay</span>
+                </div>
+              </div>
+            }
             <div class="form-group">
               <input
                 class="form-field"
                 placeholder="0.00"
                 type="number"
                 min="1"
-                onChange={this.bnbAmount}
+                onChange={this.tokenAmount}
               />
-              <span>{(this.props.walletBalance / this.state.decimals).toFixed(4) + " "} {this.props.network === 'Polygon' ? ' MATIC' : ' BNB'}</span>
+              <span>USD Amount</span>
+            </div>
+            <div class="form-group">
+              <input
+                class="form-field"
+                placeholder="0x00000000..."
+                type="text"
+                onChange={this.tokenAddress}
+              />
+              <span>Buy</span>
+            </div>
+            <div class="form-group">
+              <input
+                class="form-field"
+                placeholder="10"
+                type="number"
+                min="1"
+                onChange={this.gasAmount}
+              />
+              <span>Gas Price</span>
+            </div>
+            <div class="form-group">
+              <input
+                class="form-field"
+                type="number"
+                min={this.props.utcHour}
+                value={this.props.utcHour + 1}
+                max="23"
+                placeholder={this.props.utcHour}
+                onChange={this.hour}
+              />
+              <span>Hour</span>
+              <input
+                class="form-field"
+                type="number"
+                min={this.props.utcMinute}
+                value={this.props.utcMinute}
+                max="60"
+                placeholder={this.props.utcMinute}
+                onChange={this.minute}
+              />
+              <span>Minutes</span>
+              <input
+                class="form-field"
+                type="number"
+                min={this.props.utcSecond}
+                value={this.props.utcMinute}
+                max="60"
+                placeholder={this.props.utcSecond}
+                onChange={this.second}
+              />
+              <span>Seconds</span>
+            </div>
+            <div class="btn2">
+              <table>
+                <tfoot id="farmButton">
+                  <tr>
+                    <td>
+                      {this.state.mode === true ?
+                        <div>
+                          {this.state.searchOn === true
+                            ?
+                            <button
+                              className="slide_from_left"
+                              type="submit"
+                              onClick={(event) => {
+                                event.preventDefault();
+                                this.stopCheckPairToken();
+                              }}>
+                              STOP
+                            </button>
+                            :
+                            <button
+                              className="slide_from_left"
+                              type="submit"
+                              onClick={(event) => {
+                                event.preventDefault();
+                                this.startBot(this.state.hour, this.state.minute, this.state.second, this.state.tokenAddress, this.state.bnbAmount, this.state.tokenAmount, this.state.gasAmount, this.state.deadLine);
+                              }}>
+                              START
+                            </button>
+                          }
+                        </div>
+                        :
+                        <div>
+                          {this.props.network === 'Bsc' ?
+                            <button
+                              disabled={this.state.buyingOn === true}
+                              className="slide_from_left"
+                              type="submit"
+                              onClick={(event) => {
+                                event.preventDefault()
+                                this.manuallyBsc(this.state.tokenAddress1, this.state.tokenAmount, this.state.tokenAddress, this.state.gasAmount)
+                              }}>
+                              {this.state.buyingOn === true ? "WAIT" : "BUY"}
+                            </button>
+                            :
+                            <button
+                              disabled={this.state.buyingOn === true}
+                              className="slide_from_left"
+                              type="submit"
+                              onClick={(event) => {
+                                event.preventDefault()
+                                this.manuallyPolygon(this.state.tokenAmount, this.state.tokenAddress, this.state.tokenAddress1, this.state.deadLine, this.state.gasAmount)
+                              }}>
+                              {this.state.buyingOn === true ? "WAIT" : "BUY"}
+                            </button>
+                          }
+                        </div>
+                      }
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          :
+          <div class="boxModalEnergy">
+            <div class="form-group">
+              <input
+                class="form-field"
+                placeholder="1"
+                min="1"
+                max="259200"
+                type="number"
+                onChange={this.dayAmount}
+              />
+              <span>Day Amount</span>
+            </div>
+            <div class="form-group">
+              <input
+                class="form-field"
+                value={this.state.dayAmount * (this.props.checkPrice / this.state.decimals)}
+                type="number"
+                disabled="disabled"
+                onChange={this.dayAmount}
+              />
+              <span>PVP Amount</span>
+            </div>
+            <div class="btn2">
+              <table>
+                <tr>
+                  <td>
+                    <button
+                      disabled={this.props.energyAllowance !== '0'}
+                      className="slide_from_left"
+                      type="submit"
+                      onClick={(event) => {
+                        event.preventDefault()
+                        this.approveEnergy()
+                      }}>
+                      APPROVE
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      disabled={this.props.energyAllowance === '0'}
+                      className="slide_from_left"
+                      type="submit"
+                      onClick={(event) => {
+                        event.preventDefault()
+                        this.buyEnergy(this.state.dayAmount)
+                      }}>
+                      BUY ENERGY
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        }
+        {
+          this.state.searchOn === true ?
+            <div class="boxModalPairs">
+              <h5>STATS</h5>
+              <br></br>
+              <p class="contrast">
+                Name: {this.state.tokenName}
+              </p>
+              <p class="contrast">
+                Decimals: {this.state.tokenDecimals}
+              </p>
+              <p class="contrast">
+                Requests: {this.state.searchRequests}
+              </p>
+              <table>
+                <tfoot>
+                  <tr>
+                    <td>
+                      {this.state.checkPairWBNB !== '0x0000000000000000000000000000000000000000' ?
+                        (
+                          <table>
+                            <tfoot id="farmButton">
+                              <tr>
+                                <td>
+                                  <span class="green">
+                                    Found! &nbsp;
+                                  </span>
+                                </td>
+                                <td>
+                                  {(this.state.checkValuePairTokenWBNB / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairWBNB / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolWBNB}
+                                </td>
+                              </tr>
+                            </tfoot>
+                          </table>
+                        )
+                        :
+                        (
+                          <div>
+                          </div>
+                        )
+                      }
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      {this.state.checkPairBUSD !== '0x0000000000000000000000000000000000000000' ?
+                        (
+                          <table>
+                            <tfoot id="farmButton">
+                              <tr>
+                                <td>
+                                  <span class="green">
+                                    Found! &nbsp;
+                                  </span>
+                                </td>
+                                <td>
+                                  {(this.state.checkValuePairTokenBUSD / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairBUSD / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolBUSD}
+                                </td>
+                              </tr>
+                            </tfoot>
+                          </table>
+                        )
+                        :
+                        (
+                          <div>
+                          </div>
+                        )
+                      }
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      {this.state.checkPairUSDT !== '0x0000000000000000000000000000000000000000' ?
+                        (
+                          <table>
+                            <tfoot id="farmButton">
+                              <tr>
+                                <td>
+                                  <span class="green">
+                                    Found! &nbsp;
+                                  </span>
+                                </td>
+                                <td>
+                                  {(this.state.checkValuePairTokenUSDT / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairUSDT / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolUSDT}
+                                </td>
+                              </tr>
+                            </tfoot>
+                          </table>
+                        )
+                        :
+                        (
+                          <div>
+                          </div>
+                        )
+                      }
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      {this.state.checkPairUSDC !== '0x0000000000000000000000000000000000000000' ?
+                        (
+                          <table>
+                            <tfoot id="farmButton">
+                              <tr>
+                                <td>
+                                  <span class="green">
+                                    Found! &nbsp;
+                                  </span>
+                                </td>
+                                <td>
+                                  {(this.state.checkValuePairTokenUSDC / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairUSDC / this.state.decimalUSDC).toFixed(2) + " " + this.state.tokenSymbolUSDC}
+                                </td>
+                              </tr>
+                            </tfoot>
+                          </table>
+                        )
+                        :
+                        (
+                          <div>
+                          </div>
+                        )
+                      }
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="btn2">
+                        <button
+                          disabled={this.state.tokenAllowance > 0}
+                          className="slide_from_left"
+                          type="submit"
+                          onClick={(event) => {
+                            event.preventDefault()
+                            this.approveToken(this.state.tokenAddress)
+                          }}>
+                          {this.state.tokenAllowance > 0 ? "APPROVED" : "APPROVE"}
+                        </button>
+                        <button
+                          className="slide_from_left"
+                          type="submit"
+                          onClick={(event) => {
+                            event.preventDefault()
+                            this.addToken(this.state.tokenAddress)
+                          }}>
+                          ADD TOKEN
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
             </div>
             :
             <div>
-              <div class="form-group">
-                <input
-                  class="form-field"
-                  placeholder="0x00000000..."
-                  type="text"
-                  onChange={this.tokenAddress1}
-                />
-                <span>Pay</span>
-              </div>
             </div>
-          }
-          <div class="form-group">
-            <input
-              class="form-field"
-              placeholder="0.00"
-              type="number"
-              min="1"
-              onChange={this.tokenAmount}
-            />
-            <span>USD Amount</span>
-          </div>
-          <div class="form-group">
-            <input
-              class="form-field"
-              placeholder="0x00000000..."
-              type="text"
-              onChange={this.tokenAddress}
-            />
-            <span>Buy</span>
-          </div>
-          <div class="form-group">
-            <input
-              class="form-field"
-              placeholder="10"
-              type="number"
-              min="1"
-              onChange={this.gasAmount}
-            />
-            <span>Gas Price</span>
-          </div>
-          <div class="form-group">
-            <input
-              class="form-field"
-              type="number"
-              min={this.props.utcHour}
-              max="23"
-              placeholder={this.props.utcHour}
-              onChange={this.hour}
-            />
-            <span>Hour</span>
-            <input
-              class="form-field"
-              type="number"
-              min={this.props.utcMinute}
-              max="60"
-              placeholder={this.props.utcMinute}
-              onChange={this.minute}
-            />
-            <span>Minutes</span>
-            <input
-              class="form-field"
-              type="number"
-              min={this.props.utcSecond}
-              max="60"
-              placeholder={this.props.utcSecond}
-              onChange={this.second}
-            />
-            <span>Seconds</span>
-          </div>
-          <div class="btn2">
-            <table>
-              <tfoot id="farmButton">
-                <tr>
-                  <td>
-                    {this.state.mode === true ?
-                      <div>
-                        {this.state.searchOn === true
-                          ?
-                          <button
-                            className="slide_from_left"
-                            type="submit"
-                            onClick={(event) => {
-                              event.preventDefault();
-                              this.stopCheckPairToken();
-                            }}>
-                            STOP
-                          </button>
-                          :
-                          <button
-                            className="slide_from_left"
-                            type="submit"
-                            onClick={(event) => {
-                              event.preventDefault();
-                              this.startBot(this.state.hour, this.state.minute, this.state.second, this.state.tokenAddress, this.state.bnbAmount, this.state.tokenAmount, this.state.gasAmount, this.state.deadLine);
-                            }}>
-                            START
-                          </button>
-                        }
-                      </div>
-                      :
-                      <div>
-                        {this.props.network === 'Bsc' ?
-                          <button
-                            disabled={this.state.buyingOn === true}
-                            className="slide_from_left"
-                            type="submit"
-                            onClick={(event) => {
-                              event.preventDefault()
-                              this.manuallyBsc(this.state.tokenAddress1, this.state.tokenAmount, this.state.tokenAddress, this.state.gasAmount)
-                            }}>
-                            {this.state.buyingOn === true ? "WAIT" : "BUY"}
-                          </button>
-                          :
-                          <button
-                            disabled={this.state.buyingOn === true}
-                            className="slide_from_left"
-                            type="submit"
-                            onClick={(event) => {
-                              event.preventDefault()
-                              this.manuallyPolygon(this.state.tokenAmount, this.state.tokenAddress, this.state.tokenAddress1, this.state.deadLine, this.state.gasAmount)
-                            }}>
-                            {this.state.buyingOn === true ? "WAIT" : "BUY"}
-                          </button>
-                        }
-                      </div>
-                    }
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-        </div>
-        {this.state.searchOn === true ?
-          <div class="boxModalPairs">
-            <h5>STATS</h5>
-            <br></br>
-            <p class="contrast">
-              Name: {this.state.tokenName}
-            </p>
-            <p class="contrast">
-              Decimals: {this.state.tokenDecimals}
-            </p>
-            <p class="contrast">
-              Requests: {this.state.searchRequests}
-            </p>
-            <table>
-              <tfoot>
-                <tr>
-                  <td>
-                    {this.state.checkPairWBNB !== '0x0000000000000000000000000000000000000000' ?
-                      (
-                        <table>
-                          <tfoot id="farmButton">
-                            <tr>
-                              <td>
-                                <span class="green">
-                                  Found! &nbsp;
-                                </span>
-                              </td>
-                              <td>
-                                {(this.state.checkValuePairTokenWBNB / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairWBNB / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolWBNB}
-                              </td>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      )
-                      :
-                      (
-                        <div>
-                        </div>
-                      )
-                    }
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    {this.state.checkPairBUSD !== '0x0000000000000000000000000000000000000000' ?
-                      (
-                        <table>
-                          <tfoot id="farmButton">
-                            <tr>
-                              <td>
-                                <span class="green">
-                                  Found! &nbsp;
-                                </span>
-                              </td>
-                              <td>
-                                {(this.state.checkValuePairTokenBUSD / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairBUSD / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolBUSD}
-                              </td>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      )
-                      :
-                      (
-                        <div>
-                        </div>
-                      )
-                    }
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    {this.state.checkPairUSDT !== '0x0000000000000000000000000000000000000000' ?
-                      (
-                        <table>
-                          <tfoot id="farmButton">
-                            <tr>
-                              <td>
-                                <span class="green">
-                                  Found! &nbsp;
-                                </span>
-                              </td>
-                              <td>
-                                {(this.state.checkValuePairTokenUSDT / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairUSDT / this.state.decimals).toFixed(2) + " " + this.state.tokenSymbolUSDT}
-                              </td>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      )
-                      :
-                      (
-                        <div>
-                        </div>
-                      )
-                    }
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    {this.state.checkPairUSDC !== '0x0000000000000000000000000000000000000000' ?
-                      (
-                        <table>
-                          <tfoot id="farmButton">
-                            <tr>
-                              <td>
-                                <span class="green">
-                                  Found! &nbsp;
-                                </span>
-                              </td>
-                              <td>
-                                {(this.state.checkValuePairTokenUSDC / this.state.tokenDecimal).toFixed(2) + " " + this.state.tokenSymbol} / {(this.state.checkValuePairUSDC / this.state.decimalUSDC).toFixed(2) + " " + this.state.tokenSymbolUSDC}
-                              </td>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      )
-                      :
-                      (
-                        <div>
-                        </div>
-                      )
-                    }
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="btn2">
-                      <button
-                        disabled={this.state.tokenAllowance > 0}
-                        className="slide_from_left"
-                        type="submit"
-                        onClick={(event) => {
-                          event.preventDefault()
-                          this.approveToken(this.state.tokenAddress)
-                        }}>
-                        {this.state.tokenAllowance > 0 ? "APPROVED" : "APPROVE"}
-                      </button>
-                      <button
-                        className="slide_from_left"
-                        type="submit"
-                        onClick={(event) => {
-                          event.preventDefault()
-                          this.addToken(this.state.tokenAddress)
-                        }}>
-                        ADD TOKEN
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-          :
-          <div>
-          </div>
         }
         <Footer />
       </div >

@@ -11,6 +11,7 @@ class Chain {
   pancakeSwapAddress = "-"
   polygonPairAddress = "-"
   polygonSwapAddress = "-"
+  energyAddress = "-"
 
   constructor(
     name,
@@ -25,6 +26,7 @@ class Chain {
     pancakeSwapAddress,
     polygonPairAddress,
     polygonSwapAddress,
+    energyAddress,
   ) {
     this.name = name
     this.id = id
@@ -38,6 +40,7 @@ class Chain {
     this.pancakeSwapAddress = pancakeSwapAddress
     this.polygonPairAddress = polygonPairAddress
     this.polygonSwapAddress = polygonSwapAddress
+    this.energyAddress = energyAddress
   }
 }
 

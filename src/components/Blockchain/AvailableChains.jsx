@@ -6,7 +6,8 @@ import {
     PancakePairAddress,
     PancakeSwapAddress,
     PolygonPairAddress,
-    PolygonSwapAddress
+    PolygonSwapAddress,
+    EnergyAddress
 } from './Contracts'
 
 let chains = []
@@ -25,6 +26,7 @@ chains.push(
         PancakeSwapAddress,
         PolygonPairAddress,
         PolygonSwapAddress,
+        EnergyAddress,
     )
 )
 
@@ -42,6 +44,7 @@ chains.push(
         PancakeSwapAddress,
         PolygonPairAddress,
         PolygonSwapAddress,
+        EnergyAddress,
     )
 )
 

@@ -13,6 +13,7 @@ import FaucetAbi from './abis/Faucet.json'
 import StakingAbi from './abis/Staking.json'
 import PairAbi from './abis/Pair/PancakeFactory.json'
 import SwapAbi from './abis/Swap/PancakeRouter.json'
+import EnergyAbi from './abis/Energy/energySistem.json'
 
 import chains from './components/Blockchain/AvailableChains'
 import Layout from './components/Header/Layout'
@@ -49,6 +50,7 @@ class App extends Component {
       patoToken: {},
       faucet: {},
       staking: {},
+      energySystem: {},
       stakingPending: 0,
       stakingStaked: 0,
       patoExpiry: 0,
@@ -60,9 +62,13 @@ class App extends Component {
       utcHour: 0,
       utcMinute: 0,
       utcSecond: 0,
+      checkTime: 0,
+      checkPrice: 0,
+      checkEnergy: 0,
       account: '0x0',
       network: 'invalid',
       patoAllowance: '0',
+      energyAllowance: '0',
       patoTokenBalance: '0',
       rewardsPerDay: '0',
       faucetPatoTokenBalance: '0',
@@ -75,6 +81,8 @@ class App extends Component {
       chainInUse: undefined,
       rewardsActive: undefined,
       claimActive: undefined,
+      checkStatus: undefined,
+      checkVip: undefined,
     };
   }
 
@@ -134,6 +142,8 @@ class App extends Component {
         this.setState({ patoToken })
         let patoAllowance = await this.state.patoToken.methods.allowance(this.state.account, chainInUse.stakingAddress).call()
         this.setState({ patoAllowance: patoAllowance.toString() })
+        let energyAllowance = await this.state.patoToken.methods.allowance(this.state.account, chainInUse.energyAddress).call()
+        this.setState({ energyAllowance: energyAllowance.toString() })
         let patoTokenBalance = await this.state.patoToken.methods.balanceOf(this.state.account).call()
         this.setState({ patoTokenBalance: patoTokenBalance.toString() })
         let faucetPatoTokenBalance = await this.state.patoToken.methods.balanceOf(chainInUse.faucetAddress).call()
@@ -203,6 +213,22 @@ class App extends Component {
         console.log('SWAP POLYGON CONTRACT NOT DEPLOYED TO DETECTED NETWORK!')
       }
       try {
+        const energySystem = new web3.eth.Contract(EnergyAbi.abi, chainInUse.energyAddress)
+        this.setState({ energySystem })
+        let checkStatus = await this.state.energySystem.methods.checkUser(this.state.account).call()
+        this.setState({ checkStatus: checkStatus })
+        let checkVip = await this.state.energySystem.methods.getVipChek(this.state.account).call()
+        this.setState({ checkVip: checkVip })
+        let checkTime = await this.state.energySystem.methods.howTimeLeft(this.state.account).call()
+        this.setState({ checkTime: checkTime })
+        let checkPrice = await this.state.energySystem.methods.pricePerDay().call()
+        this.setState({ checkPrice: checkPrice })
+        let checkEnergy = await this.state.energySystem.methods.userEnergy(this.state.account).call()
+        this.setState({ checkEnergy: checkEnergy })
+      } catch (e) {
+        console.log('ENERGY SYSTEM')
+      }
+      try {
         let walletBalance = await web3.eth.getBalance(this.state.account)
         this.setState({ walletBalance: walletBalance.toString() })
         let walletChainId = await web3.eth.getChainId()
@@ -213,7 +239,7 @@ class App extends Component {
       if (this.state.walletChainId === '56') {
         this.setState({ network: 'Bsc' })
       }
-      if (this.state.walletChainId === '137') {
+      if (this.state.walletChainId === '137') { 
         this.setState({ network: 'Polygon' })
       }
       this.setState({ loading: 'FALSE' })
@@ -320,6 +346,14 @@ class App extends Component {
           utcHour={this.state.utcHour}
           utcMinute={this.state.utcMinute}
           utcSecond={this.state.utcSecond}
+          energySystem={this.state.energySystem}
+          checkStatus={this.state.checkStatus}
+          checkVip={this.state.checkVip}
+          checkTime={this.state.checkTime}
+          checkPrice={this.state.checkPrice}
+          checkEnergy={this.state.checkEnergy}
+          energyAllowance={this.state.energyAllowance}
+          patoToken={this.state.patoToken}
         />
       </article>
     }
