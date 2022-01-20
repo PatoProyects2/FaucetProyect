@@ -529,7 +529,7 @@ class PairSwap extends Component {
     var day = Math.floor(seg / (24 * 3600));
     var hour = Math.floor((seg - day * 24 * 3600) / 3600);
     var minute = Math.floor((seg - day * 24 * 3600 - hour * 3600) / 60);
- 
+
     return (
       <div>
         <h1>SniperBot</h1>
@@ -557,7 +557,6 @@ class PairSwap extends Component {
           }
         </h6>
         <h6>Time Left: {this.props.checkTime > 0 ? day + "d " + hour + "h " + minute + "m" : this.props.checkTime}</h6>
-        <h6>Energy: {Math.round(window.web3.utils.fromWei(this.props.checkEnergy.toString(), 'Mwei'))}</h6>
         {this.props.checkStatus === true || this.props.checkVip === true ?
           <div class="boxModalPairs">
             <h5>MENU</h5>
@@ -569,13 +568,15 @@ class PairSwap extends Component {
               }}>
               {this.state.mode === true ? 'MANUALLY' : 'AUTOMATIC'}
             </button>
-            <h4>{this.state.bnbAmountVerify === false ? 'Invalid BNB Amount' : ''}</h4>
-            <h4>{this.state.tokenAmountVerify === false ? 'Invalid USD Amount' : ''}</h4>
-            <h4>{this.state.tokenAddressVerify === false ? 'Invalid Token Address' : ''}</h4>
-            <h4>{this.state.gasAmountVerify === false ? 'Invalid Gas Amount' : ''}</h4>
-            <h4>{this.state.hourVerify === false ? 'Invalid Hour' : ''}</h4>
-            <h4>{this.state.minuteVerify === false ? 'Invalid Minute' : ''}</h4>
-            <h4>{this.state.secondVerify === false ? 'Invalid Second' : ''}</h4>
+            <div>
+              <h4>{this.state.bnbAmountVerify === false ? 'Invalid Amount' : ''}</h4>
+              <h4>{this.state.tokenAmountVerify === false ? 'Invalid USD Amount' : ''}</h4>
+              <h4>{this.state.tokenAddressVerify === false ? 'Invalid Token Address' : ''}</h4>
+              <h4>{this.state.gasAmountVerify === false ? 'Invalid Gas Amount' : ''}</h4>
+              <h4>{this.state.hourVerify === false ? 'Invalid Hour' : ''}</h4>
+              <h4>{this.state.minuteVerify === false ? 'Invalid Minute' : ''}</h4>
+              <h4>{this.state.secondVerify === false ? 'Invalid Second' : ''}</h4>
+            </div>
             {this.state.mode === true ?
               <div class="form-group">
                 <input
@@ -633,8 +634,7 @@ class PairSwap extends Component {
               <input
                 class="form-field"
                 type="number"
-                min={this.props.utcHour}
-                value={this.props.utcHour + 1}
+                min={this.props.utcHour + 1}
                 max="23"
                 placeholder={this.props.utcHour}
                 onChange={this.hour}
@@ -644,7 +644,6 @@ class PairSwap extends Component {
                 class="form-field"
                 type="number"
                 min={this.props.utcMinute}
-                value={this.props.utcMinute}
                 max="60"
                 placeholder={this.props.utcMinute}
                 onChange={this.minute}
@@ -654,7 +653,6 @@ class PairSwap extends Component {
                 class="form-field"
                 type="number"
                 min={this.props.utcSecond}
-                value={this.props.utcMinute}
                 max="60"
                 placeholder={this.props.utcSecond}
                 onChange={this.second}
