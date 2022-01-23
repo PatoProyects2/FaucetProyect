@@ -434,7 +434,7 @@ class PairSwap extends Component {
       .buyDay(dayAmount.toString())
       .send({ from: this.props.account })
       .on('receipt', (hash) => {
-
+        window.location.reload()
       })
       .on('error', function (error) {
 
@@ -556,7 +556,7 @@ class PairSwap extends Component {
             </button>
           }
         </h6>
-        <h6>Time Left: {this.props.checkTime > 0 ? day + "d " + hour + "h " + minute + "m" : this.props.checkTime}</h6>
+        <h6>Time Left: {this.props.checkTime > 0 ? day + "d " + hour + "h " + minute + "m" : this.props.checkTime + " days"}</h6>
         {this.props.checkStatus === true || this.props.checkVip === true ?
           <div class="boxModalPairs">
             <h5>MENU</h5>

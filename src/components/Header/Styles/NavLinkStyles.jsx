@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const NavLinkWrapper = styled.nav`
   display: flex;
-  padding: 10px;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
@@ -22,7 +21,6 @@ export const NavLinkWrapper = styled.nav`
   }
 
   a {
-    padding: 0.5rem 0.8rem;
     background-color: transparent;
   }
 

@@ -9,7 +9,7 @@ function NavLinks({ open }) {
                 <svg
                     className="svg-logo"
                     width="300"
-                    height="60"
+                    height="30"
                     viewBox="0 0 204.7 19.78"
                     fill="#009625"
                 >

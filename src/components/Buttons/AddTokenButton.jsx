@@ -1,6 +1,20 @@
 import React, { Component } from 'react'
+import styled from 'styled-components'
+import PatoLogo from '../../images/patologo.png'
+
+const PatoButton = styled.button`
+background-image: url(${PatoLogo});
+background-size: 35px;
+background-position: -7px;
+display: block;
+width: 35px;
+height: 35px;
+border-radius: 50%;
+border: 6px #009625 solid;
+`
 
 class AddTokenButton extends Component {
+
   addToken = async () => {
     try {
       const provider = window.web3.currentProvider
@@ -23,15 +37,14 @@ class AddTokenButton extends Component {
 
   render() {
     return (
-      <button
-        class="btn1"
+      <PatoButton
         type="submit"
         onClick={(event) => {
           event.preventDefault()
           this.addToken()
         }}>
-        ADD TOKEN
-      </button>
+
+      </PatoButton>
     );
   }
 }
